@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.model.Account;
 import org.example.model.UserSession;
+import org.example.service.SyncService;
 import org.example.ui.crm.CRMPanel;
 import org.example.ui.hr.HRPanel;
 import org.example.ui.inventory.InventoryPanel;
@@ -63,6 +64,33 @@ public class MainWindow extends JFrame {
         buildUI();
         startClock();
         showFirstAllowedModule();
+        initSync();
+    }
+
+    /** Initialize sync: register state listener + auto-sync if configured */
+    private void initSync() {
+        SyncService sync = SyncService.getInstance();
+        sync.setStateListener(state -> SwingUtilities.invokeLater(() -> updateSyncLabel(state)));
+        if (sync.isConfigured()) {
+            sync.startAutoSync(60);
+        }
+        updateSyncLabel(sync.isConfigured() ? SyncService.SyncState.IDLE : SyncService.SyncState.IDLE);
+    }
+
+    private void updateSyncLabel(SyncService.SyncState state) {
+        switch (state) {
+            case SYNCED  -> { lblSync.setText("● ĐỒNG BỘ ✓"); lblSync.setForeground(new Color(130,210,130)); }
+            case SYNCING -> { lblSync.setText("● ĐANG SYNC..."); lblSync.setForeground(new Color(255,200,50)); }
+            case OFFLINE -> { lblSync.setText("● OFFLINE"); lblSync.setForeground(new Color(180,180,180)); }
+            case ERROR   -> { lblSync.setText("● LỖI SYNC"); lblSync.setForeground(new Color(255,100,100)); }
+            default      -> {
+                if (SyncService.getInstance().isConfigured()) {
+                    lblSync.setText("● SẴN SÀNG"); lblSync.setForeground(new Color(130,200,230));
+                } else {
+                    lblSync.setText("● LOCAL"); lblSync.setForeground(new Color(130,210,130));
+                }
+            }
+        }
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -131,7 +159,30 @@ public class MainWindow extends JFrame {
 
         lblSync.setFont(UIUtils.FONT_BOLD);
         lblSync.setForeground(new Color(130, 210, 130));
+        lblSync.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        lblSync.setToolTipText("Click để mở cài đặt đồng bộ");
+        lblSync.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseClicked(java.awt.event.MouseEvent e) {
+                new SyncSettingsDialog(MainWindow.this).setVisible(true);
+            }
+        });
         right.add(lblSync);
+
+        JButton btnSyncNow = new JButton("🔄");
+        btnSyncNow.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        btnSyncNow.setToolTipText("Đồng bộ ngay");
+        btnSyncNow.setForeground(Color.WHITE);
+        btnSyncNow.setBackground(UIUtils.COLOR_TOPBAR);
+        btnSyncNow.setFocusPainted(false);
+        btnSyncNow.setBorderPainted(false);
+        btnSyncNow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnSyncNow.setPreferredSize(new Dimension(32, 28));
+        btnSyncNow.addActionListener(e -> {
+            SyncService sync = SyncService.getInstance();
+            if (!sync.isConfigured()) { new SyncSettingsDialog(this).setVisible(true); return; }
+            new Thread(() -> sync.syncAll(), "ManualSync").start();
+        });
+        right.add(btnSyncNow);
 
         JSeparator sep = new JSeparator(JSeparator.VERTICAL);
         sep.setForeground(new Color(100, 90, 80));
@@ -196,8 +247,9 @@ public class MainWindow extends JFrame {
         sidebar.add(div);
         sidebar.add(Box.createVerticalStrut(4));
 
-        // Settings button
+        // Settings button — opens sync settings dialog
         JButton btnSettings = makeSidebarBtn("⚙", "CÀI ĐẶT", null);
+        btnSettings.addActionListener(e -> new SyncSettingsDialog(this).setVisible(true));
         sidebar.add(btnSettings);
         sidebar.add(Box.createVerticalStrut(8));
 
@@ -273,10 +325,10 @@ public class MainWindow extends JFrame {
         left.setFont(UIUtils.FONT_SMALL);
         bar.add(left, BorderLayout.WEST);
 
-        JLabel right = new JLabel("SQLite · Offline-First · WAL Mode");
-        right.setForeground(new Color(150, 140, 120));
-        right.setFont(UIUtils.FONT_SMALL);
-        bar.add(right, BorderLayout.EAST);
+        JLabel rightLbl = new JLabel("SQLite + Cloud Sync · Offline-First · WAL Mode");
+        rightLbl.setForeground(new Color(150, 140, 120));
+        rightLbl.setFont(UIUtils.FONT_SMALL);
+        bar.add(rightLbl, BorderLayout.EAST);
 
         return bar;
     }

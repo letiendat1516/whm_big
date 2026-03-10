@@ -132,14 +132,30 @@ public class PgDatabaseManager {
             jdbcUrl = "jdbc:" + cleanUrl;
         }
 
-        // Explicitly load PostgreSQL driver (required for fat JAR where
-        // META-INF/services/java.sql.Driver may not be merged correctly)
+        // Explicitly load AND register PostgreSQL driver.
+        // In fat JARs (maven-shade), META-INF/services may not merge correctly,
+        // so we must force-register the driver with DriverManager.
         try {
             Class.forName("org.postgresql.Driver");
-            System.out.println("[PG] PostgreSQL JDBC driver loaded successfully.");
+            // Double-check: register explicitly in case ServiceLoader missed it
+            try {
+                java.sql.DriverManager.registerDriver(new org.postgresql.Driver());
+            } catch (Exception ignored) { /* already registered */ }
+            System.out.println("[PG] PostgreSQL JDBC driver loaded and registered successfully.");
+            System.out.println("[PG]   Available drivers:");
+            java.util.Collections.list(java.sql.DriverManager.getDrivers())
+                .forEach(d -> System.out.println("[PG]     " + d.getClass().getName()));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("PostgreSQL JDBC driver not found in classpath! "
-                + "Make sure postgresql dependency is in pom.xml.", e);
+            System.err.println("[PG] *** FATAL: PostgreSQL JDBC driver NOT FOUND in classpath! ***");
+            System.err.println("[PG] Check that 'org.postgresql:postgresql' is in pom.xml");
+            System.err.println("[PG] Classpath entries:");
+            String cp = System.getProperty("java.class.path");
+            if (cp != null) {
+                for (String entry : cp.split(java.io.File.pathSeparator)) {
+                    System.err.println("[PG]   " + entry);
+                }
+            }
+            throw new RuntimeException("PostgreSQL JDBC driver not found in classpath!", e);
         }
 
         HikariConfig config = new HikariConfig();

@@ -72,7 +72,8 @@ public class WebMain {
         WebInventoryController.register(app);
         WebEmployeeController.register(app);
         WebCustomerController.register(app);
-        System.out.println("[BOOT] All API routes registered.");
+        WebSyncController.register(app);
+        System.out.println("[BOOT] All API routes registered (including sync).");
 
         // ── 5. Start listening ──
         app.start(port);
