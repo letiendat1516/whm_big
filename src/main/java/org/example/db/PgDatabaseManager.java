@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,18 +91,62 @@ public class PgDatabaseManager {
             }
         }
 
-        // Convert Railway format to JDBC format if needed
-        String jdbcUrl = dbUrl;
-        if (dbUrl.startsWith("postgresql://")) {
-            jdbcUrl = "jdbc:" + dbUrl;
-        } else if (dbUrl.startsWith("postgres://")) {
-            jdbcUrl = "jdbc:postgresql://" + dbUrl.substring("postgres://".length());
-        } else if (!dbUrl.startsWith("jdbc:")) {
-            jdbcUrl = "jdbc:postgresql://" + dbUrl;
+        // Parse DATABASE_URL and build JDBC connection
+        // Railway format: postgresql://user:pass@host:port/dbname
+        // or:             postgres://user:pass@host:port/dbname
+        String cleanUrl = dbUrl;
+        if (cleanUrl.startsWith("jdbc:")) {
+            cleanUrl = cleanUrl.substring(5);
+        }
+        if (cleanUrl.startsWith("postgres://")) {
+            cleanUrl = "postgresql://" + cleanUrl.substring("postgres://".length());
+        }
+
+        // Extract user:pass from URL
+        String username = null;
+        String password = null;
+        String jdbcUrl;
+
+        try {
+            // postgresql://user:pass@host:port/db
+            java.net.URI uri = new java.net.URI(cleanUrl);
+            String userInfo = uri.getUserInfo(); // "user:pass"
+            String host = uri.getHost();
+            int uriPort = uri.getPort() > 0 ? uri.getPort() : 5432;
+            String path = uri.getPath(); // "/dbname"
+
+            if (userInfo != null && userInfo.contains(":")) {
+                String[] parts = userInfo.split(":", 2);
+                username = parts[0];
+                password = parts[1];
+            } else if (userInfo != null) {
+                username = userInfo;
+            }
+
+            jdbcUrl = "jdbc:postgresql://" + host + ":" + uriPort + path;
+            System.out.println("[PG] Parsed URL -> host=" + host + " port=" + uriPort
+                + " db=" + path + " user=" + username);
+        } catch (Exception e) {
+            // Fallback: just prepend jdbc:
+            System.out.println("[PG] Could not parse URL, using as-is: " + e.getMessage());
+            jdbcUrl = "jdbc:" + cleanUrl;
+        }
+
+        // Explicitly load PostgreSQL driver (required for fat JAR where
+        // META-INF/services/java.sql.Driver may not be merged correctly)
+        try {
+            Class.forName("org.postgresql.Driver");
+            System.out.println("[PG] PostgreSQL JDBC driver loaded successfully.");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("PostgreSQL JDBC driver not found in classpath! "
+                + "Make sure postgresql dependency is in pom.xml.", e);
         }
 
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.postgresql.Driver");
         config.setJdbcUrl(jdbcUrl);
+        if (username != null) config.setUsername(username);
+        if (password != null) config.setPassword(password);
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
         config.setConnectionTimeout(30000);
@@ -112,7 +157,7 @@ public class PgDatabaseManager {
         config.addDataSourceProperty("reWriteBatchedInserts", "true");
 
         dataSource = new HikariDataSource(config);
-        System.out.println("[PG] Connection pool initialized: " + jdbcUrl.replaceAll("://.*@", "://***@"));
+        System.out.println("[PG] Connection pool initialized: " + jdbcUrl);
     }
 
     /** Get a connection from pool. CALLER MUST CLOSE IT (use try-with-resources). */
