@@ -8,6 +8,8 @@ RUN mvn package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/store-management.jar app.jar
-EXPOSE 8080
+
+ENV PORT=8080
+EXPOSE ${PORT}
 CMD ["java", "-jar", "app.jar"]
 

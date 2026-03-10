@@ -46,9 +46,22 @@ public class PgDatabaseManager {
     public void init() {
         String dbUrl = System.getenv("DATABASE_URL");
         if (dbUrl == null || dbUrl.isBlank()) {
-            throw new RuntimeException("DATABASE_URL environment variable is not set.\n"
-                + "Railway sets this automatically when you add a PostgreSQL service.\n"
-                + "For local dev, set it like: postgresql://user:pass@localhost:5432/store_db");
+            // Also check PGHOST/PGDATABASE/PGUSER/PGPASSWORD (Railway individual vars)
+            String pgHost = System.getenv("PGHOST");
+            String pgPort = System.getenv("PGPORT");
+            String pgDb = System.getenv("PGDATABASE");
+            String pgUser = System.getenv("PGUSER");
+            String pgPass = System.getenv("PGPASSWORD");
+            if (pgHost != null && pgDb != null && pgUser != null) {
+                dbUrl = "postgresql://" + pgUser + ":" + (pgPass != null ? pgPass : "")
+                        + "@" + pgHost + ":" + (pgPort != null ? pgPort : "5432") + "/" + pgDb;
+                System.out.println("[PG] Built DATABASE_URL from individual PG* env vars.");
+            } else {
+                throw new RuntimeException("DATABASE_URL environment variable is not set.\n"
+                    + "Railway sets this automatically when you add a PostgreSQL service.\n"
+                    + "Make sure to click 'Add Reference' on DATABASE_URL in Railway Variables tab.\n"
+                    + "For local dev, set it like: postgresql://user:pass@localhost:5432/store_db");
+            }
         }
 
         // Convert Railway format to JDBC format if needed
@@ -57,6 +70,8 @@ public class PgDatabaseManager {
             jdbcUrl = "jdbc:" + dbUrl;
         } else if (dbUrl.startsWith("postgres://")) {
             jdbcUrl = "jdbc:postgresql://" + dbUrl.substring("postgres://".length());
+        } else if (!dbUrl.startsWith("jdbc:")) {
+            jdbcUrl = "jdbc:postgresql://" + dbUrl;
         }
 
         HikariConfig config = new HikariConfig();
