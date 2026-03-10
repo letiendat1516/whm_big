@@ -533,42 +533,38 @@ ORDER BY available_qty ASC;
 -- SEED DATA
 -- ------------------------------------------------------------
 INSERT OR IGNORE INTO Supplier VALUES
-('SUP-001','Coca-Cola Vietnam',1,'0901234567','order@coca-cola.vn','123 Nguyen Van Cu, Quan 5, HCM',datetime('now'),'PENDING',1),
-('SUP-002','Tan Hiep Phat Group',1,'0912345678','supply@thp.vn','219 Nguyen Van Cu, Binh Duong',datetime('now'),'PENDING',1),
-('SUP-003','Pepsico Vietnam',1,'0923456789','sales@pepsico.vn','456 Binh Duong Avenue',datetime('now'),'PENDING',1),
-('SUP-004','Unilever Vietnam',1,'0934567890','trade@unilever.vn','156 Nguyen Luong Bang, Hanoi',datetime('now'),'PENDING',1);
+('SUP-001','Công ty Xi Măng Hà Tiên',1,'028-3821-0001','order@hatien.vn','Nhà Bè, TP.HCM',datetime('now'),'PENDING',1),
+('SUP-002','Thép Pomina',1,'028-3844-0002','supply@pomina.vn','Phú Mỹ, Bà Rịa',datetime('now'),'PENDING',1),
+('SUP-003','Gạch Đồng Tâm',1,'028-3822-0003','sales@dongtam.vn','Long An',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO warehouse VALUES
-('WH-001','WH001','Central Warehouse - Ha Noi','10 Yen Vien Industrial Zone, Gia Lam, Ha Noi',1,5000,0,100,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('WH-002','WH002','Central Warehouse - HCM','55 Tan Thuan, Quan 7, TP HCM',1,8000,0,150,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('WH-003','WH003','Store S001 Storage','12 Hang Bai, Hoan Kiem, Ha Noi',1,200,0,20,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('WH-004','WH004','Store S003 Storage','78 Le Loi, Quan 1, TP HCM',1,200,0,20,datetime('now'),datetime('now'),datetime('now'),'PENDING',1);
+('WH-001','KHO-001','Kho Trung Tâm','100 Điện Biên Phủ, Q.1',1,5000,0,20,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('WH-002','KHO-002','Kho Quận 7','50 Nguyễn Hữu Thọ, Q.7',1,8000,0,15,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('WH-003','KHO-003','Kho Thủ Đức','200 Xa Lộ Hà Nội',1,200,0,10,datetime('now'),datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO InventoryManager VALUES
 ('INVMGR-001','EMP-003','WH-001',datetime('now'),'PENDING',1),
 ('INVMGR-002','EMP-005','WH-002',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO InventoryStaff VALUES
-('INVSTF-001','EMP-001','WH-003',datetime('now'),'PENDING',1),
-('INVSTF-002','EMP-004','WH-004',datetime('now'),'PENDING',1);
+('INVSTF-001','EMP-001','WH-001',datetime('now'),'PENDING',1),
+('INVSTF-002','EMP-004','WH-003',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO WarehouseSupervisor VALUES
-('WHSUP-001','EMP-006',datetime('now'),'PENDING',1);
+('WHSUP-001','EMP-005',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO warehouse_balances VALUES
-('WH-001','PROD-001',500,50,datetime('now'),datetime('now'),'PENDING'),
-('WH-001','PROD-002',300,30,datetime('now'),datetime('now'),'PENDING'),
-('WH-001','PROD-003',400,0,datetime('now'),datetime('now'),'PENDING'),
-('WH-001','PROD-004',200,20,datetime('now'),datetime('now'),'PENDING'),
-('WH-001','PROD-005',150,0,datetime('now'),datetime('now'),'PENDING'),
-('WH-003','PROD-001',50,5,datetime('now'),datetime('now'),'PENDING'),
-('WH-003','PROD-002',30,0,datetime('now'),datetime('now'),'PENDING'),
-('WH-003','PROD-003',25,0,datetime('now'),datetime('now'),'PENDING'),
-('WH-004','PROD-001',45,5,datetime('now'),datetime('now'),'PENDING'),
-('WH-004','PROD-004',20,2,datetime('now'),datetime('now'),'PENDING');
+('WH-001','PROD-001',500,10,datetime('now'),datetime('now'),'PENDING'),
+('WH-001','PROD-002',300,5,datetime('now'),datetime('now'),'PENDING'),
+('WH-001','PROD-003',200,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-001','PROD-004',150,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-001','PROD-005',1000,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-002','PROD-001',200,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-002','PROD-003',100,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-003','PROD-002',150,0,datetime('now'),datetime('now'),'PENDING'),
+('WH-003','PROD-005',500,0,datetime('now'),datetime('now'),'PENDING');
 
 INSERT OR IGNORE INTO inbound_documents VALUES
 ('IN-001',1001,'WH-001','POSTED','EMP-003',datetime('now','start of day'),'EMP-003',datetime('now'),'PROD-001',100,NULL,'SUP-001',datetime('2026-03-05'),100,datetime('now'),'SYNCED',1),
-('IN-002',1002,'WH-001','POSTED','EMP-003',datetime('now','start of day'),'EMP-003',datetime('now'),'PROD-002',60,NULL,'SUP-002',datetime('2026-03-05'),60,datetime('now'),'SYNCED',1),
-('IN-003',1003,'WH-003','DRAFT','EMP-001',datetime('now'),NULL,NULL,'PROD-001',50,'EMP-003','SUP-001',NULL,50,datetime('now'),'PENDING',1);
+('IN-002',1002,'WH-001','POSTED','EMP-003',datetime('now','start of day'),'EMP-003',datetime('now'),'PROD-002',60,NULL,'SUP-002',datetime('2026-03-05'),60,datetime('now'),'SYNCED',1);
 

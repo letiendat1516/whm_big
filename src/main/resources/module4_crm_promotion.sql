@@ -347,47 +347,39 @@ ORDER BY pt.TimeStamp DESC;
 -- SEED DATA
 -- ------------------------------------------------------------
 INSERT OR IGNORE INTO MembershipRank VALUES
-('TIER-001','Bronze',0,1.0,'Entry level membership',datetime('now'),'PENDING',1),
-('TIER-002','Silver',1000,1.5,'Mid-level membership',datetime('now'),'PENDING',1),
-('TIER-003','Gold',5000,2.0,'Premium membership',datetime('now'),'PENDING',1),
-('TIER-004','Platinum',15000,3.0,'Elite membership',datetime('now'),'PENDING',1);
+('TIER-001','Thường',0,1.0,'Hạng mặc định',datetime('now'),'PENDING',1),
+('TIER-002','Bạc',500,1.5,'Tích lũy 500 điểm',datetime('now'),'PENDING',1),
+('TIER-003','Vàng',2000,2.0,'Tích lũy 2000 điểm',datetime('now'),'PENDING',1),
+('TIER-004','Kim Cương',5000,3.0,'Tích lũy 5000 điểm',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO Customer VALUES
-('CUST-001','0901111111','Nguyen Thi Lan','lan.nguyen@email.com','2024-06-01',datetime('now'),'SYNCED',1),
-('CUST-002','0902222222','Tran Van Minh','minh.tran@email.com','2024-08-15',datetime('now'),'SYNCED',1),
-('CUST-003','0903333333','Le Thi Hoa','hoa.le@email.com','2025-01-10',datetime('now'),'SYNCED',1),
-('CUST-004','0904444444','Pham Van Duc',NULL,'2025-03-20',datetime('now'),'PENDING',1),
-('CUST-005','0905555555','Hoang Thi Mai','mai.hoang@email.com','2023-11-05',datetime('now'),'SYNCED',1);
+('CUST-001','0901234567','Nguyễn Văn Khách','khach1@email.com','2024-06-01',datetime('now'),'SYNCED',1),
+('CUST-002','0902345678','Trần Thị Hoa','hoa@email.com','2024-08-15',datetime('now'),'SYNCED',1),
+('CUST-003','0903456789','Lê Công Trình','congtrinh@email.com','2025-01-10',datetime('now'),'SYNCED',1);
 
 INSERT OR IGNORE INTO LoyaltyAccount VALUES
-('ACC-001','CUST-001','TIER-002',750,1500,'2024-06-01',datetime('now'),'SYNCED',1),
-('ACC-002','CUST-002','TIER-001',200,200,'2024-08-15',datetime('now'),'SYNCED',1),
-('ACC-003','CUST-003','TIER-001',50,50,'2025-01-10',datetime('now'),'SYNCED',1),
-('ACC-004','CUST-004','TIER-001',0,0,'2025-03-20',datetime('now'),'PENDING',1),
-('ACC-005','CUST-005','TIER-003',6200,12500,'2023-11-05',datetime('now'),'SYNCED',1);
+('ACC-001','CUST-001','TIER-002',750,1200,'2024-06-01',datetime('now'),'SYNCED',1),
+('ACC-002','CUST-002','TIER-001',100,100,'2024-08-15',datetime('now'),'SYNCED',1),
+('ACC-003','CUST-003','TIER-003',2500,3500,'2025-01-10',datetime('now'),'SYNCED',1);
 
 INSERT OR IGNORE INTO LoyaltyPointRule VALUES
-('RULE-001','Standard Earn & Redeem',1.0,100.0,500,1,datetime('now'),'PENDING',1),
-('RULE-002','Double Points Weekend',2.0,100.0,1000,1,datetime('now'),'PENDING',1),
-('RULE-003','Member Redeem',1.0,200.0,2000,1,datetime('now'),'PENDING',1);
+('RULE-001','Tích điểm tiêu chuẩn',0.001,100.0,500,1,datetime('now'),'PENDING',1),
+('RULE-002','Tích điểm gấp đôi',0.002,100.0,1000,0,datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO Campaign VALUES
-('CAMP-001','Spring Sale 2026','Discounts for spring season','2026-03-01','2026-03-31',1,NULL,datetime('now'),'PENDING',1),
-('CAMP-002','Member Appreciation Day','Special deals for members','2026-03-07','2026-03-07',1,NULL,datetime('now'),'PENDING',1),
-('CAMP-003','New Product Launch','Launch promotion for new items','2026-02-15','2026-03-15',1,'STORE-001',datetime('now'),'PENDING',1);
+('CAMP-001','Khuyến mãi Tháng 3','Giảm giá mùa xây dựng','2026-03-01','2026-03-31',1,NULL,datetime('now'),'PENDING',1),
+('CAMP-002','Flash Sale Cuối Tuần','Giảm giá cuối tuần','2026-03-08','2026-03-09',1,NULL,datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO Promotion VALUES
-('PROMO-001','CAMP-001','PERCENT_DISCOUNT','10% Off All Beverages',10,'{"categories":["CAT-001"],"discount_pct":10}',NULL,0,0,'2026-03-31','{"min_amount":50000}',1,datetime('now'),'PENDING',1),
-('PROMO-002','CAMP-001','FIXED_DISCOUNT','5,000 VND Off Orders Over 100K',5,'{"discount_amount":5000}','SPRING5K',1000,0,'2026-03-31','{"min_amount":100000}',1,datetime('now'),'PENDING',1),
-('PROMO-003','CAMP-002','POINTS_MULTIPLIER','Double Points for Members',20,'{"multiplier":2}',NULL,0,0,'2026-03-07','{"member_only":true}',1,datetime('now'),'PENDING',1),
-('PROMO-004','CAMP-003','VOUCHER','New Product Free Sample',1,'{"free_product":"PROD-001","qty":1}','NEWPROD2026',500,0,'2026-03-15',NULL,1,datetime('now'),'PENDING',1);
+('PROMO-001','CAMP-001','PERCENT_DISCOUNT','Giảm 5% Xi Măng',1,'{"percent":5}','XIMANG5',100,5,'2026-03-31','{"min_amount":50000}',1,datetime('now'),'PENDING',1),
+('PROMO-002','CAMP-001','FIXED_DISCOUNT','Giảm 50K đơn từ 2 triệu',2,'{"fixed":50000,"min_order":2000000}','GIAM50K',50,2,'2026-03-31','{"min_amount":100000}',1,datetime('now'),'PENDING',1),
+('PROMO-003','CAMP-002','PERCENT_DISCOUNT','Flash Sale 10%',3,'{"percent":10}',NULL,200,0,'2026-03-09','{"member_only":true}',1,datetime('now'),'PENDING',1);
 
 -- NOTE: PromotionApplicationLog and PointTransaction seeds that reference
--- "Order" rows are placed in module1_pos.sql (which loads after this file)
+-- "Order" rows are placed in seed_data.sql (which loads after this file)
 
 INSERT OR IGNORE INTO PromotionProductPriceMapping VALUES
 ('MAP-001','PROMO-001','VAR-001','PROD-001',1,0),
 ('MAP-002','PROMO-001','VAR-002','PROD-001',1,0),
-('MAP-003','PROMO-001','VAR-003','PROD-002',1,0),
-('MAP-004','PROMO-004','VAR-001','PROD-001',1,0);
+('MAP-003','PROMO-001','VAR-003','PROD-002',1,0);
 

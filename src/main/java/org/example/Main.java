@@ -192,7 +192,7 @@ public class Main {
      */
     private static void seedDefaultPasswords() throws Exception {
         Connection conn = DatabaseManager.getInstance().getConnection();
-        String defaultPassword = "Admin@123";
+        String defaultPassword = "123456";
         String hash = PasswordUtil.hash(defaultPassword);
 
         String sql = "UPDATE Account SET passwordHash = ? WHERE passwordHash = 'NEEDS_HASH'";

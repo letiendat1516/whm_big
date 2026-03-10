@@ -168,42 +168,40 @@ WHERE pp.start_time <= datetime('now')
 -- SEED DATA
 -- ------------------------------------------------------------
 INSERT OR IGNORE INTO ProductCategory VALUES
-('CAT-001','Beverages','Drinks and refreshments',1,datetime('now'),datetime('now'),'PENDING',1),
-('CAT-002','Snacks','Chips, cookies and sweets',1,datetime('now'),datetime('now'),'PENDING',1),
-('CAT-003','Personal Care','Hygiene and beauty products',1,datetime('now'),datetime('now'),'PENDING',1),
-('CAT-004','Dairy','Milk, cheese and yogurt',1,datetime('now'),datetime('now'),'PENDING',1),
-('CAT-005','Household','Cleaning and home supplies',0,datetime('now'),datetime('now'),'PENDING',1);
+('CAT-001','Xi măng','Các loại xi măng',1,datetime('now'),datetime('now'),'PENDING',1),
+('CAT-002','Sắt thép','Thép xây dựng các loại',1,datetime('now'),datetime('now'),'PENDING',1),
+('CAT-003','Gạch','Gạch xây, gạch ốp lát',1,datetime('now'),datetime('now'),'PENDING',1),
+('CAT-004','Cát đá','Cát xây, đá dăm',1,datetime('now'),datetime('now'),'PENDING',1),
+('CAT-005','Sơn','Sơn tường, sơn chống thấm',1,datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO Product VALUES
-('PROD-001','SKU-BEV-001','Mineral Water 500ml','CAT-001','AquaBlue','bottle','Pure mineral water 500ml','ACTIVE',150,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('PROD-002','SKU-BEV-002','Green Tea 450ml','CAT-001','TeeGreen','bottle','Unsweetened green tea','ACTIVE',120,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('PROD-003','SKU-SNK-001','Potato Chips 70g','CAT-002','CrunchMaster','pack','Original flavor potato chips','ACTIVE',90,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('PROD-004','SKU-DAI-001','Fresh Milk 1L','CAT-004','DairyFresh','carton','Full-cream fresh milk','ACTIVE',60,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
-('PROD-005','SKU-CRE-001','Hand Soap 200ml','CAT-003','CleanPlus','bottle','Antibacterial hand soap','ACTIVE',40,datetime('now'),datetime('now'),datetime('now'),'PENDING',1);
+('PROD-001','XM-001','Xi măng Hà Tiên PCB40','CAT-001','Hà Tiên','bao','Xi măng PCB40 50kg','ACTIVE',150,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('PROD-002','XM-002','Xi măng INSEE','CAT-001','INSEE','bao','Xi măng INSEE 50kg','ACTIVE',120,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('PROD-003','ST-001','Thép Pomina D10','CAT-002','Pomina','cây','Thép cuộn D10 dài 11.7m','ACTIVE',90,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('PROD-004','ST-002','Thép Việt Nhật D12','CAT-002','Việt Nhật','cây','Thép vằn D12 dài 11.7m','ACTIVE',60,datetime('now'),datetime('now'),datetime('now'),'PENDING',1),
+('PROD-005','GA-001','Gạch Đồng Tâm 40x40','CAT-003','Đồng Tâm','viên','Gạch lát nền 40x40cm','ACTIVE',80,datetime('now'),datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO PriceList VALUES
-('PL-001','Standard Retail Price','Default retail price list','ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('PL-002','Member Price','Discounted price for loyalty members','ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('PL-003','Wholesale Price','Bulk purchase price','INACTIVE',datetime('now'),datetime('now'),'PENDING',1);
+('PL-001','Giá bán lẻ','Bảng giá bán lẻ tiêu chuẩn','ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('PL-002','Giá hội viên','Giá ưu đãi cho khách hàng thân thiết','ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('PL-003','Giá sỉ','Giá bán sỉ cho đại lý','INACTIVE',datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO ProductVariant VALUES
-('VAR-001','PROD-001','500ml Regular','8935001001001',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-002','PROD-001','1.5L Family','8935001001002',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-003','PROD-002','450ml Can','8935002001001',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-004','PROD-003','70g Original','8935003001001',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-005','PROD-003','70g Barbecue','8935003001002',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-006','PROD-004','1L Standard','8935004001001',1,datetime('now'),datetime('now'),'PENDING',1),
-('VAR-007','PROD-005','200ml Pump','8935005001001',1,datetime('now'),datetime('now'),'PENDING',1);
+('VAR-001','PROD-001','50kg/bao','8935001001001',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-002','PROD-001','Pallet 50 bao','8935001001002',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-003','PROD-002','50kg/bao','8935002001001',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-004','PROD-003','Cây 11.7m','8935003001001',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-005','PROD-004','Cây 11.7m','8935004001001',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-006','PROD-005','Thùng 16 viên','8935005001001',1,datetime('now'),datetime('now'),'PENDING',1),
+('VAR-007','PROD-005','Viên lẻ','8935005001002',1,datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO ProductPrice VALUES
-('PRC-001','VAR-001','PL-001',10000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-002','VAR-001','PL-002',9000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-003','VAR-002','PL-001',20000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-004','VAR-003','PL-001',12000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-005','VAR-004','PL-001',15000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-006','VAR-005','PL-001',15000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-007','VAR-006','PL-001',28000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
-('PRC-008','VAR-007','PL-001',25000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
--- Historical price example (old price already ended)
-('PRC-000','VAR-001','PL-001',8000.0,datetime('2023-01-01'),datetime('2023-12-31'),datetime('now'),datetime('now'),'SYNCED',1);
+('PRC-001','VAR-001','PL-001',95000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-002','VAR-001','PL-002',90000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-003','VAR-002','PL-001',4500000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-004','VAR-003','PL-001',98000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-005','VAR-004','PL-001',85000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-006','VAR-005','PL-001',95000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-007','VAR-006','PL-001',120000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1),
+('PRC-008','VAR-007','PL-001',8000.0,datetime('2024-01-01'),NULL,datetime('now'),datetime('now'),'PENDING',1);
 

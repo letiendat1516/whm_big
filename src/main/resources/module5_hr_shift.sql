@@ -315,48 +315,44 @@ JOIN PayrollPeriod pp ON pp.payrollPeriodId = ps.payrollPeriodId;
 -- SEED DATA
 -- ------------------------------------------------------------
 INSERT OR IGNORE INTO Store VALUES
-('STORE-001','S001','Ha Noi - Hoan Kiem Branch','12 Hang Bai, Hoan Kiem, Ha Noi','ACTIVE',datetime('now'),'PENDING',1),
-('STORE-002','S002','Ha Noi - Dong Da Branch','45 Nguyen Chi Thanh, Dong Da, Ha Noi','ACTIVE',datetime('now'),'PENDING',1),
-('STORE-003','S003','HCM - Quan 1 Branch','78 Le Loi, Quan 1, TP HCM','ACTIVE',datetime('now'),'PENDING',1),
-('STORE-004','S004','HCM - Binh Thanh Branch','22 Dien Bien Phu, Binh Thanh, TP HCM','ACTIVE',datetime('now'),'PENDING',1),
-('STORE-005','S005','Da Nang Branch','5 Bach Dang, Hai Chau, Da Nang','ACTIVE',datetime('now'),'PENDING',1);
+('STORE-001','S001','Cửa hàng VLXD Trung Tâm','123 Nguyễn Trãi, Q.1','ACTIVE',datetime('now'),'PENDING',1),
+('STORE-002','S002','Chi nhánh Quận 7','45 Nguyễn Thị Thập, Q.7','ACTIVE',datetime('now'),'PENDING',1),
+('STORE-003','S003','Chi nhánh Thủ Đức','789 Xa lộ Hà Nội, TP.Thủ Đức','ACTIVE',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO Employee VALUES
-('EMP-001','E001','Nguyen Van An','2022-01-10',8000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('EMP-002','E002','Tran Thi Binh','2021-06-15',7500000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('EMP-003','E003','Le Van Cuong','2020-03-01',12000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('EMP-004','E004','Pham Thi Dung','2023-09-20',7000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('EMP-005','E005','Hoang Van Em','2019-11-05',15000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
-('EMP-006','E006','Nguyen Thi Phuong','2022-08-01',8200000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1);
+('EMP-001','NV001','Nguyễn Văn An','2024-01-15',8000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('EMP-002','NV002','Trần Thị Bình','2024-02-01',7500000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('EMP-003','NV003','Lê Minh Cường','2024-03-01',9000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('EMP-004','NV004','Phạm Thị Dung','2024-04-01',7500000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1),
+('EMP-005','NV005','Hoàng Văn Em','2023-06-01',10000000.0,'ACTIVE',datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO StoreManager VALUES
-('MGR-001','EMP-003','STORE-001',datetime('now'),'PENDING',1),
-('MGR-002','EMP-005','STORE-003',datetime('now'),'PENDING',1);
+('MGR-001','EMP-005','STORE-001',datetime('now'),'PENDING',1),
+('MGR-002','EMP-003','STORE-002',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO EmployeeAssignment VALUES
-('ASSIGN-001','EMP-001','STORE-001','2022-01-10',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('ASSIGN-002','EMP-002','STORE-001','2021-06-15',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('ASSIGN-003','EMP-003','STORE-001','2020-03-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('ASSIGN-004','EMP-004','STORE-003','2023-09-20',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('ASSIGN-005','EMP-005','STORE-003','2019-11-05',NULL,'ACTIVE',datetime('now'),'PENDING',1);
+('ASSIGN-001','EMP-001','STORE-001','2024-01-15',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('ASSIGN-002','EMP-002','STORE-001','2024-02-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('ASSIGN-003','EMP-003','STORE-002','2024-03-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('ASSIGN-004','EMP-004','STORE-003','2024-04-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('ASSIGN-005','EMP-005','STORE-001','2023-06-01',NULL,'ACTIVE',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO HR VALUES
-('HR-001','EMP-001','2022-01-10',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('HR-002','EMP-002','2021-06-15',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('HR-003','EMP-003','2020-03-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('HR-004','EMP-004','2023-09-20',NULL,'ACTIVE',datetime('now'),'PENDING',1),
-('HR-005','EMP-005','2019-11-05',NULL,'ACTIVE',datetime('now'),'PENDING',1);
+('HR-001','EMP-001','2024-01-15',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('HR-002','EMP-002','2024-02-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('HR-003','EMP-003','2024-03-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('HR-004','EMP-004','2024-04-01',NULL,'ACTIVE',datetime('now'),'PENDING',1),
+('HR-005','EMP-005','2023-06-01',NULL,'ACTIVE',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO ShiftTemplate VALUES
-('SHIFT-TMPL-001','Morning Shift','06:00','14:00',30,'ACTIVE',datetime('now'),'PENDING',1),
-('SHIFT-TMPL-002','Afternoon Shift','14:00','22:00',30,'ACTIVE',datetime('now'),'PENDING',1),
-('SHIFT-TMPL-003','Night Shift','22:00','06:00',60,'ACTIVE',datetime('now'),'PENDING',1),
-('SHIFT-TMPL-004','Full Day','08:00','17:00',60,'ACTIVE',datetime('now'),'PENDING',1);
+('SHIFT-T1','Ca Sáng','06:00','14:00',30,'ACTIVE',datetime('now'),'PENDING',1),
+('SHIFT-T2','Ca Chiều','14:00','22:00',30,'ACTIVE',datetime('now'),'PENDING',1),
+('SHIFT-T3','Ca Đêm','22:00','06:00',30,'ACTIVE',datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO ShiftAssignment VALUES
-('SA-001','EMP-001','SHIFT-TMPL-001','STORE-001','2026-03-07','SCHEDULED',datetime('now'),datetime('now'),'PENDING',1),
-('SA-002','EMP-002','SHIFT-TMPL-002','STORE-001','2026-03-07','SCHEDULED',datetime('now'),datetime('now'),'PENDING',1),
-('SA-003','EMP-004','SHIFT-TMPL-001','STORE-003','2026-03-07','COMPLETED',datetime('now'),datetime('now'),'PENDING',1);
+('SA-001','EMP-001','SHIFT-T1','STORE-001','2026-03-07','SCHEDULED',datetime('now'),datetime('now'),'PENDING',1),
+('SA-002','EMP-002','SHIFT-T2','STORE-001','2026-03-07','SCHEDULED',datetime('now'),datetime('now'),'PENDING',1),
+('SA-003','EMP-004','SHIFT-T1','STORE-003','2026-03-07','COMPLETED',datetime('now'),datetime('now'),'PENDING',1);
 
 INSERT OR IGNORE INTO AttendanceRecord VALUES
 ('ATT-001','SA-001','2026-03-07 06:05:00',NULL,NULL,'PENDING',datetime('now'),'PENDING',1),
