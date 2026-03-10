@@ -44,9 +44,31 @@ public class PgDatabaseManager {
 
     /** Initialize connection pool from DATABASE_URL env var */
     public void init() {
+        // Debug: print all DB-related env vars
+        System.out.println("[PG] Checking environment variables...");
+        System.out.println("[PG]   DATABASE_URL = " + (System.getenv("DATABASE_URL") != null ? "SET" : "NOT SET"));
+        System.out.println("[PG]   DATABASE_PUBLIC_URL = " + (System.getenv("DATABASE_PUBLIC_URL") != null ? "SET" : "NOT SET"));
+        System.out.println("[PG]   DATABASE_PRIVATE_URL = " + (System.getenv("DATABASE_PRIVATE_URL") != null ? "SET" : "NOT SET"));
+        System.out.println("[PG]   PGHOST = " + System.getenv("PGHOST"));
+        System.out.println("[PG]   PGPORT = " + System.getenv("PGPORT"));
+        System.out.println("[PG]   PGDATABASE = " + System.getenv("PGDATABASE"));
+        System.out.println("[PG]   PGUSER = " + System.getenv("PGUSER"));
+        System.out.println("[PG]   PGPASSWORD = " + (System.getenv("PGPASSWORD") != null ? "SET" : "NOT SET"));
+
         String dbUrl = System.getenv("DATABASE_URL");
+
+        // Railway sometimes uses DATABASE_PUBLIC_URL or DATABASE_PRIVATE_URL
         if (dbUrl == null || dbUrl.isBlank()) {
-            // Also check PGHOST/PGDATABASE/PGUSER/PGPASSWORD (Railway individual vars)
+            dbUrl = System.getenv("DATABASE_PUBLIC_URL");
+            if (dbUrl != null) System.out.println("[PG] Using DATABASE_PUBLIC_URL");
+        }
+        if (dbUrl == null || dbUrl.isBlank()) {
+            dbUrl = System.getenv("DATABASE_PRIVATE_URL");
+            if (dbUrl != null) System.out.println("[PG] Using DATABASE_PRIVATE_URL");
+        }
+
+        if (dbUrl == null || dbUrl.isBlank()) {
+            // Build from individual PG* vars (Railway sets these automatically)
             String pgHost = System.getenv("PGHOST");
             String pgPort = System.getenv("PGPORT");
             String pgDb = System.getenv("PGDATABASE");
@@ -57,10 +79,14 @@ public class PgDatabaseManager {
                         + "@" + pgHost + ":" + (pgPort != null ? pgPort : "5432") + "/" + pgDb;
                 System.out.println("[PG] Built DATABASE_URL from individual PG* env vars.");
             } else {
-                throw new RuntimeException("DATABASE_URL environment variable is not set.\n"
-                    + "Railway sets this automatically when you add a PostgreSQL service.\n"
-                    + "Make sure to click 'Add Reference' on DATABASE_URL in Railway Variables tab.\n"
-                    + "For local dev, set it like: postgresql://user:pass@localhost:5432/store_db");
+                System.err.println("[PG] *** ALL DB env vars are missing! ***");
+                System.err.println("[PG] You need to:");
+                System.err.println("[PG]   1. Add a PostgreSQL database to your Railway project");
+                System.err.println("[PG]   2. Go to your Java service → Variables tab");
+                System.err.println("[PG]   3. Click 'Add Reference Variable' → select DATABASE_URL from Postgres");
+                System.err.println("[PG]   4. Redeploy");
+                throw new RuntimeException("DATABASE_URL environment variable is not set. "
+                    + "Add a PostgreSQL service to your Railway project and reference DATABASE_URL.");
             }
         }
 

@@ -1,0 +1,24 @@
+# Build artifacts
+target/
+*.jar
+
+# IDE
+.idea/
+*.iml
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Logs & temp
+*.txt
+*.log
+
+# Source 2 (reference only)
+src2/
+
+# Git
+.git/
+.gitignore
+
