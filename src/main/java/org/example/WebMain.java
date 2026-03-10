@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class WebMain {
 
-    private static final AtomicBoolean dbReady = new AtomicBoolean(false);
+    public static final AtomicBoolean dbReady = new AtomicBoolean(false);
     private static final AtomicReference<String> dbError = new AtomicReference<>(null);
 
     public static void main(String[] args) {
@@ -65,16 +65,24 @@ public class WebMain {
         // ── 3. Redirect root to login page ──
         app.get("/", ctx -> ctx.redirect("/login.html"));
 
-        // ── 4. Start listening ──
+        // ── 4. Register ALL API routes NOW (before server starts) ──
+        WebAuthController.register(app);
+        WebProductController.register(app);
+        WebOrderController.register(app);
+        WebInventoryController.register(app);
+        WebEmployeeController.register(app);
+        WebCustomerController.register(app);
+        System.out.println("[BOOT] All API routes registered.");
+
+        // ── 5. Start listening ──
         app.start(port);
 
         System.out.println("╔══════════════════════════════════════════╗");
         System.out.println("║  Store Management Web Server             ║");
         System.out.printf( "║  http://localhost:%-24s║%n", port);
-        System.out.println("║  Health check: /api/health               ║");
         System.out.println("╚══════════════════════════════════════════╝");
 
-        // ── 5. NOW initialize database (server is already listening) ──
+        // ── 6. NOW initialize database (server is already listening) ──
         PgDatabaseManager pg = PgDatabaseManager.getInstance();
         try {
             System.out.println("[DB] Initializing database connection...");
@@ -83,23 +91,12 @@ public class WebMain {
             pg.initializeSchema();
             System.out.println("[DB] Seeding default passwords...");
             WebAuthController.seedDefaultPasswords(pg);
-
-            // ── 6. Register API routes AFTER DB is ready ──
-            WebAuthController.register(app);
-            WebProductController.register(app);
-            WebOrderController.register(app);
-            WebInventoryController.register(app);
-            WebEmployeeController.register(app);
-            WebCustomerController.register(app);
-
             dbReady.set(true);
-            System.out.println("[DB] ✅ Database ready. All API routes registered.");
+            System.out.println("[DB] ✅ Database ready.");
         } catch (Exception e) {
             dbError.set(e.getMessage());
             System.err.println("[DB] ❌ Database initialization failed: " + e.getMessage());
             e.printStackTrace(System.err);
-            // Server still runs — healthcheck still responds
-            // API routes will return 404 until DB is fixed
         }
 
         // ── 7. Shutdown hook ──
@@ -111,4 +108,3 @@ public class WebMain {
         }));
     }
 }
-
