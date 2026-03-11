@@ -62,6 +62,8 @@ public class SyncService {
         TABLE_PK.put("ProductPrice",            "price_id");
         TABLE_PK.put("Store",                   "storeId");
         TABLE_PK.put("Employee",                "employeeId");
+        TABLE_PK.put("EmployeeAssignment",      "assignmentId");
+        TABLE_PK.put("HR",                       "hrId");
         TABLE_PK.put("ShiftTemplate",           "shiftTemplateId");
         TABLE_PK.put("ShiftAssignment",         "shiftAssignmentId");
         TABLE_PK.put("AttendanceRecord",        "attendanceId");
@@ -471,6 +473,9 @@ public class SyncService {
         Object pk = row.get(pkCol);
         if (pk == null) return 0;
 
+        // Quote table name if it's a SQL reserved word
+        String qt = "Order".equals(tableName) ? "\"Order\"" : tableName;
+
         int incomingVersion = 1;
         Object vObj = row.get("version");
         if (vObj instanceof Number) incomingVersion = ((Number) vObj).intValue();
@@ -481,7 +486,7 @@ public class SyncService {
         int localVersion = -1;
 
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT version FROM " + tableName + " WHERE " + pkCol + "=?")) {
+                "SELECT version FROM " + qt + " WHERE " + pkCol + "=?")) {
             ps.setString(1, pk.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -494,7 +499,7 @@ public class SyncService {
             hasVersionCol = false;
             // Check existence without version
             try (PreparedStatement ps2 = conn.prepareStatement(
-                    "SELECT 1 FROM " + tableName + " WHERE " + pkCol + "=?")) {
+                    "SELECT 1 FROM " + qt + " WHERE " + pkCol + "=?")) {
                 ps2.setString(1, pk.toString());
                 try (ResultSet rs2 = ps2.executeQuery()) {
                     rowExists = rs2.next();
@@ -530,7 +535,7 @@ public class SyncService {
                 params.add(e.getValue());
             }
 
-            String sql = "INSERT OR IGNORE INTO " + tableName + " (" + cols + ") VALUES (" + vals + ")";
+            String sql = "INSERT OR IGNORE INTO " + qt + " (" + cols + ") VALUES (" + vals + ")";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 setParams(ps, params);
                 return ps.executeUpdate();
@@ -550,7 +555,7 @@ public class SyncService {
             if (setClause.length() == 0) return 0;
 
             params.add(pk.toString());
-            String sql = "UPDATE " + tableName + " SET " + setClause + " WHERE " + pkCol + "=?";
+            String sql = "UPDATE " + qt + " SET " + setClause + " WHERE " + pkCol + "=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 setParams(ps, params);
                 return ps.executeUpdate();
@@ -561,8 +566,9 @@ public class SyncService {
     /** Filter row map to only include columns that exist in the local SQLite table */
     private Map<String, Object> filterExistingColumns(Connection conn, String tableName, Map<String, Object> row) {
         Set<String> existingCols = new HashSet<>();
+        String pragmaTable = "Order".equals(tableName) ? "\"Order\"" : tableName;
         try (Statement s = conn.createStatement();
-             ResultSet rs = s.executeQuery("PRAGMA table_info(" + tableName + ")")) {
+             ResultSet rs = s.executeQuery("PRAGMA table_info(" + pragmaTable + ")")) {
             while (rs.next()) {
                 existingCols.add(rs.getString("name"));
             }

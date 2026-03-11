@@ -41,6 +41,8 @@ public class WebSyncController {
         TABLE_PK.put("ProductPrice",            "price_id");
         TABLE_PK.put("Store",                   "\"storeId\"");
         TABLE_PK.put("Employee",                "\"employeeId\"");
+        TABLE_PK.put("EmployeeAssignment",      "\"assignmentId\"");
+        TABLE_PK.put("HR",                       "\"hrId\"");
         TABLE_PK.put("ShiftTemplate",           "\"shiftTemplateId\"");
         TABLE_PK.put("ShiftAssignment",         "\"shiftAssignmentId\"");
         TABLE_PK.put("AttendanceRecord",        "\"attendanceId\"");
@@ -69,6 +71,18 @@ public class WebSyncController {
         TABLE_PK.put("SalesOutbound",           "\"outboundId\"");
         TABLE_PK.put("SalesOutboundItem",       "\"outboundItemId\"");
     }
+
+    // Dependency order: parent tables first, child tables last
+    private static final List<String> TABLE_ORDER = List.of(
+        "ProductCategory", "Product", "ProductVariant", "PriceList", "ProductPrice",
+        "Store", "Employee", "EmployeeAssignment", "StoreManager", "Cashier", "HR",
+        "ShiftTemplate", "ShiftAssignment", "AttendanceRecord", "PayrollPeriod", "PayrollSnapshot",
+        "MembershipRank", "Customer", "LoyaltyAccount", "LoyaltyPointRule", "PointTransaction",
+        "Campaign", "Promotion", "PromotionApplicationLog",
+        "warehouse",
+        "Order", "OrderItem", "Payment", "CashPayment", "QRPayment", "Receipt",
+        "ReturnOrder", "ReturnOrderItem", "SalesOutbound", "SalesOutboundItem"
+    );
 
     public static void register(Javalin app) {
         // Sync endpoints — protected by API key
@@ -117,8 +131,18 @@ public class WebSyncController {
                 return;
             }
 
+            // Sort changes by table dependency order (parents first)
+            changes.sort((a, b) -> {
+                String ta = (String) a.get("table");
+                String tb = (String) b.get("table");
+                int ia = TABLE_ORDER.indexOf(ta); if (ia < 0) ia = 999;
+                int ib = TABLE_ORDER.indexOf(tb); if (ib < 0) ib = 999;
+                return Integer.compare(ia, ib);
+            });
+
             int accepted = 0, rejected = 0, errors = 0;
             List<Map<String, Object>> rejectedItems = new ArrayList<>();
+            List<Map<String, Object>> errorItems = new ArrayList<>();
 
             try (Connection conn = pg.getConnection()) {
                 conn.setAutoCommit(false);
@@ -135,39 +159,41 @@ public class WebSyncController {
                         continue;
                     }
 
+                    // Resolve table name → PG table name
+                    String pgTable = table;
                     String pkCol = TABLE_PK.get(table);
                     if (pkCol == null) {
-                        // Try with quotes
                         pkCol = TABLE_PK.get("\"" + table + "\"");
-                        if (pkCol == null) {
+                        if (pkCol != null) {
+                            pgTable = "\"" + table + "\"";
+                        } else {
+                            System.err.println("[SYNC] Unknown table: " + table);
                             errors++;
                             continue;
                         }
-                        table = "\"" + table + "\"";
                     }
 
                     try {
                         if ("DELETE".equals(operation)) {
-                            // Delete — only if server version <= incoming
-                            String sql = "DELETE FROM " + table + " WHERE " + pkCol + "=? AND version<=?";
+                            String sql = "DELETE FROM " + pgTable + " WHERE " + pkCol + "=?";
                             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                                 ps.setString(1, recordId);
-                                ps.setInt(2, incomingVersion);
                                 int rows = ps.executeUpdate();
                                 if (rows > 0) accepted++; else rejected++;
                             }
                         } else if (data != null && !data.isEmpty()) {
-                            // Check server version
-                            int serverVersion = getServerVersion(conn, table, pkCol, recordId);
+                            int serverVersion = getServerVersion(conn, pgTable, pkCol, recordId);
 
                             if (serverVersion < 0) {
-                                // Record doesn't exist on server → INSERT
-                                accepted += doInsert(conn, table, pkCol, recordId, data, incomingVersion);
+                                // Record doesn't exist → INSERT (upsert)
+                                int r = doInsert(conn, pgTable, pkCol, recordId, data, incomingVersion);
+                                if (r > 0) accepted++;
+                                else { errors++; errorItems.add(Map.of("table", table, "recordId", recordId, "reason", "INSERT returned 0")); }
                             } else if (incomingVersion > serverVersion) {
                                 // Incoming is newer → UPDATE
-                                accepted += doUpdate(conn, table, pkCol, recordId, data, incomingVersion);
+                                doUpdate(conn, pgTable, pkCol, recordId, data, incomingVersion);
+                                accepted++;
                             } else {
-                                // Server is newer or same → REJECT (server wins)
                                 rejected++;
                                 rejectedItems.add(Map.of(
                                     "table", table, "recordId", recordId,
@@ -177,7 +203,9 @@ public class WebSyncController {
                         }
                     } catch (SQLException e) {
                         errors++;
-                        System.err.println("[SYNC] Push error on " + table + "/" + recordId + ": " + e.getMessage());
+                        String msg = e.getMessage() != null ? e.getMessage() : "unknown";
+                        System.err.println("[SYNC] Push error on " + table + "/" + recordId + ": " + msg);
+                        errorItems.add(Map.of("table", table, "recordId", recordId, "error", msg));
                     }
                 }
 
@@ -194,9 +222,11 @@ public class WebSyncController {
             result.put("errors", errors);
             result.put("serverTime", Instant.now().toString());
             if (!rejectedItems.isEmpty()) result.put("rejectedItems", rejectedItems);
+            if (!errorItems.isEmpty()) result.put("errorItems", errorItems);
             ctx.json(result);
 
         } catch (Exception e) {
+            e.printStackTrace();
             ctx.status(500).json(Map.of("error", "Sync push failed: " + e.getMessage()));
         }
     }
@@ -433,32 +463,48 @@ public class WebSyncController {
 
     private static int doInsert(Connection conn, String table, String pkCol, String recordId,
                                  Map<String, Object> data, int version) throws SQLException {
-        data.put(pkCol.replace("\"", ""), recordId);
+        String cleanPk = pkCol.replace("\"", "");
+        data.put(cleanPk, recordId);
         data.put("version", version);
         data.put("sync_status", "SYNCED");
+        data.remove("last_modified");
+
+        // Get column types from DB metadata for proper casting
+        Map<String, String> colTypes = getColumnTypes(conn, table);
 
         StringBuilder cols = new StringBuilder();
         StringBuilder vals = new StringBuilder();
+        StringBuilder updateSet = new StringBuilder();
         List<Object> params = new ArrayList<>();
 
         for (Map.Entry<String, Object> e : data.entrySet()) {
             if (cols.length() > 0) { cols.append(","); vals.append(","); }
-            String colName = e.getKey();
-            // Quote if contains uppercase
-            if (colName.matches(".*[A-Z].*") && !colName.startsWith("\"")) {
-                colName = "\"" + colName + "\"";
-            }
+            String colName = quoteCol(e.getKey());
             cols.append(colName);
-            vals.append("?");
+            vals.append(getCastExpression(e.getKey(), colTypes));
             params.add(e.getValue());
+            if (!e.getKey().equals(cleanPk)) {
+                if (updateSet.length() > 0) updateSet.append(",");
+                updateSet.append(colName).append("=EXCLUDED.").append(colName);
+            }
         }
 
-        String sql = "INSERT INTO " + table + " (" + cols + ") VALUES (" + vals + ") ON CONFLICT DO NOTHING";
+        String sql;
+        if (updateSet.length() > 0) {
+            sql = "INSERT INTO " + table + " (" + cols + ") VALUES (" + vals + ") ON CONFLICT (" + pkCol + ") DO UPDATE SET " + updateSet;
+        } else {
+            sql = "INSERT INTO " + table + " (" + cols + ") VALUES (" + vals + ") ON CONFLICT DO NOTHING";
+        }
+
+        System.out.println("[SYNC-INSERT] " + table + " id=" + recordId);
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
             return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("[SYNC-INSERT] FAIL " + table + ": " + e.getMessage());
+            throw e;
         }
     }
 
@@ -466,53 +512,94 @@ public class WebSyncController {
                                  Map<String, Object> data, int version) throws SQLException {
         data.put("version", version);
         data.put("sync_status", "SYNCED");
+        data.remove("last_modified");
+
+        Map<String, String> colTypes = getColumnTypes(conn, table);
 
         StringBuilder setClause = new StringBuilder();
         List<Object> params = new ArrayList<>();
+        String cleanPk = pkCol.replace("\"", "");
 
         for (Map.Entry<String, Object> e : data.entrySet()) {
             String colName = e.getKey();
-            String cleanPk = pkCol.replace("\"", "");
-            if (colName.equals(cleanPk)) continue; // Don't update PK
-
+            if (colName.equals(cleanPk)) continue;
             if (setClause.length() > 0) setClause.append(",");
-            if (colName.matches(".*[A-Z].*") && !colName.startsWith("\"")) {
-                colName = "\"" + colName + "\"";
-            }
-            setClause.append(colName).append("=?");
+            setClause.append(quoteCol(colName)).append("=").append(getCastExpression(colName, colTypes));
             params.add(e.getValue());
         }
 
         params.add(recordId);
-        params.add(version);
-
-        String sql = "UPDATE " + table + " SET " + setClause + " WHERE " + pkCol + "=? AND version<?";
+        String sql = "UPDATE " + table + " SET " + setClause + " WHERE " + pkCol + "=?";
+        System.out.println("[SYNC-UPDATE] " + table + " id=" + recordId);
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
             return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("[SYNC-UPDATE] FAIL " + table + ": " + e.getMessage());
+            throw e;
         }
     }
 
+    /** Quote a column name for PostgreSQL if it contains uppercase characters */
+    private static String quoteCol(String colName) {
+        if (colName == null) return colName;
+        if (colName.startsWith("\"")) return colName;
+        if (colName.matches(".*[A-Z].*")) return "\"" + colName + "\"";
+        return colName;
+    }
+
     /**
-     * Pull changed rows from a table since a given timestamp.
-     * For tables WITH last_modified column: filter by last_modified > since
-     * For tables WITHOUT last_modified (child tables like OrderItem, CashPayment):
-     *   return ALL rows (they get pulled whenever parent changes)
+     * Get column type map for a table from PostgreSQL metadata.
      */
+    private static Map<String, String> getColumnTypes(Connection conn, String table) {
+        Map<String, String> types = new HashMap<>();
+        String cleanTable = table.replace("\"", "");
+        try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable, null)) {
+            while (rs.next()) {
+                String col = rs.getString("COLUMN_NAME");
+                String type = rs.getString("TYPE_NAME").toLowerCase();
+                types.put(col, type);
+                types.put(col.toLowerCase(), type);
+            }
+        } catch (SQLException e) {
+            // ignore
+        }
+        return types;
+    }
+
+    /**
+     * Returns the proper placeholder with cast for a column.
+     * Fixes: "column X is of type timestamp but expression is of type varchar"
+     */
+    private static String getCastExpression(String colName, Map<String, String> colTypes) {
+        String type = colTypes.get(colName);
+        if (type == null) type = colTypes.get(colName.toLowerCase());
+        if (type == null) return "?";
+
+        if (type.contains("timestamp")) {
+            return "CAST(? AS TIMESTAMP)";
+        } else if (type.equals("date")) {
+            return "CAST(? AS DATE)";
+        } else if (type.contains("bool")) {
+            return "CAST(? AS BOOLEAN)";
+        } else if (type.contains("int") || type.contains("serial")) {
+            return "CAST(? AS INTEGER)";
+        } else if (type.contains("numeric") || type.contains("decimal") || type.contains("float") || type.contains("double") || type.contains("real")) {
+            return "CAST(? AS NUMERIC)";
+        }
+        return "?";
+    }
+
     private static List<Map<String, Object>> pullTable(Connection conn, String table, Timestamp since) throws SQLException {
         List<Map<String, Object>> rows = new ArrayList<>();
-
-        // Check if table has last_modified column
         boolean hasLastModified = hasColumn(conn, table, "last_modified");
 
         String sql;
         if (hasLastModified) {
             sql = "SELECT * FROM " + table + " WHERE last_modified > ? ORDER BY last_modified LIMIT 2000";
         } else {
-            // Child table without last_modified → pull all rows
-            // (Desktop will use version/INSERT OR REPLACE logic)
             sql = "SELECT * FROM " + table + " LIMIT 5000";
         }
 
@@ -526,13 +613,9 @@ public class WebSyncController {
                 while (rs.next()) {
                     Map<String, Object> row = new LinkedHashMap<>();
                     for (int i = 1; i <= colCount; i++) {
-                        String colName = meta.getColumnName(i);
                         Object value = rs.getObject(i);
-                        // Convert Timestamp to String for JSON compatibility
-                        if (value instanceof Timestamp) {
-                            value = value.toString();
-                        }
-                        row.put(colName, value);
+                        if (value instanceof Timestamp) value = value.toString();
+                        row.put(meta.getColumnName(i), value);
                     }
                     rows.add(row);
                 }
@@ -541,7 +624,6 @@ public class WebSyncController {
         return rows;
     }
 
-    /** Check if a table has a specific column */
     private static boolean hasColumn(Connection conn, String table, String column) {
         String cleanTable = table.replace("\"", "");
         try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable, column)) {
@@ -554,17 +636,14 @@ public class WebSyncController {
     private static void logSyncEvent(String storeId, String direction, int accepted, int rejected, int errors) {
         try (Connection conn = pg.getConnection()) {
             try (Statement s = conn.createStatement()) {
-                s.execute("""
-                    CREATE TABLE IF NOT EXISTS sync_log (
-                        log_id     TEXT PRIMARY KEY DEFAULT replace(gen_random_uuid()::text,'-',''),
-                        store_id   TEXT NOT NULL,
-                        direction  TEXT NOT NULL,
-                        accepted   INTEGER DEFAULT 0,
-                        rejected   INTEGER DEFAULT 0,
-                        errors     INTEGER DEFAULT 0,
-                        synced_at  TIMESTAMP NOT NULL DEFAULT NOW()
-                    )
-                """);
+                s.execute("CREATE TABLE IF NOT EXISTS sync_log (" +
+                    "log_id TEXT PRIMARY KEY DEFAULT replace(gen_random_uuid()::text,'-','')," +
+                    "store_id TEXT NOT NULL," +
+                    "direction TEXT NOT NULL," +
+                    "accepted INTEGER DEFAULT 0," +
+                    "rejected INTEGER DEFAULT 0," +
+                    "errors INTEGER DEFAULT 0," +
+                    "synced_at TIMESTAMP NOT NULL DEFAULT NOW())");
             }
             String sql = "INSERT INTO sync_log(store_id,direction,accepted,rejected,errors) VALUES(?,?,?,?,?)";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -575,7 +654,6 @@ public class WebSyncController {
                 ps.setInt(5, errors);
                 ps.executeUpdate();
             }
-            // Update last_sync on sync_keys
             try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE sync_keys SET last_sync=NOW() WHERE store_id=?")) {
                 ps.setString(1, storeId);
@@ -592,4 +670,3 @@ public class WebSyncController {
         try { return Integer.parseInt(obj.toString()); } catch (Exception e) { return 1; }
     }
 }
-

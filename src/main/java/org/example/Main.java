@@ -39,7 +39,8 @@ public class Main {
             "module4_crm_promotion.sql",  // 4. Customer, Loyalty, Campaign, Promotion
             "module2_inventory.sql",      // 5. Warehouse, Stock, Documents
             "module1_pos.sql",            // 6. Order, Payment, Receipt (refs Customer, Employee)
-            "seed_data.sql"               // 7. Cross-module seed data (refs Order + CRM)
+            "seed_data.sql",              // 7. Cross-module seed data (refs Order + CRM)
+            "sqlite_sync_triggers.sql"    // 8. Sync queue triggers (auto-enqueue changes for cloud sync)
     );
 
     public static void main(String[] args) {
