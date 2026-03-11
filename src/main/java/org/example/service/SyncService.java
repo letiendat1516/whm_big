@@ -448,11 +448,14 @@ public class SyncService {
             } catch (SQLException e) { return null; }
         }
 
+        // Quote table name if it's a SQL reserved word
+        String qt = "Order".equals(tableName) ? "\"Order\"" : tableName;
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM " + tableName + " WHERE " + pkCol + "=?")) {
+                "SELECT * FROM " + qt + " WHERE " + pkCol + "=?")) {
             ps.setString(1, recordId);
             return resultSetToMap(ps);
         } catch (SQLException e) {
+            System.err.println("[SYNC] readRow error " + tableName + "/" + recordId + ": " + e.getMessage());
             return null;
         }
     }
