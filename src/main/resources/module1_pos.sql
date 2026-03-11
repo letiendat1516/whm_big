@@ -258,7 +258,10 @@ CREATE TABLE IF NOT EXISTS SalesOutboundItem (
     outboundId     TEXT NOT NULL REFERENCES SalesOutbound(outboundId) ON DELETE CASCADE,
     productId      TEXT NOT NULL,
     variantId      TEXT,
-    quantity       INTEGER NOT NULL DEFAULT 1 CHECK(quantity > 0)
+    quantity       INTEGER NOT NULL DEFAULT 1 CHECK(quantity > 0),
+    last_modified  TEXT NOT NULL DEFAULT (datetime('now')),
+    sync_status    TEXT NOT NULL DEFAULT 'PENDING' CHECK(sync_status IN ('PENDING','SYNCED','CONFLICT')),
+    version        INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE INDEX IF NOT EXISTS idx_sales_outbound_item ON SalesOutboundItem(outboundId);

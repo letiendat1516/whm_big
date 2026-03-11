@@ -111,7 +111,10 @@ CREATE TABLE IF NOT EXISTS ReturnOrderItem (
     quantity       INTEGER NOT NULL DEFAULT 1,
     "unitPrice"    NUMERIC NOT NULL DEFAULT 0,
     subtotal       NUMERIC NOT NULL DEFAULT 0,
-    reason         TEXT
+    reason         TEXT,
+    last_modified  TIMESTAMP NOT NULL DEFAULT NOW(),
+    sync_status    TEXT NOT NULL DEFAULT 'PENDING',
+    version        INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS SalesOutbound (
@@ -134,6 +137,9 @@ CREATE TABLE IF NOT EXISTS SalesOutboundItem (
     "outboundId"     TEXT NOT NULL REFERENCES SalesOutbound("outboundId") ON DELETE CASCADE,
     "productId"      TEXT NOT NULL,
     "variantId"      TEXT,
-    quantity         INTEGER NOT NULL DEFAULT 1
+    quantity         INTEGER NOT NULL DEFAULT 1,
+    last_modified    TIMESTAMP NOT NULL DEFAULT NOW(),
+    sync_status      TEXT NOT NULL DEFAULT 'PENDING',
+    version          INTEGER NOT NULL DEFAULT 1
 );
 

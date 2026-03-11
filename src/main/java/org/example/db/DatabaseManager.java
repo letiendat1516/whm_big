@@ -28,7 +28,9 @@ public class DatabaseManager {
             "module2_inventory.sql",
             "module1_pos.sql",
             "seed_data.sql",
-            "module6_pos_enhancement.sql"
+            "module6_pos_enhancement.sql",
+            "sqlite_migrations.sql",
+            "sqlite_sync_triggers.sql"
     );
 
     private DatabaseManager() {}

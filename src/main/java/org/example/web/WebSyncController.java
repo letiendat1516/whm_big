@@ -173,7 +173,11 @@ public class WebSyncController {
                         }
                     }
 
+                    // Savepoint isolates each record — one failure won't abort the whole batch
+                    java.sql.Savepoint sp = conn.setSavepoint("rec_" + Math.abs((table + recordId).hashCode()));
                     try {
+                        boolean versionColExists = hasColumn(conn, pgTable, "version");
+
                         if ("DELETE".equals(operation)) {
                             String sql = "DELETE FROM " + pgTable + " WHERE " + pkCol + "=?";
                             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -182,26 +186,34 @@ public class WebSyncController {
                                 if (rows > 0) accepted++; else rejected++;
                             }
                         } else if (data != null && !data.isEmpty()) {
-                            int serverVersion = getServerVersion(conn, pgTable, pkCol, recordId);
-
-                            if (serverVersion < 0) {
-                                // Record doesn't exist → INSERT (upsert)
-                                int r = doInsert(conn, pgTable, pkCol, recordId, data, incomingVersion);
-                                if (r > 0) accepted++;
-                                else { errors++; errorItems.add(Map.of("table", table, "recordId", recordId, "reason", "INSERT returned 0")); }
-                            } else if (incomingVersion > serverVersion) {
-                                // Incoming is newer → UPDATE
-                                doUpdate(conn, pgTable, pkCol, recordId, data, incomingVersion);
-                                accepted++;
+                            if (versionColExists) {
+                                int serverVersion = getServerVersion(conn, pgTable, pkCol, recordId);
+                                if (serverVersion < 0) {
+                                    int r = doInsert(conn, pgTable, pkCol, recordId, data, incomingVersion, true);
+                                    if (r > 0) accepted++;
+                                    else { errors++; errorItems.add(Map.of("table", table, "recordId", recordId, "reason", "INSERT returned 0")); }
+                                } else if (incomingVersion > serverVersion) {
+                                    doUpdate(conn, pgTable, pkCol, recordId, data, incomingVersion, true);
+                                    accepted++;
+                                } else {
+                                    rejected++;
+                                    rejectedItems.add(Map.of("table", table, "recordId", recordId,
+                                        "reason", "Server version " + serverVersion + " >= incoming " + incomingVersion));
+                                }
                             } else {
-                                rejected++;
-                                rejectedItems.add(Map.of(
-                                    "table", table, "recordId", recordId,
-                                    "reason", "Server version " + serverVersion + " >= incoming " + incomingVersion
-                                ));
+                                // No version column — upsert without version check
+                                boolean exists = recordExistsInPg(conn, pgTable, pkCol, recordId);
+                                if (exists) {
+                                    doUpdate(conn, pgTable, pkCol, recordId, data, incomingVersion, false);
+                                } else {
+                                    doInsert(conn, pgTable, pkCol, recordId, data, incomingVersion, false);
+                                }
+                                accepted++;
                             }
                         }
+                        conn.releaseSavepoint(sp);
                     } catch (SQLException e) {
+                        try { conn.rollback(sp); } catch (SQLException ignored) {}
                         errors++;
                         String msg = e.getMessage() != null ? e.getMessage() : "unknown";
                         System.err.println("[SYNC] Push error on " + table + "/" + recordId + ": " + msg);
@@ -456,28 +468,54 @@ public class WebSyncController {
             ps.setString(1, recordId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getInt("version");
-                return -1; // Not found
+                return -1;
+            }
+        } catch (SQLException e) {
+            if (e.getMessage() != null && e.getMessage().contains("does not exist")) return -1;
+            throw e;
+        }
+    }
+
+    private static boolean recordExistsInPg(Connection conn, String table, String pkCol, String recordId) throws SQLException {
+        String sql = "SELECT 1 FROM " + table + " WHERE " + pkCol + "=?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, recordId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
             }
         }
     }
 
     private static int doInsert(Connection conn, String table, String pkCol, String recordId,
-                                 Map<String, Object> data, int version) throws SQLException {
+                                 Map<String, Object> data, int version, boolean hasVersionCol) throws SQLException {
         String cleanPk = pkCol.replace("\"", "");
         data.put(cleanPk, recordId);
-        data.put("version", version);
-        data.put("sync_status", "SYNCED");
         data.remove("last_modified");
 
-        // Get column types from DB metadata for proper casting
+        if (hasVersionCol) {
+            data.put("version", version);
+            data.put("sync_status", "SYNCED");
+        } else {
+            data.remove("version");
+            data.remove("sync_status");
+        }
+
         Map<String, String> colTypes = getColumnTypes(conn, table);
+
+        // Filter: only include columns that actually exist in PG table
+        Map<String, Object> filteredData = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> e : data.entrySet()) {
+            if (colTypes.containsKey(e.getKey()) || colTypes.containsKey(e.getKey().toLowerCase())) {
+                filteredData.put(e.getKey(), e.getValue());
+            }
+        }
 
         StringBuilder cols = new StringBuilder();
         StringBuilder vals = new StringBuilder();
         StringBuilder updateSet = new StringBuilder();
         List<Object> params = new ArrayList<>();
 
-        for (Map.Entry<String, Object> e : data.entrySet()) {
+        for (Map.Entry<String, Object> e : filteredData.entrySet()) {
             if (cols.length() > 0) { cols.append(","); vals.append(","); }
             String colName = quoteCol(e.getKey());
             cols.append(colName);
@@ -509,13 +547,18 @@ public class WebSyncController {
     }
 
     private static int doUpdate(Connection conn, String table, String pkCol, String recordId,
-                                 Map<String, Object> data, int version) throws SQLException {
-        data.put("version", version);
-        data.put("sync_status", "SYNCED");
+                                 Map<String, Object> data, int version, boolean hasVersionCol) throws SQLException {
         data.remove("last_modified");
 
-        Map<String, String> colTypes = getColumnTypes(conn, table);
+        if (hasVersionCol) {
+            data.put("version", version);
+            data.put("sync_status", "SYNCED");
+        } else {
+            data.remove("version");
+            data.remove("sync_status");
+        }
 
+        Map<String, String> colTypes = getColumnTypes(conn, table);
         StringBuilder setClause = new StringBuilder();
         List<Object> params = new ArrayList<>();
         String cleanPk = pkCol.replace("\"", "");
@@ -523,10 +566,14 @@ public class WebSyncController {
         for (Map.Entry<String, Object> e : data.entrySet()) {
             String colName = e.getKey();
             if (colName.equals(cleanPk)) continue;
+            // Skip columns that don't exist in PG table
+            if (!colTypes.containsKey(colName) && !colTypes.containsKey(colName.toLowerCase())) continue;
             if (setClause.length() > 0) setClause.append(",");
             setClause.append(quoteCol(colName)).append("=").append(getCastExpression(colName, colTypes));
             params.add(e.getValue());
         }
+
+        if (setClause.length() == 0) return 0;
 
         params.add(recordId);
         String sql = "UPDATE " + table + " SET " + setClause + " WHERE " + pkCol + "=?";
@@ -552,19 +599,26 @@ public class WebSyncController {
 
     /**
      * Get column type map for a table from PostgreSQL metadata.
+     * Stores entries with both exact and lowercase keys for case-insensitive matching.
      */
     private static Map<String, String> getColumnTypes(Connection conn, String table) {
         Map<String, String> types = new HashMap<>();
         String cleanTable = table.replace("\"", "");
-        try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable, null)) {
-            while (rs.next()) {
-                String col = rs.getString("COLUMN_NAME");
-                String type = rs.getString("TYPE_NAME").toLowerCase();
-                types.put(col, type);
-                types.put(col.toLowerCase(), type);
+
+        // Try exact case first, then lowercase (PG stores unquoted identifiers as lowercase)
+        String[] tableVariants = { cleanTable, cleanTable.toLowerCase() };
+        for (String t : tableVariants) {
+            try (ResultSet rs = conn.getMetaData().getColumns(null, null, t, null)) {
+                while (rs.next()) {
+                    String col = rs.getString("COLUMN_NAME");
+                    String type = rs.getString("TYPE_NAME").toLowerCase();
+                    types.put(col, type);                    // exact case from PG
+                    types.put(col.toLowerCase(), type);      // lowercase for safe matching
+                }
+            } catch (SQLException e) {
+                // ignore
             }
-        } catch (SQLException e) {
-            // ignore
+            if (!types.isEmpty()) break;
         }
         return types;
     }

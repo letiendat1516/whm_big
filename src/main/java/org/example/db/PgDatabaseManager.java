@@ -34,7 +34,8 @@ public class PgDatabaseManager {
         "pg_module2_inventory.sql",
         "pg_module1_pos.sql",
         "pg_seed_data.sql",
-        "pg_sync_triggers.sql"
+        "pg_sync_triggers.sql",
+        "pg_migrations.sql"
     );
 
     private PgDatabaseManager() {}
