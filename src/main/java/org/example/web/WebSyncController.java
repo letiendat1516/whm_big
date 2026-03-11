@@ -55,7 +55,7 @@ public class WebSyncController {
         TABLE_PK.put("Promotion",               "\"PromotionID\"");
         TABLE_PK.put("PromotionApplicationLog", "\"LogID\"");
         TABLE_PK.put("warehouse",               "warehouse_id");
-        TABLE_PK.put("warehouse_balances",      "balance_id");
+        // warehouse_balances has composite PK — handled separately
         TABLE_PK.put("Cashier",                 "\"cashierId\"");
         TABLE_PK.put("StoreManager",            "\"managerId\"");
         TABLE_PK.put("\"Order\"",               "\"orderId\"");
@@ -65,7 +65,9 @@ public class WebSyncController {
         TABLE_PK.put("QRPayment",               "\"paymentId\"");
         TABLE_PK.put("Receipt",                 "\"receiptId\"");
         TABLE_PK.put("ReturnOrder",             "\"returnId\"");
-        TABLE_PK.put("SalesOutbound",           "outbound_id");
+        TABLE_PK.put("ReturnOrderItem",         "\"returnItemId\"");
+        TABLE_PK.put("SalesOutbound",           "\"outboundId\"");
+        TABLE_PK.put("SalesOutboundItem",       "\"outboundItemId\"");
     }
 
     public static void register(Javalin app) {
@@ -256,6 +258,19 @@ public class WebSyncController {
                         }
                     } catch (SQLException e) {
                         System.err.println("[SYNC] Pull error on " + table + ": " + e.getMessage());
+                    }
+                }
+
+                // Special: warehouse_balances (composite PK)
+                if (requestedTables == null || requestedTables.isEmpty() || requestedTables.contains("warehouse_balances")) {
+                    try {
+                        List<Map<String, Object>> wbRows = pullTable(conn, "warehouse_balances", sinceTs);
+                        if (!wbRows.isEmpty()) {
+                            allChanges.put("warehouse_balances", wbRows);
+                            totalRecords += wbRows.size();
+                        }
+                    } catch (SQLException e) {
+                        System.err.println("[SYNC] Pull error on warehouse_balances: " + e.getMessage());
                     }
                 }
             }
@@ -480,24 +495,60 @@ public class WebSyncController {
         }
     }
 
+    /**
+     * Pull changed rows from a table since a given timestamp.
+     * For tables WITH last_modified column: filter by last_modified > since
+     * For tables WITHOUT last_modified (child tables like OrderItem, CashPayment):
+     *   return ALL rows (they get pulled whenever parent changes)
+     */
     private static List<Map<String, Object>> pullTable(Connection conn, String table, Timestamp since) throws SQLException {
         List<Map<String, Object>> rows = new ArrayList<>();
-        String sql = "SELECT * FROM " + table + " WHERE last_modified > ? ORDER BY last_modified LIMIT 1000";
+
+        // Check if table has last_modified column
+        boolean hasLastModified = hasColumn(conn, table, "last_modified");
+
+        String sql;
+        if (hasLastModified) {
+            sql = "SELECT * FROM " + table + " WHERE last_modified > ? ORDER BY last_modified LIMIT 2000";
+        } else {
+            // Child table without last_modified → pull all rows
+            // (Desktop will use version/INSERT OR REPLACE logic)
+            sql = "SELECT * FROM " + table + " LIMIT 5000";
+        }
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setTimestamp(1, since);
+            if (hasLastModified) {
+                ps.setTimestamp(1, since);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 ResultSetMetaData meta = rs.getMetaData();
                 int colCount = meta.getColumnCount();
                 while (rs.next()) {
                     Map<String, Object> row = new LinkedHashMap<>();
                     for (int i = 1; i <= colCount; i++) {
-                        row.put(meta.getColumnName(i), rs.getObject(i));
+                        String colName = meta.getColumnName(i);
+                        Object value = rs.getObject(i);
+                        // Convert Timestamp to String for JSON compatibility
+                        if (value instanceof Timestamp) {
+                            value = value.toString();
+                        }
+                        row.put(colName, value);
                     }
                     rows.add(row);
                 }
             }
         }
         return rows;
+    }
+
+    /** Check if a table has a specific column */
+    private static boolean hasColumn(Connection conn, String table, String column) {
+        String cleanTable = table.replace("\"", "");
+        try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable, column)) {
+            return rs.next();
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     private static void logSyncEvent(String storeId, String direction, int accepted, int rejected, int errors) {

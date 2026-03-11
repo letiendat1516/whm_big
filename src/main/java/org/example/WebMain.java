@@ -65,7 +65,51 @@ public class WebMain {
         // ── 3. Redirect root to login page ──
         app.get("/", ctx -> ctx.redirect("/login.html"));
 
-        // ── 4. Register ALL API routes NOW (before server starts) ──
+        // ── 4. RBAC middleware: protect /api/* routes by role/permission ──
+        app.before("/api/*", ctx -> {
+            String path = ctx.path();
+            // Public endpoints — skip auth
+            if (path.startsWith("/api/health") || path.startsWith("/api/auth/")
+                || path.startsWith("/api/sync/")) return;
+
+            // Require login
+            @SuppressWarnings("unchecked")
+            Map<String, Object> user = ctx.sessionAttribute("user");
+            if (user == null) {
+                ctx.status(401).json(Map.of("error", "Chưa đăng nhập"));
+                return; // Javalin before-handler: returning doesn't skip; use skipRemainingHandlers
+            }
+
+            String roleName = (String) user.get("roleName");
+            if ("ADMIN".equals(roleName)) return; // Admin can do everything
+
+            @SuppressWarnings("unchecked")
+            java.util.List<String> perms = (java.util.List<String>) user.get("permissions");
+            if (perms == null) perms = java.util.List.of();
+
+            // Map URL → required permission
+            String need = null;
+            if (path.startsWith("/api/orders") || path.startsWith("/api/payments")
+                || path.startsWith("/api/returns")) need = "POS";
+            else if (path.startsWith("/api/warehouses") || path.startsWith("/api/inventory")
+                || path.startsWith("/api/inbound") || path.startsWith("/api/outbound")
+                || path.startsWith("/api/suppliers")) need = "INVENTORY";
+            else if (path.startsWith("/api/products") || path.startsWith("/api/categories")
+                || path.startsWith("/api/variants") || path.startsWith("/api/prices")
+                || path.startsWith("/api/pricelists")) need = "PRODUCT";
+            else if (path.startsWith("/api/customers") || path.startsWith("/api/promotions")
+                || path.startsWith("/api/campaigns") || path.startsWith("/api/loyalty")
+                || path.startsWith("/api/vouchers")) need = "CRM";
+            else if (path.startsWith("/api/employees") || path.startsWith("/api/stores")
+                || path.startsWith("/api/shifts")) need = "HR";
+            else if (path.startsWith("/api/accounts")) need = "ADMIN";
+
+            if (need != null && !perms.contains(need)) {
+                ctx.status(403).json(Map.of("error", "Bạn không có quyền truy cập chức năng này"));
+            }
+        });
+
+        // ── 5. Register ALL API routes NOW (before server starts) ──
         WebAuthController.register(app);
         WebProductController.register(app);
         WebOrderController.register(app);
@@ -73,7 +117,7 @@ public class WebMain {
         WebEmployeeController.register(app);
         WebCustomerController.register(app);
         WebSyncController.register(app);
-        System.out.println("[BOOT] All API routes registered (including sync).");
+        System.out.println("[BOOT] All API routes registered (with RBAC, sync).");
 
         // ── 5. Start listening ──
         app.start(port);

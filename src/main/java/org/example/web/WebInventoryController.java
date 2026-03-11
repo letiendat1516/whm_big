@@ -8,20 +8,37 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Inventory REST API: Warehouses, Balances, Inbound/Outbound
+ * Inventory REST API: Warehouses, Balances, Inbound/Outbound, Suppliers
  */
 public class WebInventoryController {
 
     private static final PgDatabaseManager pg = PgDatabaseManager.getInstance();
 
     public static void register(Javalin app) {
-        app.get("/api/warehouses",        WebInventoryController::listWarehouses);
+        // Warehouses CRUD
+        app.get("/api/warehouses",          WebInventoryController::listWarehouses);
+        app.post("/api/warehouses",         WebInventoryController::createWarehouse);
+        app.put("/api/warehouses/{id}",     WebInventoryController::updateWarehouse);
+        app.delete("/api/warehouses/{id}",  WebInventoryController::deleteWarehouse);
         app.get("/api/warehouses/{id}/balances", WebInventoryController::warehouseBalances);
-        app.get("/api/inventory/balances", WebInventoryController::allBalances);
-        app.get("/api/suppliers",         WebInventoryController::listSuppliers);
-        app.get("/api/inbound",           WebInventoryController::listInbound);
-        app.get("/api/outbound",          WebInventoryController::listOutbound);
+        app.get("/api/inventory/balances",  WebInventoryController::allBalances);
+
+        // Suppliers CRUD
+        app.get("/api/suppliers",           WebInventoryController::listSuppliers);
+        app.post("/api/suppliers",          WebInventoryController::createSupplier);
+        app.put("/api/suppliers/{id}",      WebInventoryController::updateSupplier);
+        app.delete("/api/suppliers/{id}",   WebInventoryController::deleteSupplier);
+
+        // Inbound / Outbound
+        app.get("/api/inbound",             WebInventoryController::listInbound);
+        app.post("/api/inbound",            WebInventoryController::createInbound);
+        app.get("/api/outbound",            WebInventoryController::listOutbound);
+        app.post("/api/outbound",           WebInventoryController::createOutbound);
     }
+
+    // ═══════════════════════════════════════
+    // WAREHOUSES CRUD
+    // ═══════════════════════════════════════
 
     private static void listWarehouses(Context ctx) {
         try (Connection conn = pg.getConnection();
@@ -43,6 +60,64 @@ public class WebInventoryController {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }
     }
+
+    private static void createWarehouse(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "WH-" + PgDatabaseManager.newId().substring(0, 8);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO warehouse(warehouse_id,warehouse_code,warehouse_name,address,is_active,remaining_capacity,threshold) " +
+                    "VALUES(?,?,?,?,1,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("warehouseCode"));
+                ps.setString(3, (String) body.get("warehouseName"));
+                ps.setString(4, (String) body.get("address"));
+                ps.setInt(5, ((Number) body.getOrDefault("remainingCapacity", 1000)).intValue());
+                ps.setInt(6, ((Number) body.getOrDefault("threshold", 10)).intValue());
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "warehouseId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateWarehouse(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE warehouse SET warehouse_code=?,warehouse_name=?,address=?,remaining_capacity=?,threshold=?,updated_at=NOW() " +
+                    "WHERE warehouse_id=?")) {
+                ps.setString(1, (String) body.get("warehouseCode"));
+                ps.setString(2, (String) body.get("warehouseName"));
+                ps.setString(3, (String) body.get("address"));
+                ps.setInt(4, ((Number) body.getOrDefault("remainingCapacity", 1000)).intValue());
+                ps.setInt(5, ((Number) body.getOrDefault("threshold", 10)).intValue());
+                ps.setString(6, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteWarehouse(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE warehouse SET is_active=0 WHERE warehouse_id=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // BALANCES
+    // ═══════════════════════════════════════
 
     private static void warehouseBalances(Context ctx) {
         try (Connection conn = pg.getConnection();
@@ -101,6 +176,10 @@ public class WebInventoryController {
         }
     }
 
+    // ═══════════════════════════════════════
+    // SUPPLIERS CRUD
+    // ═══════════════════════════════════════
+
     private static void listSuppliers(Context ctx) {
         try (Connection conn = pg.getConnection();
              ResultSet rs = conn.createStatement().executeQuery(
@@ -120,6 +199,61 @@ public class WebInventoryController {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }
     }
+
+    private static void createSupplier(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "SUP-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO Supplier(\"supplierID\",name_supplier,\"isCooperating\",contact_phone,address) " +
+                    "VALUES(?,?,1,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("name"));
+                ps.setString(3, (String) body.get("phone"));
+                ps.setString(4, (String) body.get("address"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "supplierId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateSupplier(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE Supplier SET name_supplier=?,contact_phone=?,address=?,\"isCooperating\"=? " +
+                    "WHERE \"supplierID\"=?")) {
+                ps.setString(1, (String) body.get("name"));
+                ps.setString(2, (String) body.get("phone"));
+                ps.setString(3, (String) body.get("address"));
+                ps.setInt(4, Boolean.TRUE.equals(body.get("isCooperating")) ? 1 : 0);
+                ps.setString(5, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteSupplier(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Supplier WHERE \"supplierID\"=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // INBOUND / OUTBOUND
+    // ═══════════════════════════════════════
 
     private static void listInbound(Context ctx) {
         try (Connection conn = pg.getConnection();
@@ -143,6 +277,51 @@ public class WebInventoryController {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private static void createInbound(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "INB-" + PgDatabaseManager.newId().substring(0, 8);
+            String whId = (String) body.get("warehouseId");
+            String productId = (String) body.get("productId");
+            int qty = ((Number) body.getOrDefault("qty", 0)).intValue();
+
+            try (Connection conn = pg.getConnection()) {
+                conn.setAutoCommit(false);
+                try {
+                    // Insert inbound doc
+                    try (PreparedStatement ps = conn.prepareStatement(
+                            "INSERT INTO inbound_documents(inbound_id,source_warehouse_id,status_code,product_id,qty,created_by) " +
+                            "VALUES(?,?,'POSTED',?,?,?)")) {
+                        ps.setString(1, id);
+                        ps.setString(2, whId);
+                        ps.setString(3, productId);
+                        ps.setInt(4, qty);
+                        ps.setString(5, (String) body.getOrDefault("createdBy", "SYSTEM"));
+                        ps.executeUpdate();
+                    }
+                    // Update warehouse balance
+                    try (PreparedStatement ps = conn.prepareStatement(
+                            "INSERT INTO warehouse_balances(warehouse_id,product_id,on_hand_qty,reserved_qty) " +
+                            "VALUES(?,?,?,0) ON CONFLICT(warehouse_id,product_id) DO UPDATE SET on_hand_qty=warehouse_balances.on_hand_qty+?")) {
+                        ps.setString(1, whId);
+                        ps.setString(2, productId);
+                        ps.setInt(3, qty);
+                        ps.setInt(4, qty);
+                        ps.executeUpdate();
+                    }
+                    conn.commit();
+                } catch (Exception e) {
+                    conn.rollback();
+                    throw e;
+                }
+            }
+            ctx.json(Map.of("success", true, "inboundId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
     private static void listOutbound(Context ctx) {
         try (Connection conn = pg.getConnection();
              ResultSet rs = conn.createStatement().executeQuery(
@@ -160,6 +339,49 @@ public class WebInventoryController {
                 list.add(m);
             }
             ctx.json(list);
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void createOutbound(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "OUT-" + PgDatabaseManager.newId().substring(0, 8);
+            String whId = (String) body.get("warehouseId");
+            String productId = (String) body.get("productId");
+            int qty = ((Number) body.getOrDefault("qty", 0)).intValue();
+
+            try (Connection conn = pg.getConnection()) {
+                conn.setAutoCommit(false);
+                try {
+                    try (PreparedStatement ps = conn.prepareStatement(
+                            "INSERT INTO outbound_documents(outbound_id,source_warehouse_id,status_code,product_id,qty,created_by) " +
+                            "VALUES(?,?,'POSTED',?,?,?)")) {
+                        ps.setString(1, id);
+                        ps.setString(2, whId);
+                        ps.setString(3, productId);
+                        ps.setInt(4, qty);
+                        ps.setString(5, (String) body.getOrDefault("createdBy", "SYSTEM"));
+                        ps.executeUpdate();
+                    }
+                    // Decrease balance
+                    try (PreparedStatement ps = conn.prepareStatement(
+                            "UPDATE warehouse_balances SET on_hand_qty=GREATEST(on_hand_qty-?,0),updated_at=NOW() " +
+                            "WHERE warehouse_id=? AND product_id=?")) {
+                        ps.setInt(1, qty);
+                        ps.setString(2, whId);
+                        ps.setString(3, productId);
+                        ps.executeUpdate();
+                    }
+                    conn.commit();
+                } catch (Exception e) {
+                    conn.rollback();
+                    throw e;
+                }
+            }
+            ctx.json(Map.of("success", true, "outboundId", id));
         } catch (Exception e) {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }

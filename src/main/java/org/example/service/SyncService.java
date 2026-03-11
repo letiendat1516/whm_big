@@ -76,7 +76,7 @@ public class SyncService {
         TABLE_PK.put("Promotion",               "PromotionID");
         TABLE_PK.put("PromotionApplicationLog", "LogID");
         TABLE_PK.put("warehouse",               "warehouse_id");
-        TABLE_PK.put("warehouse_balances",      "balance_id");
+        // warehouse_balances has composite PK (warehouse_id, product_id) — handled separately
         TABLE_PK.put("Cashier",                 "cashierId");
         TABLE_PK.put("StoreManager",            "managerId");
         TABLE_PK.put("Order",                   "orderId");
@@ -86,7 +86,9 @@ public class SyncService {
         TABLE_PK.put("QRPayment",               "paymentId");
         TABLE_PK.put("Receipt",                  "receiptId");
         TABLE_PK.put("ReturnOrder",             "returnId");
-        TABLE_PK.put("SalesOutbound",           "outbound_id");
+        TABLE_PK.put("ReturnOrderItem",         "returnItemId");
+        TABLE_PK.put("SalesOutbound",           "outboundId");
+        TABLE_PK.put("SalesOutboundItem",       "outboundItemId");
     }
 
     private SyncService() {
@@ -332,7 +334,21 @@ public class SyncService {
                 String tableName = tableEntry.getKey();
                 List<Map<String, Object>> rows = tableEntry.getValue();
                 String pkCol = TABLE_PK.get(tableName);
-                if (pkCol == null) continue;
+
+                if (pkCol == null) {
+                    // Special handling for composite PK tables (e.g., warehouse_balances)
+                    if ("warehouse_balances".equals(tableName)) {
+                        for (Map<String, Object> row : rows) {
+                            try {
+                                int applied = upsertWarehouseBalance(conn, row);
+                                totalApplied += applied;
+                            } catch (SQLException e) {
+                                System.err.println("[SYNC] Pull warehouse_balances error: " + e.getMessage());
+                            }
+                        }
+                    }
+                    continue;
+                }
 
                 for (Map<String, Object> row : rows) {
                     try {
@@ -459,33 +475,55 @@ public class SyncService {
         Object vObj = row.get("version");
         if (vObj instanceof Number) incomingVersion = ((Number) vObj).intValue();
 
-        // Check local version
+        // Check if row exists locally and get its version (if version column exists)
+        boolean rowExists = false;
+        boolean hasVersionCol = true;
         int localVersion = -1;
+
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT version FROM " + tableName + " WHERE " + pkCol + "=?")) {
             ps.setString(1, pk.toString());
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) localVersion = rs.getInt("version");
+                if (rs.next()) {
+                    rowExists = true;
+                    localVersion = rs.getInt("version");
+                }
             }
         } catch (SQLException e) {
-            // Table might not exist or no version column — skip
+            // Table might not have 'version' column (child tables like OrderItem, CashPayment)
+            hasVersionCol = false;
+            // Check existence without version
+            try (PreparedStatement ps2 = conn.prepareStatement(
+                    "SELECT 1 FROM " + tableName + " WHERE " + pkCol + "=?")) {
+                ps2.setString(1, pk.toString());
+                try (ResultSet rs2 = ps2.executeQuery()) {
+                    rowExists = rs2.next();
+                }
+            } catch (SQLException e2) {
+                return 0; // Table doesn't exist
+            }
+        }
+
+        // For tables with version: skip if local is same or newer
+        if (hasVersionCol && rowExists && localVersion >= incomingVersion) {
             return 0;
         }
 
-        if (localVersion >= incomingVersion) {
-            return 0; // Local is same or newer — skip
+        // Filter out columns that don't exist in local SQLite table
+        Map<String, Object> filteredRow = filterExistingColumns(conn, tableName, row);
+
+        // Mark as SYNCED if column exists
+        if (filteredRow.containsKey("sync_status")) {
+            filteredRow.put("sync_status", "SYNCED");
         }
 
-        // Mark as SYNCED
-        row.put("sync_status", "SYNCED");
-
-        if (localVersion < 0) {
+        if (!rowExists) {
             // INSERT
             StringBuilder cols = new StringBuilder();
             StringBuilder vals = new StringBuilder();
             List<Object> params = new ArrayList<>();
 
-            for (Map.Entry<String, Object> e : row.entrySet()) {
+            for (Map.Entry<String, Object> e : filteredRow.entrySet()) {
                 if (cols.length() > 0) { cols.append(","); vals.append(","); }
                 cols.append(e.getKey());
                 vals.append("?");
@@ -502,12 +540,14 @@ public class SyncService {
             StringBuilder setClause = new StringBuilder();
             List<Object> params = new ArrayList<>();
 
-            for (Map.Entry<String, Object> e : row.entrySet()) {
+            for (Map.Entry<String, Object> e : filteredRow.entrySet()) {
                 if (e.getKey().equals(pkCol)) continue;
                 if (setClause.length() > 0) setClause.append(",");
                 setClause.append(e.getKey()).append("=?");
                 params.add(e.getValue());
             }
+
+            if (setClause.length() == 0) return 0;
 
             params.add(pk.toString());
             String sql = "UPDATE " + tableName + " SET " + setClause + " WHERE " + pkCol + "=?";
@@ -515,6 +555,52 @@ public class SyncService {
                 setParams(ps, params);
                 return ps.executeUpdate();
             }
+        }
+    }
+
+    /** Filter row map to only include columns that exist in the local SQLite table */
+    private Map<String, Object> filterExistingColumns(Connection conn, String tableName, Map<String, Object> row) {
+        Set<String> existingCols = new HashSet<>();
+        try (Statement s = conn.createStatement();
+             ResultSet rs = s.executeQuery("PRAGMA table_info(" + tableName + ")")) {
+            while (rs.next()) {
+                existingCols.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            return row; // If we can't check, pass all columns
+        }
+
+        if (existingCols.isEmpty()) return row;
+
+        Map<String, Object> filtered = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> e : row.entrySet()) {
+            if (existingCols.contains(e.getKey())) {
+                filtered.put(e.getKey(), e.getValue());
+            }
+        }
+        return filtered;
+    }
+
+    /** Special upsert for warehouse_balances (composite PK: warehouse_id + product_id) */
+    private int upsertWarehouseBalance(Connection conn, Map<String, Object> row) throws SQLException {
+        Object whId = row.get("warehouse_id");
+        Object prodId = row.get("product_id");
+        if (whId == null || prodId == null) return 0;
+
+        Map<String, Object> filtered = filterExistingColumns(conn, "warehouse_balances", row);
+        filtered.put("sync_status", "SYNCED");
+
+        String sql = "INSERT OR REPLACE INTO warehouse_balances (warehouse_id, product_id, on_hand_qty, reserved_qty, " +
+                "updated_at, last_modified, sync_status) VALUES (?,?,?,?,?,?,?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, whId.toString());
+            ps.setString(2, prodId.toString());
+            ps.setObject(3, filtered.getOrDefault("on_hand_qty", 0));
+            ps.setObject(4, filtered.getOrDefault("reserved_qty", 0));
+            ps.setObject(5, filtered.getOrDefault("updated_at", ""));
+            ps.setObject(6, filtered.getOrDefault("last_modified", ""));
+            ps.setString(7, "SYNCED");
+            return ps.executeUpdate();
         }
     }
 

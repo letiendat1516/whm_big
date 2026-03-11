@@ -23,8 +23,11 @@ public class WebProductController {
         app.put("/api/products/{id}",     WebProductController::updateProduct);
         app.delete("/api/products/{id}",  WebProductController::deleteProduct);
 
-        // Categories
-        app.get("/api/categories",        WebProductController::listCategories);
+        // Categories CRUD
+        app.get("/api/categories",           WebProductController::listCategories);
+        app.post("/api/categories",          WebProductController::createCategory);
+        app.put("/api/categories/{id}",      WebProductController::updateCategory);
+        app.delete("/api/categories/{id}",   WebProductController::deleteCategory);
 
         // Variants
         app.get("/api/variants",          WebProductController::listVariants);
@@ -160,6 +163,52 @@ public class WebProductController {
                 ));
             }
             ctx.json(list);
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void createCategory(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "CAT-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO ProductCategory(category_id,category_name,description) VALUES(?,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("categoryName"));
+                ps.setString(3, (String) body.get("description"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "categoryId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateCategory(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE ProductCategory SET category_name=?,description=? WHERE category_id=?")) {
+                ps.setString(1, (String) body.get("categoryName"));
+                ps.setString(2, (String) body.get("description"));
+                ps.setString(3, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteCategory(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM ProductCategory WHERE category_id=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
         } catch (Exception e) {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }

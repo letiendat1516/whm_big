@@ -156,6 +156,56 @@ public class WebEmployeeController {
         }
     }
 
+    private static void createStore(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "STORE-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO Store(\"storeId\",\"storeCode\",name,address,status) VALUES(?,?,?,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("storeCode"));
+                ps.setString(3, (String) body.get("name"));
+                ps.setString(4, (String) body.get("address"));
+                ps.setString(5, (String) body.getOrDefault("status", "ACTIVE"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "storeId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateStore(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE Store SET \"storeCode\"=?,name=?,address=?,status=? WHERE \"storeId\"=?")) {
+                ps.setString(1, (String) body.get("storeCode"));
+                ps.setString(2, (String) body.get("name"));
+                ps.setString(3, (String) body.get("address"));
+                ps.setString(4, (String) body.getOrDefault("status", "ACTIVE"));
+                ps.setString(5, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteStore(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Store WHERE \"storeId\"=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
     private static void listShiftTemplates(Context ctx) {
         try (Connection conn = pg.getConnection();
              ResultSet rs = conn.createStatement().executeQuery(
@@ -172,6 +222,60 @@ public class WebEmployeeController {
                 list.add(m);
             }
             ctx.json(list);
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void createShiftTemplate(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "SHIFT-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO ShiftTemplate(\"shiftTemplateId\",name,\"startTime\",\"endTime\",\"breakMinutes\",status) " +
+                    "VALUES(?,?,?,?,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("name"));
+                ps.setString(3, (String) body.get("startTime"));
+                ps.setString(4, (String) body.get("endTime"));
+                ps.setInt(5, ((Number) body.getOrDefault("breakMinutes", 30)).intValue());
+                ps.setString(6, (String) body.getOrDefault("status", "ACTIVE"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "shiftTemplateId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateShiftTemplate(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE ShiftTemplate SET name=?,\"startTime\"=?,\"endTime\"=?,\"breakMinutes\"=?,status=? " +
+                    "WHERE \"shiftTemplateId\"=?")) {
+                ps.setString(1, (String) body.get("name"));
+                ps.setString(2, (String) body.get("startTime"));
+                ps.setString(3, (String) body.get("endTime"));
+                ps.setInt(4, ((Number) body.getOrDefault("breakMinutes", 30)).intValue());
+                ps.setString(5, (String) body.getOrDefault("status", "ACTIVE"));
+                ps.setString(6, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteShiftTemplate(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM ShiftTemplate WHERE \"shiftTemplateId\"=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
         } catch (Exception e) {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }

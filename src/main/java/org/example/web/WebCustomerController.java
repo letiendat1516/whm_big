@@ -21,9 +21,17 @@ public class WebCustomerController {
         app.put("/api/customers/{id}",    WebCustomerController::updateCustomer);
         app.delete("/api/customers/{id}", WebCustomerController::deleteCustomer);
 
-        // Promotions
-        app.get("/api/promotions",        WebCustomerController::listPromotions);
-        app.get("/api/campaigns",         WebCustomerController::listCampaigns);
+        // Promotions CRUD
+        app.get("/api/promotions",          WebCustomerController::listPromotions);
+        app.post("/api/promotions",         WebCustomerController::createPromotion);
+        app.put("/api/promotions/{id}",     WebCustomerController::updatePromotion);
+        app.delete("/api/promotions/{id}",  WebCustomerController::deletePromotion);
+
+        // Campaigns CRUD
+        app.get("/api/campaigns",           WebCustomerController::listCampaigns);
+        app.post("/api/campaigns",          WebCustomerController::createCampaign);
+        app.put("/api/campaigns/{id}",      WebCustomerController::updateCampaign);
+        app.delete("/api/campaigns/{id}",   WebCustomerController::deleteCampaign);
 
         // Loyalty
         app.get("/api/loyalty/accounts",  WebCustomerController::listLoyaltyAccounts);
@@ -180,6 +188,72 @@ public class WebCustomerController {
         }
     }
 
+    private static void createPromotion(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "PROMO-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO Promotion(\"PromotionID\",\"CampaignID\",\"PromoType\",\"Name\"," +
+                    "\"Priority\",\"RuleDefinition\",\"VoucherCode\",\"MaxUsageCount\",\"CurrentUsageCount\"," +
+                    "\"ExpiryDate\",\"TriggerCondition\",\"IsActive\") VALUES(?,?,?,?,?,?,?,?,0,?,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("campaignId"));
+                ps.setString(3, (String) body.getOrDefault("promoType", "DISCOUNT"));
+                ps.setString(4, (String) body.get("name"));
+                ps.setInt(5, ((Number) body.getOrDefault("priority", 1)).intValue());
+                ps.setString(6, (String) body.get("ruleDefinition"));
+                ps.setString(7, (String) body.get("voucherCode"));
+                ps.setInt(8, ((Number) body.getOrDefault("maxUsageCount", 100)).intValue());
+                ps.setString(9, (String) body.get("expiryDate"));
+                ps.setString(10, (String) body.get("triggerCondition"));
+                ps.setInt(11, 1);
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "promotionId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updatePromotion(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE Promotion SET \"CampaignID\"=?,\"PromoType\"=?,\"Name\"=?,\"Priority\"=?," +
+                    "\"RuleDefinition\"=?,\"VoucherCode\"=?,\"MaxUsageCount\"=?,\"ExpiryDate\"=?," +
+                    "\"TriggerCondition\"=?,\"IsActive\"=? WHERE \"PromotionID\"=?")) {
+                ps.setString(1, (String) body.get("campaignId"));
+                ps.setString(2, (String) body.getOrDefault("promoType", "DISCOUNT"));
+                ps.setString(3, (String) body.get("name"));
+                ps.setInt(4, ((Number) body.getOrDefault("priority", 1)).intValue());
+                ps.setString(5, (String) body.get("ruleDefinition"));
+                ps.setString(6, (String) body.get("voucherCode"));
+                ps.setInt(7, ((Number) body.getOrDefault("maxUsageCount", 100)).intValue());
+                ps.setString(8, (String) body.get("expiryDate"));
+                ps.setString(9, (String) body.get("triggerCondition"));
+                ps.setInt(10, Boolean.TRUE.equals(body.get("isActive")) ? 1 : 0);
+                ps.setString(11, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deletePromotion(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Promotion WHERE \"PromotionID\"=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
     private static void listCampaigns(Context ctx) {
         try (Connection conn = pg.getConnection();
              ResultSet rs = conn.createStatement().executeQuery(
@@ -196,6 +270,60 @@ public class WebCustomerController {
                 list.add(m);
             }
             ctx.json(list);
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void createCampaign(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            String id = "CAMP-" + PgDatabaseManager.newId().substring(0, 6);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO Campaign(\"CampaignID\",\"Name\",\"Description\",\"StartDate\",\"EndDate\",\"IsActive\") " +
+                    "VALUES(?,?,?,?,?,?)")) {
+                ps.setString(1, id);
+                ps.setString(2, (String) body.get("name"));
+                ps.setString(3, (String) body.get("description"));
+                ps.setString(4, (String) body.get("startDate"));
+                ps.setString(5, (String) body.get("endDate"));
+                ps.setInt(6, 1);
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true, "campaignId", id));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void updateCampaign(Context ctx) {
+        try {
+            Map body = ctx.bodyAsClass(Map.class);
+            try (Connection conn = pg.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE Campaign SET \"Name\"=?,\"Description\"=?,\"StartDate\"=?,\"EndDate\"=?,\"IsActive\"=? " +
+                    "WHERE \"CampaignID\"=?")) {
+                ps.setString(1, (String) body.get("name"));
+                ps.setString(2, (String) body.get("description"));
+                ps.setString(3, (String) body.get("startDate"));
+                ps.setString(4, (String) body.get("endDate"));
+                ps.setInt(5, Boolean.TRUE.equals(body.get("isActive")) ? 1 : 0);
+                ps.setString(6, ctx.pathParam("id"));
+                ps.executeUpdate();
+            }
+            ctx.json(Map.of("success", true));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private static void deleteCampaign(Context ctx) {
+        try (Connection conn = pg.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Campaign WHERE \"CampaignID\"=?")) {
+            ps.setString(1, ctx.pathParam("id"));
+            ps.executeUpdate();
+            ctx.json(Map.of("success", true));
         } catch (Exception e) {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }
