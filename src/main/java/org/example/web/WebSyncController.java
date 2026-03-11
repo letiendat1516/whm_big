@@ -626,11 +626,15 @@ public class WebSyncController {
 
     private static boolean hasColumn(Connection conn, String table, String column) {
         String cleanTable = table.replace("\"", "");
+        // Try exact case first
         try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable, column)) {
-            return rs.next();
-        } catch (SQLException e) {
-            return false;
-        }
+            if (rs.next()) return true;
+        } catch (SQLException e) { /* ignore */ }
+        // Try lowercase
+        try (ResultSet rs = conn.getMetaData().getColumns(null, null, cleanTable.toLowerCase(), column.toLowerCase())) {
+            if (rs.next()) return true;
+        } catch (SQLException e) { /* ignore */ }
+        return false;
     }
 
     private static void logSyncEvent(String storeId, String direction, int accepted, int rejected, int errors) {
