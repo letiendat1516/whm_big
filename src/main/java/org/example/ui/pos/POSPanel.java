@@ -700,6 +700,8 @@ public class POSPanel extends JPanel {
         sb.append(String.format("Tổng hàng: %s%n", UIUtils.formatCurrency(subtotal)));
         if (result.discountAmount() > 0)
             sb.append(String.format("Giảm giá : -%s%n", UIUtils.formatCurrency(result.discountAmount())));
+        if (result.pointsDiscount() > 0)
+            sb.append(String.format("Đổi điểm : -%s%n", UIUtils.formatCurrency(result.pointsDiscount())));
         sb.append(String.format("Thuế VAT : %s%n", UIUtils.formatCurrency(result.taxAmount())));
         sb.append(String.format("T.Toán   : %s%n", UIUtils.formatCurrency(result.finalAmount())));
         sb.append("───────────────────────────────────\n");

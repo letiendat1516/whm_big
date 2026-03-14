@@ -91,6 +91,10 @@ public class SyncService {
         TABLE_PK.put("ReturnOrderItem",         "returnItemId");
         TABLE_PK.put("SalesOutbound",           "outboundId");
         TABLE_PK.put("SalesOutboundItem",       "outboundItemId");
+        TABLE_PK.put("StoreTransferRequest",    "request_id");
+        TABLE_PK.put("StoreTransferRequestItem","item_id");
+        TABLE_PK.put("WarehouseOverstockRequest","request_id");
+        TABLE_PK.put("WarehouseOverstockRequestItem","item_id");
     }
 
     private SyncService() {

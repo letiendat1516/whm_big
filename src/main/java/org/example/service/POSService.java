@@ -51,6 +51,8 @@ public class POSService {
         cartItems.clear();
         discountAmount = 0;
         appliedPromotionId = null;
+        pointsDiscount = 0;
+        pointsRedeemed = 0;
         warehouseId = inventoryDAO.getDefaultWarehouseId(storeId);
 
         currentOrder = new Order();
@@ -135,6 +137,51 @@ public class POSService {
         orderDAO.removeOrderItem(orderItemId);
     }
 
+    /**
+     * Apply per-item discount (giảm giá trên từng sản phẩm).
+     * The item's subtotal becomes: quantity * unitPrice - itemDiscount.
+     * Can still combine with order-level voucher.
+     */
+    public void setItemDiscount(String orderItemId, double discount) throws SQLException {
+        for (OrderItem item : cartItems) {
+            if (item.getOrderItemId().equals(orderItemId)) {
+                double maxDiscount = item.getQuantity() * item.getUnitPrice();
+                item.setItemDiscount(Math.min(discount, maxDiscount));
+                orderDAO.updateItemDiscount(orderItemId, item.getItemDiscount());
+                return;
+            }
+        }
+    }
+
+    /** Total per-item discounts across all cart items. */
+    public double getTotalItemDiscounts() {
+        return cartItems.stream().mapToDouble(OrderItem::getItemDiscount).sum();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  POINTS REDEMPTION
+    // ═══════════════════════════════════════════════════════════
+    private double pointsDiscount = 0;
+    private int    pointsRedeemed = 0;
+
+    /**
+     * Redeem customer loyalty points.
+     * @param points number of points to redeem
+     * @return the VND discount amount
+     */
+    public double redeemPoints(int points) throws SQLException {
+        if (currentOrder == null) throw new IllegalStateException("No active order.");
+        String custId = currentOrder.getCustomerId();
+        if (custId == null || custId.isEmpty()) throw new SQLException("Chưa gắn khách hàng cho đơn.");
+        java.sql.Connection conn = db.getConnection();
+        pointsDiscount = customerDAO.redeemPoints(conn, custId, points, currentOrder.getOrderId());
+        pointsRedeemed = points;
+        return pointsDiscount;
+    }
+
+    public double getPointsDiscount() { return pointsDiscount; }
+    public int    getPointsRedeemed() { return pointsRedeemed; }
+
     // ═══════════════════════════════════════════════════════════
     //  TOTALS (with tax)
     // ═══════════════════════════════════════════════════════════
@@ -143,12 +190,12 @@ public class POSService {
     }
 
     public double getTaxAmount() {
-        double afterDiscount = Math.max(0, getCartTotal() - discountAmount);
+        double afterDiscount = Math.max(0, getCartTotal() - discountAmount - pointsDiscount);
         return afterDiscount * taxRate;
     }
 
     public double getFinalAmount() {
-        double afterDiscount = Math.max(0, getCartTotal() - discountAmount);
+        double afterDiscount = Math.max(0, getCartTotal() - discountAmount - pointsDiscount);
         return afterDiscount + getTaxAmount();
     }
 
@@ -238,14 +285,16 @@ public class POSService {
             String payStatus = debtRemaining <= 0 ? "PAID" : (actualPay > 0 ? "PARTIAL" : "UNPAID");
 
             CheckoutResult result = new CheckoutResult(
-                currentOrder.getOrderId(), finalAmt, discountAmount, getTaxAmount(),
-                change, pointsEarned, paymentId, actualPay, debtRemaining, payStatus
+                currentOrder.getOrderId(), finalAmt, discountAmount, pointsDiscount,
+                getTaxAmount(), change, pointsEarned, paymentId, actualPay, debtRemaining, payStatus
             );
 
             cartItems.clear();
             currentOrder = null;
             discountAmount = 0;
             appliedPromotionId = null;
+            pointsDiscount = 0;
+            pointsRedeemed = 0;
             return result;
 
         } catch (SQLException e) {
@@ -307,8 +356,8 @@ public class POSService {
 
     /** Immutable checkout result. */
     public record CheckoutResult(
-        String orderId, double finalAmount, double discountAmount, double taxAmount,
-        double changeAmount, int pointsEarned, String paymentId,
+        String orderId, double finalAmount, double discountAmount, double pointsDiscount,
+        double taxAmount, double changeAmount, int pointsEarned, String paymentId,
         double paidAmount, double debtRemaining, String paymentStatus
     ) {}
 }

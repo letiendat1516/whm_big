@@ -47,6 +47,7 @@ public class MainWindow extends JFrame {
     private ProductPanel   productPanel;
     private CRMPanel       crmPanel;
     private HRPanel        hrPanel;
+    private org.example.ui.transfer.TransferPanel transferPanel;
 
     private final JLabel lblClock = new JLabel();
     private final JLabel lblSync  = new JLabel("● LOCAL");
@@ -237,6 +238,7 @@ public class MainWindow extends JFrame {
         if (canAccess("PRODUCT"))   sidebar.add(makeSidebarBtn("🧱",  "SẢN PHẨM",    "PRODUCT"));
         if (canAccess("CRM"))       sidebar.add(makeSidebarBtn("👥",  "KHÁCH HÀNG",  "CRM"));
         if (canAccess("HR"))        sidebar.add(makeSidebarBtn("👔",  "NHÂN SỰ",     "HR"));
+        if (canAccess("TRANSFER"))  sidebar.add(makeSidebarBtn("🔄",  "ĐIỀU CHUYỂN", "TRANSFER"));
 
         sidebar.add(Box.createVerticalGlue());
 
@@ -360,6 +362,10 @@ public class MainWindow extends JFrame {
                 if (hrPanel == null) { hrPanel = new HRPanel(); centerPanel.add(hrPanel, "HR"); }
                 cardLayout.show(centerPanel, "HR");
             }
+            case "TRANSFER" -> {
+                if (transferPanel == null) { transferPanel = new org.example.ui.transfer.TransferPanel(); centerPanel.add(transferPanel, "TRANSFER"); }
+                cardLayout.show(centerPanel, "TRANSFER");
+            }
         }
     }
 
@@ -380,7 +386,7 @@ public class MainWindow extends JFrame {
 
     /** Tự động chuyển đến module đầu tiên mà user được phép truy cập */
     private void showFirstAllowedModule() {
-        String[] modules = {"POS", "PAYMENT", "INVENTORY", "PRODUCT", "CRM", "HR"};
+        String[] modules = {"POS", "PAYMENT", "INVENTORY", "PRODUCT", "CRM", "HR", "TRANSFER"};
         for (String m : modules) {
             if (canAccess(m)) {
                 showModule(m);

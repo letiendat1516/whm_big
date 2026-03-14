@@ -7,6 +7,7 @@ public class OrderItem {
     private String variantId;
     private int quantity;
     private double unitPrice;   // FROZEN at time of sale — never recalculated
+    private double itemDiscount;// per-item discount amount
     private double subtotal;
     private double taxRate;     // e.g. 0.1 = 10%
     private double taxAmount;
@@ -26,9 +27,11 @@ public class OrderItem {
     public String getVariantId() { return variantId; }
     public void setVariantId(String v) { this.variantId = v; }
     public int getQuantity() { return quantity; }
-    public void setQuantity(int v) { this.quantity = v; this.subtotal = v * this.unitPrice; }
+    public void setQuantity(int v) { this.quantity = v; this.subtotal = v * this.unitPrice - this.itemDiscount; }
     public double getUnitPrice() { return unitPrice; }
-    public void setUnitPrice(double v) { this.unitPrice = v; this.subtotal = this.quantity * v; }
+    public void setUnitPrice(double v) { this.unitPrice = v; this.subtotal = this.quantity * v - this.itemDiscount; }
+    public double getItemDiscount() { return itemDiscount; }
+    public void setItemDiscount(double v) { this.itemDiscount = v; this.subtotal = this.quantity * this.unitPrice - v; }
     public double getSubtotal() { return subtotal; }
     public void setSubtotal(double v) { this.subtotal = v; }
     public double getTaxRate() { return taxRate; }

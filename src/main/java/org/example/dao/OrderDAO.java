@@ -182,6 +182,15 @@ public class OrderDAO {
         }
     }
 
+    /** Update per-item discount and recalculate subtotal. */
+    public void updateItemDiscount(String orderItemId, double itemDiscount) throws SQLException {
+        String sql = "UPDATE OrderItem SET itemDiscount=?, subtotal=(quantity*unitPrice-?) WHERE orderItemId=?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setDouble(1, itemDiscount); ps.setDouble(2, itemDiscount);
+            ps.setString(3, orderItemId); ps.executeUpdate();
+        }
+    }
+
     public List<OrderItem> findItemsByOrder(String orderId) throws SQLException {
         List<OrderItem> list = new ArrayList<>();
         String sql = "SELECT oi.*, p.Name as product_name, pv.variant_name, pv.barcode " +
@@ -475,6 +484,7 @@ public class OrderDAO {
         i.setOrderItemId(rs.getString("orderItemId")); i.setOrderId(rs.getString("orderId"));
         i.setProductId(rs.getString("productId")); i.setVariantId(rs.getString("variantId"));
         i.setQuantity(rs.getInt("quantity")); i.setUnitPrice(rs.getDouble("unitPrice"));
+        try { i.setItemDiscount(rs.getDouble("itemDiscount")); } catch (SQLException ignored){}
         i.setSubtotal(rs.getDouble("subtotal"));
         try { i.setProductName(rs.getString("product_name")); } catch (SQLException ignored) {}
         try { i.setVariantName(rs.getString("variant_name")); } catch (SQLException ignored) {}

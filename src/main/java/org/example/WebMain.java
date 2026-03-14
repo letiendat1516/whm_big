@@ -116,6 +116,7 @@ public class WebMain {
         WebInventoryController.register(app);
         WebEmployeeController.register(app);
         WebCustomerController.register(app);
+        WebTransferController.register(app);
         WebSyncController.register(app);
         System.out.println("[BOOT] All API routes registered (with RBAC, sync).");
 

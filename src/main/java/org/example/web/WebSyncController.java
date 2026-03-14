@@ -70,6 +70,10 @@ public class WebSyncController {
         TABLE_PK.put("ReturnOrderItem",         "\"returnItemId\"");
         TABLE_PK.put("SalesOutbound",           "\"outboundId\"");
         TABLE_PK.put("SalesOutboundItem",       "\"outboundItemId\"");
+        TABLE_PK.put("StoreTransferRequest",    "request_id");
+        TABLE_PK.put("StoreTransferRequestItem","item_id");
+        TABLE_PK.put("WarehouseOverstockRequest","request_id");
+        TABLE_PK.put("WarehouseOverstockRequestItem","item_id");
     }
 
     // Dependency order: parent tables first, child tables last
@@ -81,7 +85,9 @@ public class WebSyncController {
         "Campaign", "Promotion", "PromotionApplicationLog",
         "warehouse",
         "Order", "OrderItem", "Payment", "CashPayment", "QRPayment", "Receipt",
-        "ReturnOrder", "ReturnOrderItem", "SalesOutbound", "SalesOutboundItem"
+        "ReturnOrder", "ReturnOrderItem", "SalesOutbound", "SalesOutboundItem",
+        "StoreTransferRequest", "StoreTransferRequestItem",
+        "WarehouseOverstockRequest", "WarehouseOverstockRequestItem"
     );
 
     public static void register(Javalin app) {

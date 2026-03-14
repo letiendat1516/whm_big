@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quản lý Vật liệu Xây dựng</title>
+<title>Quáº£n lÃ½ Váº­t liá»‡u XÃ¢y dá»±ng</title>
 <style>
 :root{--primary:#1e3c72;--primary2:#2a5298;--bg:#f0f2f5;--sidebar-w:220px;--header-h:50px;--green:#27ae60;--red:#e74c3c;--orange:#f39c12;--blue:#2980b9}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -75,30 +75,30 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-    <div class="logo">🏗️ VLXD Manager</div>
-    <div class="menu-item active" data-section="dashboard" data-perm="ALL"><span class="icon">📊</span>Tổng quan</div>
-    <div class="menu-item" data-section="pos" data-perm="POS"><span class="icon">🛒</span>Bán hàng (POS)</div>
-    <div class="menu-item" data-section="orders" data-perm="POS"><span class="icon">📋</span>Đơn hàng</div>
-    <div class="menu-item" data-section="payments" data-perm="POS"><span class="icon">💳</span>Thanh toán</div>
-    <div class="menu-item" data-section="returns" data-perm="POS"><span class="icon">↩️</span>Trả hàng</div>
-    <div class="menu-item" data-section="products" data-perm="PRODUCT"><span class="icon">📦</span>Sản phẩm</div>
-    <div class="menu-item" data-section="categories" data-perm="PRODUCT"><span class="icon">🏷️</span>Danh mục</div>
-    <div class="menu-item" data-section="inventory" data-perm="INVENTORY"><span class="icon">🏭</span>Kho hàng</div>
-    <div class="menu-item" data-section="suppliers" data-perm="INVENTORY"><span class="icon">🚛</span>Nhà cung cấp</div>
-    <div class="menu-item" data-section="customers" data-perm="CRM"><span class="icon">👥</span>Khách hàng</div>
-    <div class="menu-item" data-section="promotions" data-perm="CRM"><span class="icon">🎁</span>Khuyến mãi</div>
-    <div class="menu-item" data-section="employees" data-perm="HR"><span class="icon">👔</span>Nhân sự</div>
-    <div class="menu-item" data-section="accounts" data-perm="ADMIN"><span class="icon">🔑</span>Tài khoản</div>
+    <div class="logo">ðŸ—ï¸ VLXD Manager</div>
+    <div class="menu-item active" data-section="dashboard" data-perm="ALL"><span class="icon">ðŸ“Š</span>Tá»•ng quan</div>
+    <div class="menu-item" data-section="pos" data-perm="POS"><span class="icon">ðŸ›’</span>BÃ¡n hÃ ng (POS)</div>
+    <div class="menu-item" data-section="orders" data-perm="POS"><span class="icon">ðŸ“‹</span>ÄÆ¡n hÃ ng</div>
+    <div class="menu-item" data-section="payments" data-perm="POS"><span class="icon">ðŸ’³</span>Thanh toÃ¡n</div>
+    <div class="menu-item" data-section="returns" data-perm="POS"><span class="icon">â†©ï¸</span>Tráº£ hÃ ng</div>
+    <div class="menu-item" data-section="products" data-perm="PRODUCT"><span class="icon">ðŸ“¦</span>Sáº£n pháº©m</div>
+    <div class="menu-item" data-section="categories" data-perm="PRODUCT"><span class="icon">ðŸ·ï¸</span>Danh má»¥c</div>
+    <div class="menu-item" data-section="inventory" data-perm="INVENTORY"><span class="icon">ðŸ­</span>Kho hÃ ng</div>
+    <div class="menu-item" data-section="suppliers" data-perm="INVENTORY"><span class="icon">ðŸš›</span>NhÃ  cung cáº¥p</div>
+    <div class="menu-item" data-section="customers" data-perm="CRM"><span class="icon">ðŸ‘¥</span>KhÃ¡ch hÃ ng</div>
+    <div class="menu-item" data-section="promotions" data-perm="CRM"><span class="icon">ðŸŽ</span>Khuyáº¿n mÃ£i</div>
+    <div class="menu-item" data-section="employees" data-perm="HR"><span class="icon">ðŸ‘”</span>NhÃ¢n sá»±</div>
+    <div class="menu-item" data-section="accounts" data-perm="ADMIN"><span class="icon">ðŸ”‘</span>TÃ i khoáº£n</div>
 </div>
 
 <!-- HEADER -->
 <div class="header">
-    <div class="left" id="pageTitle">Tổng quan</div>
+    <div class="left" id="pageTitle">Tá»•ng quan</div>
     <div class="right">
-        <button class="btn btn-info btn-sm" onclick="reloadCurrentSection()" title="Tải lại dữ liệu">🔄 Tải lại</button>
+        <button class="btn btn-info btn-sm" onclick="reloadCurrentSection()" title="Táº£i láº¡i dá»¯ liá»‡u">ðŸ”„ Táº£i láº¡i</button>
         <span class="user-info" id="userDisplay">...</span>
         <span class="role-badge" id="roleBadge">...</span>
-        <button class="btn btn-outline btn-sm" onclick="logout()">Đăng xuất</button>
+        <button class="btn btn-outline btn-sm" onclick="logout()">ÄÄƒng xuáº¥t</button>
     </div>
 </div>
 
@@ -107,180 +107,180 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
 <!-- MAIN CONTENT -->
 <div class="main">
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- â•â•â• DASHBOARD â•â•â• -->
 <div class="section active" id="sec-dashboard">
-    <div class="sync-bar" id="syncBar">🔄 Trạng thái đồng bộ: <span id="syncStatus">Đang kiểm tra...</span></div>
+    <div class="sync-bar" id="syncBar">ðŸ”„ Tráº¡ng thÃ¡i Ä‘á»“ng bá»™: <span id="syncStatus">Äang kiá»ƒm tra...</span></div>
     <div class="stat-cards" id="dashStats"></div>
 </div>
 
-<!-- ═══ POS ═══ -->
+<!-- â•â•â• POS â•â•â• -->
 <div class="section" id="sec-pos">
     <div class="toolbar">
-        <input type="text" id="posSearch" placeholder="🔍 Tìm sản phẩm (tên, mã)..." oninput="posSearchProducts()">
-        <button class="btn btn-success" onclick="posCheckout()">✅ Thanh toán</button>
-        <button class="btn btn-outline" onclick="posClearCart()">🗑️ Xóa giỏ</button>
+        <input type="text" id="posSearch" placeholder="ðŸ” TÃ¬m sáº£n pháº©m (tÃªn, mÃ£)..." oninput="posSearchProducts()">
+        <button class="btn btn-success" onclick="posCheckout()">âœ… Thanh toÃ¡n</button>
+        <button class="btn btn-outline" onclick="posClearCart()">ðŸ—‘ï¸ XÃ³a giá»</button>
     </div>
     <div style="display:grid;grid-template-columns:1fr 380px;gap:16px">
         <div>
-            <table class="data-table"><thead><tr><th>Mã SP</th><th>Tên sản phẩm</th><th>ĐVT</th><th>Giá</th><th>Tồn</th><th></th></tr></thead>
+            <table class="data-table"><thead><tr><th>MÃ£ SP</th><th>TÃªn sáº£n pháº©m</th><th>ÄVT</th><th>GiÃ¡</th><th>Tá»“n</th><th></th></tr></thead>
             <tbody id="posProductList"></tbody></table>
         </div>
         <div>
             <div style="background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)">
-                <h4 style="margin-bottom:10px;color:var(--primary)">🛒 Giỏ hàng</h4>
-                <table class="data-table"><thead><tr><th>Sản phẩm</th><th>SL</th><th>Giá</th><th>Thành tiền</th><th></th></tr></thead>
+                <h4 style="margin-bottom:10px;color:var(--primary)">ðŸ›’ Giá» hÃ ng</h4>
+                <table class="data-table"><thead><tr><th>Sáº£n pháº©m</th><th>SL</th><th>GiÃ¡</th><th>ThÃ nh tiá»n</th><th></th></tr></thead>
                 <tbody id="posCart"></tbody></table>
                 <div style="margin-top:12px;font-size:13px">
-                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Tạm tính:</span><span id="posSubtotal">0</span></div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Thuế (10%):</span><span id="posTax">0</span></div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Giảm giá:</span><span id="posDiscount">0</span></div>
-                    <div style="display:flex;justify-content:space-between;font-weight:700;font-size:16px;color:var(--primary);border-top:2px solid #eee;padding-top:8px"><span>Tổng:</span><span id="posTotal">0</span></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Táº¡m tÃ­nh:</span><span id="posSubtotal">0</span></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Thuáº¿ (10%):</span><span id="posTax">0</span></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Giáº£m giÃ¡:</span><span id="posDiscount">0</span></div>
+                    <div style="display:flex;justify-content:space-between;font-weight:700;font-size:16px;color:var(--primary);border-top:2px solid #eee;padding-top:8px"><span>Tá»•ng:</span><span id="posTotal">0</span></div>
                 </div>
                 <div class="form-group" style="margin-top:10px">
-                    <label style="font-size:11px;font-weight:600">Ghi chú</label>
-                    <input type="text" id="posNote" placeholder="Ghi chú đơn hàng...">
+                    <label style="font-size:11px;font-weight:600">Ghi chÃº</label>
+                    <input type="text" id="posNote" placeholder="Ghi chÃº Ä‘Æ¡n hÃ ng...">
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ═══ ORDERS ═══ -->
+<!-- â•â•â• ORDERS â•â•â• -->
 <div class="section" id="sec-orders">
     <div class="toolbar">
-        <input type="text" id="orderSearch" placeholder="🔍 Tìm đơn hàng..." oninput="loadOrders()">
-        <button class="btn btn-info btn-sm" onclick="loadOrders()">🔄 Tải lại</button>
+        <input type="text" id="orderSearch" placeholder="ðŸ” TÃ¬m Ä‘Æ¡n hÃ ng..." oninput="loadOrders()">
+        <button class="btn btn-info btn-sm" onclick="loadOrders()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Mã ĐH</th><th>Ngày</th><th>Tổng tiền</th><th>Thuế</th><th>Giảm giá</th><th>Thành tiền</th><th>Thanh toán</th><th>Công nợ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>MÃ£ ÄH</th><th>NgÃ y</th><th>Tá»•ng tiá»n</th><th>Thuáº¿</th><th>Giáº£m giÃ¡</th><th>ThÃ nh tiá»n</th><th>Thanh toÃ¡n</th><th>CÃ´ng ná»£</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="orderList"></tbody></table>
 </div>
 
-<!-- ═══ PAYMENTS ═══ -->
+<!-- â•â•â• PAYMENTS â•â•â• -->
 <div class="section" id="sec-payments">
     <div class="toolbar">
-        <input type="text" id="paymentSearch" placeholder="🔍 Tìm thanh toán..." oninput="loadPayments()">
-        <button class="btn btn-success" onclick="showPaymentModal()">+ Thanh toán mới</button>
-        <button class="btn btn-info btn-sm" onclick="loadPayments()">🔄 Tải lại</button>
+        <input type="text" id="paymentSearch" placeholder="ðŸ” TÃ¬m thanh toÃ¡n..." oninput="loadPayments()">
+        <button class="btn btn-success" onclick="showPaymentModal()">+ Thanh toÃ¡n má»›i</button>
+        <button class="btn btn-info btn-sm" onclick="loadPayments()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Mã TT</th><th>Mã ĐH</th><th>Ngày</th><th>Phương thức</th><th>Số tiền</th><th>Trạng thái</th></tr></thead>
+    <table class="data-table"><thead><tr><th>MÃ£ TT</th><th>MÃ£ ÄH</th><th>NgÃ y</th><th>PhÆ°Æ¡ng thá»©c</th><th>Sá»‘ tiá»n</th><th>Tráº¡ng thÃ¡i</th></tr></thead>
     <tbody id="paymentList"></tbody></table>
 </div>
 
-<!-- ═══ RETURNS ═══ -->
+<!-- â•â•â• RETURNS â•â•â• -->
 <div class="section" id="sec-returns">
     <div class="toolbar">
-        <button class="btn btn-success" onclick="showReturnModal()">+ Tạo phiếu trả</button>
-        <button class="btn btn-info btn-sm" onclick="loadReturns()">🔄 Tải lại</button>
+        <button class="btn btn-success" onclick="showReturnModal()">+ Táº¡o phiáº¿u tráº£</button>
+        <button class="btn btn-info btn-sm" onclick="loadReturns()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Mã trả</th><th>Mã ĐH gốc</th><th>Ngày trả</th><th>Lý do</th><th>Số tiền hoàn</th><th>Trạng thái</th></tr></thead>
+    <table class="data-table"><thead><tr><th>MÃ£ tráº£</th><th>MÃ£ ÄH gá»‘c</th><th>NgÃ y tráº£</th><th>LÃ½ do</th><th>Sá»‘ tiá»n hoÃ n</th><th>Tráº¡ng thÃ¡i</th></tr></thead>
     <tbody id="returnList"></tbody></table>
 </div>
 
-<!-- ═══ PRODUCTS ═══ -->
+<!-- â•â•â• PRODUCTS â•â•â• -->
 <div class="section" id="sec-products">
     <div class="toolbar">
-        <input type="text" id="productSearch" placeholder="🔍 Tìm sản phẩm (tên, mã, thương hiệu)..." oninput="loadProducts()">
-        <button class="btn btn-success" onclick="showProductModal()">+ Thêm sản phẩm</button>
-        <button class="btn btn-info btn-sm" onclick="loadProducts()">🔄 Tải lại</button>
+        <input type="text" id="productSearch" placeholder="ðŸ” TÃ¬m sáº£n pháº©m (tÃªn, mÃ£, thÆ°Æ¡ng hiá»‡u)..." oninput="loadProducts()">
+        <button class="btn btn-success" onclick="showProductModal()">+ ThÃªm sáº£n pháº©m</button>
+        <button class="btn btn-info btn-sm" onclick="loadProducts()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Mã SP</th><th>Tên</th><th>Danh mục</th><th>Thương hiệu</th><th>ĐVT</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>MÃ£ SP</th><th>TÃªn</th><th>Danh má»¥c</th><th>ThÆ°Æ¡ng hiá»‡u</th><th>ÄVT</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="productList"></tbody></table>
 </div>
 
-<!-- ═══ CATEGORIES ═══ -->
+<!-- â•â•â• CATEGORIES â•â•â• -->
 <div class="section" id="sec-categories">
     <div class="toolbar">
-        <button class="btn btn-success" onclick="showCategoryModal()">+ Thêm danh mục</button>
-        <button class="btn btn-info btn-sm" onclick="loadCategories()">🔄 Tải lại</button>
+        <button class="btn btn-success" onclick="showCategoryModal()">+ ThÃªm danh má»¥c</button>
+        <button class="btn btn-info btn-sm" onclick="loadCategories()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Tên danh mục</th><th>Mô tả</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>TÃªn danh má»¥c</th><th>MÃ´ táº£</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="categoryList"></tbody></table>
 </div>
 
-<!-- ═══ INVENTORY ═══ -->
+<!-- â•â•â• INVENTORY â•â•â• -->
 <div class="section" id="sec-inventory">
     <div class="toolbar">
-        <select id="warehouseFilter" onchange="loadInventory()"><option value="">-- Tất cả kho --</option></select>
-        <button class="btn btn-success" onclick="showWarehouseModal()">+ Thêm kho</button>
-        <button class="btn btn-info btn-sm" onclick="loadInventory()">🔄 Tải lại</button>
+        <select id="warehouseFilter" onchange="loadInventory()"><option value="">-- Táº¥t cáº£ kho --</option></select>
+        <button class="btn btn-success" onclick="showWarehouseModal()">+ ThÃªm kho</button>
+        <button class="btn btn-info btn-sm" onclick="loadInventory()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <h4 style="margin:10px 0 6px;color:var(--primary);font-size:13px">Danh sách kho</h4>
-    <table class="data-table"><thead><tr><th>Mã kho</th><th>Tên kho</th><th>Địa chỉ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <h4 style="margin:10px 0 6px;color:var(--primary);font-size:13px">Danh sÃ¡ch kho</h4>
+    <table class="data-table"><thead><tr><th>MÃ£ kho</th><th>TÃªn kho</th><th>Äá»‹a chá»‰</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="warehouseList"></tbody></table>
-    <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Tồn kho</h4>
-    <table class="data-table"><thead><tr><th>Kho</th><th>Sản phẩm</th><th>Tồn kho</th><th>Đã đặt</th><th>Khả dụng</th></tr></thead>
+    <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Tá»“n kho</h4>
+    <table class="data-table"><thead><tr><th>Kho</th><th>Sáº£n pháº©m</th><th>Tá»“n kho</th><th>ÄÃ£ Ä‘áº·t</th><th>Kháº£ dá»¥ng</th></tr></thead>
     <tbody id="balanceList"></tbody></table>
 </div>
 
-<!-- ═══ SUPPLIERS ═══ -->
+<!-- â•â•â• SUPPLIERS â•â•â• -->
 <div class="section" id="sec-suppliers">
     <div class="toolbar">
-        <input type="text" id="supplierSearch" placeholder="🔍 Tìm nhà cung cấp..." oninput="loadSuppliers()">
-        <button class="btn btn-success" onclick="showSupplierModal()">+ Thêm NCC</button>
-        <button class="btn btn-info btn-sm" onclick="loadSuppliers()">🔄 Tải lại</button>
+        <input type="text" id="supplierSearch" placeholder="ðŸ” TÃ¬m nhÃ  cung cáº¥p..." oninput="loadSuppliers()">
+        <button class="btn btn-success" onclick="showSupplierModal()">+ ThÃªm NCC</button>
+        <button class="btn btn-info btn-sm" onclick="loadSuppliers()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Tên NCC</th><th>Sản phẩm</th><th>Hợp tác</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>TÃªn NCC</th><th>Sáº£n pháº©m</th><th>Há»£p tÃ¡c</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="supplierList"></tbody></table>
 </div>
 
-<!-- ═══ CUSTOMERS ═══ -->
+<!-- â•â•â• CUSTOMERS â•â•â• -->
 <div class="section" id="sec-customers">
     <div class="toolbar">
-        <input type="text" id="customerSearch" placeholder="🔍 Tìm khách hàng (tên, SĐT, email)..." oninput="loadCustomers()">
-        <button class="btn btn-success" onclick="showCustomerModal()">+ Thêm khách</button>
-        <button class="btn btn-info btn-sm" onclick="loadCustomers()">🔄 Tải lại</button>
+        <input type="text" id="customerSearch" placeholder="ðŸ” TÃ¬m khÃ¡ch hÃ ng (tÃªn, SÄT, email)..." oninput="loadCustomers()">
+        <button class="btn btn-success" onclick="showCustomerModal()">+ ThÃªm khÃ¡ch</button>
+        <button class="btn btn-info btn-sm" onclick="loadCustomers()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Hạng</th><th>Điểm</th><th>Ngày ĐK</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Há» tÃªn</th><th>SÄT</th><th>Email</th><th>Háº¡ng</th><th>Äiá»ƒm</th><th>NgÃ y ÄK</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="customerList"></tbody></table>
 </div>
 
-<!-- ═══ PROMOTIONS ═══ -->
+<!-- â•â•â• PROMOTIONS â•â•â• -->
 <div class="section" id="sec-promotions">
     <div class="toolbar">
-        <button class="btn btn-success" onclick="showPromotionModal()">+ Thêm khuyến mãi</button>
-        <button class="btn btn-warning" onclick="showCampaignModal()">+ Thêm chiến dịch</button>
-        <button class="btn btn-info btn-sm" onclick="loadPromotions()">🔄 Tải lại</button>
+        <button class="btn btn-success" onclick="showPromotionModal()">+ ThÃªm khuyáº¿n mÃ£i</button>
+        <button class="btn btn-warning" onclick="showCampaignModal()">+ ThÃªm chiáº¿n dá»‹ch</button>
+        <button class="btn btn-info btn-sm" onclick="loadPromotions()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <h4 style="margin:0 0 6px;color:var(--primary);font-size:13px">Chiến dịch</h4>
-    <table class="data-table"><thead><tr><th>Tên</th><th>Mô tả</th><th>Bắt đầu</th><th>Kết thúc</th><th>Kích hoạt</th><th>Thao tác</th></tr></thead>
+    <h4 style="margin:0 0 6px;color:var(--primary);font-size:13px">Chiáº¿n dá»‹ch</h4>
+    <table class="data-table"><thead><tr><th>TÃªn</th><th>MÃ´ táº£</th><th>Báº¯t Ä‘áº§u</th><th>Káº¿t thÃºc</th><th>KÃ­ch hoáº¡t</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="campaignList"></tbody></table>
-    <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Khuyến mãi</h4>
-    <table class="data-table"><thead><tr><th>Tên</th><th>Loại</th><th>Mã voucher</th><th>Ưu tiên</th><th>Đã dùng/Tối đa</th><th>Hết hạn</th><th>Kích hoạt</th><th>Thao tác</th></tr></thead>
+    <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Khuyáº¿n mÃ£i</h4>
+    <table class="data-table"><thead><tr><th>TÃªn</th><th>Loáº¡i</th><th>MÃ£ voucher</th><th>Æ¯u tiÃªn</th><th>ÄÃ£ dÃ¹ng/Tá»‘i Ä‘a</th><th>Háº¿t háº¡n</th><th>KÃ­ch hoáº¡t</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="promotionList"></tbody></table>
 </div>
 
-<!-- ═══ EMPLOYEES ═══ -->
+<!-- â•â•â• EMPLOYEES â•â•â• -->
 <div class="section" id="sec-employees">
     <div class="toolbar">
-        <input type="text" id="empSearch" placeholder="🔍 Tìm nhân viên (tên, mã)..." oninput="loadEmployees()">
-        <button class="btn btn-success" onclick="showEmployeeModal()">+ Thêm nhân viên</button>
-        <button class="btn btn-info btn-sm" onclick="loadEmployees()">🔄 Tải lại</button>
+        <input type="text" id="empSearch" placeholder="ðŸ” TÃ¬m nhÃ¢n viÃªn (tÃªn, mÃ£)..." oninput="loadEmployees()">
+        <button class="btn btn-success" onclick="showEmployeeModal()">+ ThÃªm nhÃ¢n viÃªn</button>
+        <button class="btn btn-info btn-sm" onclick="loadEmployees()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Mã NV</th><th>Họ tên</th><th>Ngày vào</th><th>Lương cơ bản</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>MÃ£ NV</th><th>Há» tÃªn</th><th>NgÃ y vÃ o</th><th>LÆ°Æ¡ng cÆ¡ báº£n</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="employeeList"></tbody></table>
 </div>
 
-<!-- ═══ ACCOUNTS ═══ -->
+<!-- â•â•â• ACCOUNTS â•â•â• -->
 <div class="section" id="sec-accounts">
     <div class="toolbar">
-        <button class="btn btn-success" onclick="showAccountModal()">+ Thêm tài khoản</button>
-        <button class="btn btn-info btn-sm" onclick="loadAccounts()">🔄 Tải lại</button>
+        <button class="btn btn-success" onclick="showAccountModal()">+ ThÃªm tÃ i khoáº£n</button>
+        <button class="btn btn-info btn-sm" onclick="loadAccounts()">ðŸ”„ Táº£i láº¡i</button>
     </div>
-    <table class="data-table"><thead><tr><th>Username</th><th>Họ tên</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Username</th><th>Há» tÃªn</th><th>Vai trÃ²</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
     <tbody id="accountList"></tbody></table>
 </div>
 
 </div><!-- /main -->
 
-<!-- ═══ MODALS ═══ -->
+<!-- â•â•â• MODALS â•â•â• -->
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalContent"></div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GLOBAL STATE
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 let currentUser = null;
 let cart = [];
 let allProducts = [];
@@ -288,9 +288,9 @@ let allCategories = [];
 let allWarehouses = [];
 let allRoles = [];
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INIT
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 (async function init(){
     try {
         const r = await api('/api/auth/me');
@@ -332,7 +332,8 @@ function switchSection(id, title){
         dashboard: loadDashboard, pos: loadPOS, orders: loadOrders, payments: loadPayments,
         returns: loadReturns, products: loadProducts, categories: loadCategories,
         inventory: loadInventory, suppliers: loadSuppliers, customers: loadCustomers,
-        promotions: loadPromotions, employees: loadEmployees, accounts: loadAccounts
+        promotions: loadPromotions, employees: loadEmployees, accounts: loadAccounts,
+        transfers: loadTransfers
     };
     if(loaders[id]) loaders[id]();
 }
@@ -340,12 +341,12 @@ function switchSection(id, title){
 function reloadCurrentSection(){
     const active = document.querySelector('.menu-item.active');
     if(active) switchSection(active.dataset.section, active.textContent.trim());
-    toast('Đã tải lại dữ liệu','success');
+    toast('ÄÃ£ táº£i láº¡i dá»¯ liá»‡u','success');
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // API HELPER
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function api(url, method='GET', body=null){
     const opts = {method, headers:{'Content-Type':'application/json'}};
     if(body) opts.body = JSON.stringify(body);
@@ -386,41 +387,41 @@ async function logout(){
     window.location.href='/login.html';
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DASHBOARD
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadDashboard(){
     try {
         const sync = await api('/api/sync/status');
         const syncEl = document.getElementById('syncStatus');
         const bar = document.getElementById('syncBar');
         if(sync.error){ syncEl.textContent = sync.error; bar.className='sync-bar error'; }
-        else { syncEl.textContent = `DB kết nối OK | ${sync.totalRecords||0} bản ghi`; bar.className='sync-bar'; }
-    } catch(e){ document.getElementById('syncStatus').textContent = 'Không kết nối được server'; }
+        else { syncEl.textContent = `DB káº¿t ná»‘i OK | ${sync.totalRecords||0} báº£n ghi`; bar.className='sync-bar'; }
+    } catch(e){ document.getElementById('syncStatus').textContent = 'KhÃ´ng káº¿t ná»‘i Ä‘Æ°á»£c server'; }
 
     let html = '';
     try {
         const [products, customers, employees, orders] = await Promise.all([
             api('/api/products'), api('/api/customers'), api('/api/employees'), api('/api/orders')
         ]);
-        html += card('Sản phẩm', Array.isArray(products)?products.length:0);
-        html += card('Khách hàng', Array.isArray(customers)?customers.length:0);
-        html += card('Nhân viên', Array.isArray(employees)?employees.length:0);
-        html += card('Đơn hàng', Array.isArray(orders)?orders.length:0);
+        html += card('Sáº£n pháº©m', Array.isArray(products)?products.length:0);
+        html += card('KhÃ¡ch hÃ ng', Array.isArray(customers)?customers.length:0);
+        html += card('NhÃ¢n viÃªn', Array.isArray(employees)?employees.length:0);
+        html += card('ÄÆ¡n hÃ ng', Array.isArray(orders)?orders.length:0);
         if(Array.isArray(orders)){
             const totalRev = orders.reduce((s,o)=>s+(o.finalAmount||0),0);
             const totalDebt = orders.reduce((s,o)=>s+(o.debtAmount||0),0);
-            html += card('Doanh thu', fmt(totalRev) + ' đ');
-            html += card('Công nợ', fmt(totalDebt) + ' đ');
+            html += card('Doanh thu', fmt(totalRev) + ' Ä‘');
+            html += card('CÃ´ng ná»£', fmt(totalDebt) + ' Ä‘');
         }
-    } catch(e){ html = '<div class="stat-card"><div class="label">Lỗi</div><div class="value" style="font-size:14px">'+e.message+'</div></div>'; }
+    } catch(e){ html = '<div class="stat-card"><div class="label">Lá»—i</div><div class="value" style="font-size:14px">'+e.message+'</div></div>'; }
     document.getElementById('dashStats').innerHTML = html;
 }
 function card(label, value){ return `<div class="stat-card"><div class="label">${label}</div><div class="value">${value}</div></div>`; }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // POS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadPOS(){
     allProducts = await api('/api/products') || [];
     allCategories = await api('/api/categories') || [];
@@ -440,8 +441,8 @@ function renderPosProducts(list){
     document.getElementById('posProductList').innerHTML = list.map(p =>
         `<tr><td>${p.productCode||''}</td><td>${p.name||''}</td><td>${p.unit||''}</td>
         <td>${fmt(p.price||0)}</td><td>${p.stock!=null?p.stock:'-'}</td>
-        <td><button class="btn btn-success btn-sm" onclick="addToCart('${p.productId}')">+ Thêm</button></td></tr>`
-    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">Không có sản phẩm</td></tr>';
+        <td><button class="btn btn-success btn-sm" onclick="addToCart('${p.productId}')">+ ThÃªm</button></td></tr>`
+    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">KhÃ´ng cÃ³ sáº£n pháº©m</td></tr>';
 }
 
 function addToCart(productId){
@@ -461,8 +462,8 @@ function renderCart(){
     tbody.innerHTML = cart.map((c,i) =>
         `<tr><td>${c.name}</td><td><input type="number" value="${c.qty}" min="1" style="width:50px;padding:3px;font-size:12px" onchange="updateCartQty(${i},this.value)"></td>
         <td>${fmt(c.price)}</td><td>${fmt(c.price*c.qty)}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${i})">✕</button></td></tr>`
-    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;font-size:11px">Giỏ trống</td></tr>';
+        <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${i})">âœ•</button></td></tr>`
+    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;font-size:11px">Giá» trá»‘ng</td></tr>';
 
     const sub = cart.reduce((s,c)=>s+c.price*c.qty,0);
     const tax = Math.round(sub * 0.1);
@@ -473,24 +474,24 @@ function renderCart(){
 }
 
 async function posCheckout(){
-    if(!cart.length){ toast('Giỏ hàng trống','error'); return; }
+    if(!cart.length){ toast('Giá» hÃ ng trá»‘ng','error'); return; }
     const sub = cart.reduce((s,c)=>s+c.price*c.qty,0);
     const taxRate = 10;
     const taxAmt = Math.round(sub * taxRate/100);
 
     // Show checkout modal
-    showModal(`<h3>Xác nhận thanh toán</h3>
-        <div class="form-group"><label>Tổng hàng</label><input value="${fmt(sub)} đ" disabled></div>
-        <div class="form-group"><label>Thuế (${taxRate}%)</label><input value="${fmt(taxAmt)} đ" disabled></div>
-        <div class="form-group"><label>Tổng thanh toán</label><input value="${fmt(sub+taxAmt)} đ" disabled style="font-weight:700;font-size:16px"></div>
-        <div class="form-group"><label>Phương thức</label>
-            <select id="ckMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR / Chuyển khoản</option><option value="PARTIAL">Thanh toán một phần</option></select>
+    showModal(`<h3>XÃ¡c nháº­n thanh toÃ¡n</h3>
+        <div class="form-group"><label>Tá»•ng hÃ ng</label><input value="${fmt(sub)} Ä‘" disabled></div>
+        <div class="form-group"><label>Thuáº¿ (${taxRate}%)</label><input value="${fmt(taxAmt)} Ä‘" disabled></div>
+        <div class="form-group"><label>Tá»•ng thanh toÃ¡n</label><input value="${fmt(sub+taxAmt)} Ä‘" disabled style="font-weight:700;font-size:16px"></div>
+        <div class="form-group"><label>PhÆ°Æ¡ng thá»©c</label>
+            <select id="ckMethod"><option value="CASH">Tiá»n máº·t</option><option value="QR">QR / Chuyá»ƒn khoáº£n</option><option value="PARTIAL">Thanh toÃ¡n má»™t pháº§n</option></select>
         </div>
-        <div class="form-group"><label>Số tiền khách trả</label><input type="number" id="ckPaid" value="${sub+taxAmt}"></div>
-        <div class="form-group"><label>Ghi chú</label><input type="text" id="ckNote" value="${document.getElementById('posNote').value}"></div>
+        <div class="form-group"><label>Sá»‘ tiá»n khÃ¡ch tráº£</label><input type="number" id="ckPaid" value="${sub+taxAmt}"></div>
+        <div class="form-group"><label>Ghi chÃº</label><input type="text" id="ckNote" value="${document.getElementById('posNote').value}"></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-success" onclick="doCheckout()">Xác nhận thanh toán</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-success" onclick="doCheckout()">XÃ¡c nháº­n thanh toÃ¡n</button>
         </div>`);
 }
 
@@ -520,18 +521,18 @@ async function doCheckout(){
             });
         }
 
-        toast('Đặt hàng thành công! Mã: '+shortId(orderRes.orderId),'success');
+        toast('Äáº·t hÃ ng thÃ nh cÃ´ng! MÃ£: '+shortId(orderRes.orderId),'success');
         cart = [];
         renderCart();
         document.getElementById('posNote').value = '';
         hideModal();
-    } catch(e){ toast('Lỗi: '+e.message,'error'); }
+    } catch(e){ toast('Lá»—i: '+e.message,'error'); }
 }
 function posClearCart(){ cart=[]; renderCart(); }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ORDERS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadOrders(){
     const data = await api('/api/orders');
     document.getElementById('orderList').innerHTML = (data||[]).map(o =>
@@ -541,43 +542,43 @@ async function loadOrders(){
         <td>${fmt(o.paidAmount)}</td><td style="color:${(o.debtAmount||0)>0?'var(--red)':'inherit'}">${fmt(o.debtAmount)}</td>
         <td>${statusBadge(o.paymentStatus||o.status)}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="viewOrder('${o.orderId}')">Chi tiết</button>
-            ${(o.debtAmount||0)>0?`<button class="btn btn-success btn-sm" onclick="showPayForOrder('${o.orderId}',${o.debtAmount})">Thanh toán</button>`:''}
+            <button class="btn btn-info btn-sm" onclick="viewOrder('${o.orderId}')">Chi tiáº¿t</button>
+            ${(o.debtAmount||0)>0?`<button class="btn btn-success btn-sm" onclick="showPayForOrder('${o.orderId}',${o.debtAmount})">Thanh toÃ¡n</button>`:''}
         </td></tr>`
-    ).join('') || '<tr><td colspan="10" style="text-align:center;color:#999">Chưa có đơn hàng</td></tr>';
+    ).join('') || '<tr><td colspan="10" style="text-align:center;color:#999">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng</td></tr>';
 }
 
 async function viewOrder(id){
     const [order, items] = await Promise.all([api('/api/orders/'+id), api('/api/orders/'+id+'/items')]);
-    let html = `<h3>Chi tiết đơn hàng</h3>
-        <p style="font-size:12px;margin-bottom:10px">Mã: ${id}<br>Ngày: ${fmtDateTime(order.orderDate)}<br>TT: ${order.paymentStatus||order.status}</p>
-        <table class="data-table"><thead><tr><th>Sản phẩm</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>`;
+    let html = `<h3>Chi tiáº¿t Ä‘Æ¡n hÃ ng</h3>
+        <p style="font-size:12px;margin-bottom:10px">MÃ£: ${id}<br>NgÃ y: ${fmtDateTime(order.orderDate)}<br>TT: ${order.paymentStatus||order.status}</p>
+        <table class="data-table"><thead><tr><th>Sáº£n pháº©m</th><th>SL</th><th>ÄÆ¡n giÃ¡</th><th>ThÃ nh tiá»n</th></tr></thead><tbody>`;
     (items||[]).forEach(it => {
         html += `<tr><td>${it.productName||it.productId}</td><td>${it.quantity}</td><td>${fmt(it.unitPrice)}</td><td>${fmt(it.subtotal)}</td></tr>`;
     });
     html += `</tbody></table>
         <div style="margin-top:10px;font-size:13px">
-            <div>Tổng hàng: <b>${fmt(order.totalAmount)}</b></div>
-            <div>Thuế: <b>${fmt(order.taxAmount)}</b></div>
-            <div>Giảm giá: <b>${fmt(order.discountAmount)}</b></div>
-            <div style="font-size:15px;font-weight:700;color:var(--primary)">Thành tiền: ${fmt(order.finalAmount)}</div>
-            <div>Đã thanh toán: <b>${fmt(order.paidAmount)}</b></div>
-            <div style="color:var(--red)">Công nợ: <b>${fmt(order.debtAmount)}</b></div>
+            <div>Tá»•ng hÃ ng: <b>${fmt(order.totalAmount)}</b></div>
+            <div>Thuáº¿: <b>${fmt(order.taxAmount)}</b></div>
+            <div>Giáº£m giÃ¡: <b>${fmt(order.discountAmount)}</b></div>
+            <div style="font-size:15px;font-weight:700;color:var(--primary)">ThÃ nh tiá»n: ${fmt(order.finalAmount)}</div>
+            <div>ÄÃ£ thanh toÃ¡n: <b>${fmt(order.paidAmount)}</b></div>
+            <div style="color:var(--red)">CÃ´ng ná»£: <b>${fmt(order.debtAmount)}</b></div>
         </div>
-        <div class="modal-actions"><button class="btn btn-outline" onclick="hideModal()">Đóng</button></div>`;
+        <div class="modal-actions"><button class="btn btn-outline" onclick="hideModal()">ÄÃ³ng</button></div>`;
     showModal(html);
 }
 
 function showPayForOrder(orderId, debt){
-    showModal(`<h3>Thanh toán công nợ</h3>
-        <div class="form-group"><label>Mã đơn hàng</label><input value="${shortId(orderId)}" disabled></div>
-        <div class="form-group"><label>Công nợ còn lại</label><input value="${fmt(debt)} đ" disabled></div>
-        <div class="form-group"><label>Số tiền thanh toán</label><input type="number" id="payDebtAmt" value="${debt}"></div>
-        <div class="form-group"><label>Phương thức</label>
-            <select id="payDebtMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR</option></select></div>
+    showModal(`<h3>Thanh toÃ¡n cÃ´ng ná»£</h3>
+        <div class="form-group"><label>MÃ£ Ä‘Æ¡n hÃ ng</label><input value="${shortId(orderId)}" disabled></div>
+        <div class="form-group"><label>CÃ´ng ná»£ cÃ²n láº¡i</label><input value="${fmt(debt)} Ä‘" disabled></div>
+        <div class="form-group"><label>Sá»‘ tiá»n thanh toÃ¡n</label><input type="number" id="payDebtAmt" value="${debt}"></div>
+        <div class="form-group"><label>PhÆ°Æ¡ng thá»©c</label>
+            <select id="payDebtMethod"><option value="CASH">Tiá»n máº·t</option><option value="QR">QR</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-success" onclick="doPayDebt('${orderId}')">Thanh toán</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-success" onclick="doPayDebt('${orderId}')">Thanh toÃ¡n</button>
         </div>`);
 }
 
@@ -586,30 +587,30 @@ async function doPayDebt(orderId){
     const method = document.getElementById('payDebtMethod').value;
     const r = await api('/api/payments','POST',{orderId, method, amountPaid:amt});
     if(r.error) toast(r.error,'error');
-    else { toast('Thanh toán thành công','success'); hideModal(); loadOrders(); }
+    else { toast('Thanh toÃ¡n thÃ nh cÃ´ng','success'); hideModal(); loadOrders(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAYMENTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadPayments(){
     const data = await api('/api/payments');
     document.getElementById('paymentList').innerHTML = (data||[]).map(p =>
         `<tr><td title="${p.paymentId}">${shortId(p.paymentId)}</td><td title="${p.orderId}">${shortId(p.orderId)}</td>
         <td>${fmtDateTime(p.paymentDate)}</td><td>${p.method}</td><td>${fmt(p.amountPaid)}</td>
         <td>${statusBadge(p.status)}</td></tr>`
-    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">Chưa có thanh toán</td></tr>';
+    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">ChÆ°a cÃ³ thanh toÃ¡n</td></tr>';
 }
 
 function showPaymentModal(){
-    showModal(`<h3>Thanh toán mới</h3>
-        <div class="form-group"><label>Mã đơn hàng</label><input type="text" id="pmOrderId" placeholder="Nhập mã đơn hàng..."></div>
-        <div class="form-group"><label>Số tiền</label><input type="number" id="pmAmount" placeholder="Số tiền thanh toán"></div>
-        <div class="form-group"><label>Phương thức</label>
-            <select id="pmMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR</option></select></div>
+    showModal(`<h3>Thanh toÃ¡n má»›i</h3>
+        <div class="form-group"><label>MÃ£ Ä‘Æ¡n hÃ ng</label><input type="text" id="pmOrderId" placeholder="Nháº­p mÃ£ Ä‘Æ¡n hÃ ng..."></div>
+        <div class="form-group"><label>Sá»‘ tiá»n</label><input type="number" id="pmAmount" placeholder="Sá»‘ tiá»n thanh toÃ¡n"></div>
+        <div class="form-group"><label>PhÆ°Æ¡ng thá»©c</label>
+            <select id="pmMethod"><option value="CASH">Tiá»n máº·t</option><option value="QR">QR</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-success" onclick="doCreatePayment()">Tạo thanh toán</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-success" onclick="doCreatePayment()">Táº¡o thanh toÃ¡n</button>
         </div>`);
 }
 
@@ -620,28 +621,28 @@ async function doCreatePayment(){
         method: document.getElementById('pmMethod').value
     });
     if(r.error) toast(r.error,'error');
-    else { toast('Tạo thanh toán thành công','success'); hideModal(); loadPayments(); }
+    else { toast('Táº¡o thanh toÃ¡n thÃ nh cÃ´ng','success'); hideModal(); loadPayments(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // RETURNS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadReturns(){
     const data = await api('/api/returns');
     document.getElementById('returnList').innerHTML = (data||[]).map(r =>
         `<tr><td title="${r.returnId}">${shortId(r.returnId)}</td><td title="${r.orderId}">${shortId(r.orderId)}</td>
         <td>${fmtDateTime(r.returnDate)}</td><td>${r.reason||''}</td><td>${fmt(r.refundAmount)}</td>
         <td>${statusBadge(r.status)}</td></tr>`
-    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">Chưa có phiếu trả hàng</td></tr>';
+    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">ChÆ°a cÃ³ phiáº¿u tráº£ hÃ ng</td></tr>';
 }
 
 function showReturnModal(){
-    showModal(`<h3>Tạo phiếu trả hàng</h3>
-        <div class="form-group"><label>Mã đơn hàng gốc</label><input type="text" id="retOrderId" placeholder="Nhập mã đơn hàng..."></div>
-        <div class="form-group"><label>Lý do trả hàng</label><textarea id="retReason" placeholder="Lý do trả hàng..."></textarea></div>
+    showModal(`<h3>Táº¡o phiáº¿u tráº£ hÃ ng</h3>
+        <div class="form-group"><label>MÃ£ Ä‘Æ¡n hÃ ng gá»‘c</label><input type="text" id="retOrderId" placeholder="Nháº­p mÃ£ Ä‘Æ¡n hÃ ng..."></div>
+        <div class="form-group"><label>LÃ½ do tráº£ hÃ ng</label><textarea id="retReason" placeholder="LÃ½ do tráº£ hÃ ng..."></textarea></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-danger" onclick="doCreateReturn()">Tạo phiếu trả</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-danger" onclick="doCreateReturn()">Táº¡o phiáº¿u tráº£</button>
         </div>`);
 }
 
@@ -652,12 +653,12 @@ async function doCreateReturn(){
         managerId: currentUser.employeeId || currentUser.accountId
     });
     if(r.error) toast(r.error,'error');
-    else { toast('Tạo phiếu trả thành công','success'); hideModal(); loadReturns(); }
+    else { toast('Táº¡o phiáº¿u tráº£ thÃ nh cÃ´ng','success'); hideModal(); loadReturns(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PRODUCTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadProducts(){
     const search = document.getElementById('productSearch')?.value || '';
     const data = await api('/api/products?search='+encodeURIComponent(search));
@@ -666,26 +667,26 @@ async function loadProducts(){
         `<tr><td>${p.productCode||''}</td><td>${p.name||''}</td><td>${p.categoryName||''}</td>
         <td>${p.brand||''}</td><td>${p.unit||''}</td><td>${statusBadge(p.status)}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="editProduct('${p.productId}')">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.productId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="editProduct('${p.productId}')">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.productId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="7" style="text-align:center;color:#999">Không có sản phẩm</td></tr>';
+    ).join('') || '<tr><td colspan="7" style="text-align:center;color:#999">KhÃ´ng cÃ³ sáº£n pháº©m</td></tr>';
 }
 
 async function showProductModal(data={}){
     if(!allCategories.length) allCategories = await api('/api/categories') || [];
     const catOpts = allCategories.map(c=>`<option value="${c.categoryId}" ${c.categoryId===data.categoryId?'selected':''}>${c.categoryName}</option>`).join('');
-    showModal(`<h3>${data.productId?'Sửa':'Thêm'} sản phẩm</h3>
-        <div class="form-group"><label>Mã SP</label><input type="text" id="pCode" value="${data.productCode||''}" placeholder="VD: SP001"></div>
-        <div class="form-group"><label>Tên sản phẩm</label><input type="text" id="pName" value="${data.name||''}" placeholder="Tên sản phẩm"></div>
-        <div class="form-group"><label>Danh mục</label><select id="pCat"><option value="">-- Chọn --</option>${catOpts}</select></div>
-        <div class="form-group"><label>Thương hiệu</label><input type="text" id="pBrand" value="${data.brand||''}" placeholder="Thương hiệu"></div>
-        <div class="form-group"><label>Đơn vị tính</label><input type="text" id="pUnit" value="${data.unit||''}" placeholder="VD: bao, kg, cái"></div>
-        <div class="form-group"><label>Mô tả</label><textarea id="pDesc">${data.description||''}</textarea></div>
-        <div class="form-group"><label>Trạng thái</label><select id="pStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Hoạt động</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Ngừng KD</option></select></div>
+    showModal(`<h3>${data.productId?'Sá»­a':'ThÃªm'} sáº£n pháº©m</h3>
+        <div class="form-group"><label>MÃ£ SP</label><input type="text" id="pCode" value="${data.productCode||''}" placeholder="VD: SP001"></div>
+        <div class="form-group"><label>TÃªn sáº£n pháº©m</label><input type="text" id="pName" value="${data.name||''}" placeholder="TÃªn sáº£n pháº©m"></div>
+        <div class="form-group"><label>Danh má»¥c</label><select id="pCat"><option value="">-- Chá»n --</option>${catOpts}</select></div>
+        <div class="form-group"><label>ThÆ°Æ¡ng hiá»‡u</label><input type="text" id="pBrand" value="${data.brand||''}" placeholder="ThÆ°Æ¡ng hiá»‡u"></div>
+        <div class="form-group"><label>ÄÆ¡n vá»‹ tÃ­nh</label><input type="text" id="pUnit" value="${data.unit||''}" placeholder="VD: bao, kg, cÃ¡i"></div>
+        <div class="form-group"><label>MÃ´ táº£</label><textarea id="pDesc">${data.description||''}</textarea></div>
+        <div class="form-group"><label>Tráº¡ng thÃ¡i</label><select id="pStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Hoáº¡t Ä‘á»™ng</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Ngá»«ng KD</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveProduct('${data.productId||''}')">${data.productId?'Cập nhật':'Thêm mới'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveProduct('${data.productId||''}')">${data.productId?'Cáº­p nháº­t':'ThÃªm má»›i'}</button>
         </div>`);
 }
 
@@ -706,37 +707,37 @@ async function saveProduct(id){
     };
     const r = id ? await api('/api/products/'+id,'PUT',body) : await api('/api/products','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast(id?'Cập nhật thành công':'Thêm thành công','success'); hideModal(); loadProducts(); }
+    else { toast(id?'Cáº­p nháº­t thÃ nh cÃ´ng':'ThÃªm thÃ nh cÃ´ng','success'); hideModal(); loadProducts(); }
 }
 
 async function deleteProduct(id){
-    if(!confirm('Xóa sản phẩm này?')) return;
+    if(!confirm('XÃ³a sáº£n pháº©m nÃ y?')) return;
     const r = await api('/api/products/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadProducts(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadProducts(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CATEGORIES
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadCategories(){
     allCategories = await api('/api/categories') || [];
     document.getElementById('categoryList').innerHTML = allCategories.map(c =>
         `<tr><td>${c.categoryName||''}</td><td>${c.description||''}</td><td>${statusBadge(c.status?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showCategoryModal(${JSON.stringify(c).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteCategory('${c.categoryId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showCategoryModal(${JSON.stringify(c).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCategory('${c.categoryId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="4" style="text-align:center;color:#999">Chưa có danh mục</td></tr>';
+    ).join('') || '<tr><td colspan="4" style="text-align:center;color:#999">ChÆ°a cÃ³ danh má»¥c</td></tr>';
 }
 
 function showCategoryModal(data={}){
-    showModal(`<h3>${data.categoryId?'Sửa':'Thêm'} danh mục</h3>
-        <div class="form-group"><label>Tên danh mục</label><input type="text" id="catName" value="${data.categoryName||''}" placeholder="Tên danh mục"></div>
-        <div class="form-group"><label>Mô tả</label><textarea id="catDesc">${data.description||''}</textarea></div>
+    showModal(`<h3>${data.categoryId?'Sá»­a':'ThÃªm'} danh má»¥c</h3>
+        <div class="form-group"><label>TÃªn danh má»¥c</label><input type="text" id="catName" value="${data.categoryName||''}" placeholder="TÃªn danh má»¥c"></div>
+        <div class="form-group"><label>MÃ´ táº£</label><textarea id="catDesc">${data.description||''}</textarea></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveCategory('${data.categoryId||''}')">${data.categoryId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveCategory('${data.categoryId||''}')">${data.categoryId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -744,19 +745,19 @@ async function saveCategory(id){
     const body = {categoryName: document.getElementById('catName').value, description: document.getElementById('catDesc').value};
     const r = id ? await api('/api/categories/'+id,'PUT',body) : await api('/api/categories','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadCategories(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadCategories(); }
 }
 
 async function deleteCategory(id){
-    if(!confirm('Xóa danh mục này?')) return;
+    if(!confirm('XÃ³a danh má»¥c nÃ y?')) return;
     const r = await api('/api/categories/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadCategories(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadCategories(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INVENTORY
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadInventory(){
     allWarehouses = await api('/api/warehouses') || [];
     // Render warehouse list
@@ -764,15 +765,15 @@ async function loadInventory(){
         `<tr><td>${w.warehouseCode||''}</td><td>${w.warehouseName||''}</td><td>${w.address||''}</td>
         <td>${statusBadge(w.isActive?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showWarehouseModal(${JSON.stringify(w).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteWarehouse('${w.warehouseId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showWarehouseModal(${JSON.stringify(w).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteWarehouse('${w.warehouseId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">Chưa có kho</td></tr>';
+    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">ChÆ°a cÃ³ kho</td></tr>';
 
     // Update filter dropdown
     const sel = document.getElementById('warehouseFilter');
     const curVal = sel.value;
-    sel.innerHTML = '<option value="">-- Tất cả kho --</option>' +
+    sel.innerHTML = '<option value="">-- Táº¥t cáº£ kho --</option>' +
         allWarehouses.map(w=>`<option value="${w.warehouseId}" ${w.warehouseId===curVal?'selected':''}>${w.warehouseName}</option>`).join('');
 
     // Load balances
@@ -781,17 +782,17 @@ async function loadInventory(){
     document.getElementById('balanceList').innerHTML = (balances||[]).map(b =>
         `<tr><td>${b.warehouseName||''}</td><td>${b.productName||b.productId||''}</td>
         <td>${b.onHandQty||0}</td><td>${b.reservedQty||0}</td><td>${(b.onHandQty||0)-(b.reservedQty||0)}</td></tr>`
-    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">Chưa có tồn kho</td></tr>';
+    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">ChÆ°a cÃ³ tá»“n kho</td></tr>';
 }
 
 function showWarehouseModal(data={}){
-    showModal(`<h3>${data.warehouseId?'Sửa':'Thêm'} kho hàng</h3>
-        <div class="form-group"><label>Mã kho</label><input type="text" id="whCode" value="${data.warehouseCode||''}" placeholder="VD: WH001"></div>
-        <div class="form-group"><label>Tên kho</label><input type="text" id="whName" value="${data.warehouseName||''}" placeholder="Tên kho hàng"></div>
-        <div class="form-group"><label>Địa chỉ</label><input type="text" id="whAddr" value="${data.address||''}" placeholder="Địa chỉ kho"></div>
+    showModal(`<h3>${data.warehouseId?'Sá»­a':'ThÃªm'} kho hÃ ng</h3>
+        <div class="form-group"><label>MÃ£ kho</label><input type="text" id="whCode" value="${data.warehouseCode||''}" placeholder="VD: WH001"></div>
+        <div class="form-group"><label>TÃªn kho</label><input type="text" id="whName" value="${data.warehouseName||''}" placeholder="TÃªn kho hÃ ng"></div>
+        <div class="form-group"><label>Äá»‹a chá»‰</label><input type="text" id="whAddr" value="${data.address||''}" placeholder="Äá»‹a chá»‰ kho"></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveWarehouse('${data.warehouseId||''}')">${data.warehouseId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveWarehouse('${data.warehouseId||''}')">${data.warehouseId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -799,39 +800,39 @@ async function saveWarehouse(id){
     const body = {warehouseCode: document.getElementById('whCode').value, warehouseName: document.getElementById('whName').value, address: document.getElementById('whAddr').value};
     const r = id ? await api('/api/warehouses/'+id,'PUT',body) : await api('/api/warehouses','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadInventory(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadInventory(); }
 }
 
 async function deleteWarehouse(id){
-    if(!confirm('Xóa kho này?')) return;
+    if(!confirm('XÃ³a kho nÃ y?')) return;
     const r = await api('/api/warehouses/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadInventory(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadInventory(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SUPPLIERS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadSuppliers(){
     const data = await api('/api/suppliers');
     document.getElementById('supplierList').innerHTML = (data||[]).map(s =>
         `<tr><td>${s.nameSupplier||s.name||''}</td><td>${s.productName||''}</td>
         <td>${statusBadge(s.isCooperating?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showSupplierModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteSupplier('${s.supplierId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showSupplierModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteSupplier('${s.supplierId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="4" style="text-align:center;color:#999">Chưa có nhà cung cấp</td></tr>';
+    ).join('') || '<tr><td colspan="4" style="text-align:center;color:#999">ChÆ°a cÃ³ nhÃ  cung cáº¥p</td></tr>';
 }
 
 function showSupplierModal(data={}){
-    showModal(`<h3>${data.supplierId?'Sửa':'Thêm'} nhà cung cấp</h3>
-        <div class="form-group"><label>Tên NCC</label><input type="text" id="supName" value="${data.nameSupplier||data.name||''}" placeholder="Tên nhà cung cấp"></div>
-        <div class="form-group"><label>Tên sản phẩm</label><input type="text" id="supProduct" value="${data.productName||''}" placeholder="Sản phẩm cung cấp"></div>
-        <div class="form-group"><label>Đang hợp tác</label><select id="supActive"><option value="1" ${data.isCooperating?'selected':''}>Có</option><option value="0" ${!data.isCooperating?'selected':''}>Không</option></select></div>
+    showModal(`<h3>${data.supplierId?'Sá»­a':'ThÃªm'} nhÃ  cung cáº¥p</h3>
+        <div class="form-group"><label>TÃªn NCC</label><input type="text" id="supName" value="${data.nameSupplier||data.name||''}" placeholder="TÃªn nhÃ  cung cáº¥p"></div>
+        <div class="form-group"><label>TÃªn sáº£n pháº©m</label><input type="text" id="supProduct" value="${data.productName||''}" placeholder="Sáº£n pháº©m cung cáº¥p"></div>
+        <div class="form-group"><label>Äang há»£p tÃ¡c</label><select id="supActive"><option value="1" ${data.isCooperating?'selected':''}>CÃ³</option><option value="0" ${!data.isCooperating?'selected':''}>KhÃ´ng</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveSupplier('${data.supplierId||''}')">${data.supplierId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveSupplier('${data.supplierId||''}')">${data.supplierId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -839,40 +840,40 @@ async function saveSupplier(id){
     const body = {nameSupplier: document.getElementById('supName').value, productName: document.getElementById('supProduct').value, isCooperating: document.getElementById('supActive').value==='1'};
     const r = id ? await api('/api/suppliers/'+id,'PUT',body) : await api('/api/suppliers','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadSuppliers(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadSuppliers(); }
 }
 
 async function deleteSupplier(id){
-    if(!confirm('Xóa NCC này?')) return;
+    if(!confirm('XÃ³a NCC nÃ y?')) return;
     const r = await api('/api/suppliers/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadSuppliers(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadSuppliers(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CUSTOMERS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadCustomers(){
     const search = document.getElementById('customerSearch')?.value || '';
     const data = await api('/api/customers?search='+encodeURIComponent(search));
     document.getElementById('customerList').innerHTML = (data||[]).map(c =>
         `<tr><td>${c.fullName||''}</td><td>${c.phoneNum||''}</td><td>${c.email||''}</td>
-        <td>${c.tierName||'Chưa có'}</td><td>${c.currentPoints||0}</td><td>${fmtDate(c.registrationDate)}</td>
+        <td>${c.tierName||'ChÆ°a cÃ³'}</td><td>${c.currentPoints||0}</td><td>${fmtDate(c.registrationDate)}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="editCustomer('${c.customerId}')">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.customerId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="editCustomer('${c.customerId}')">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${c.customerId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="7" style="text-align:center;color:#999">Chưa có khách hàng</td></tr>';
+    ).join('') || '<tr><td colspan="7" style="text-align:center;color:#999">ChÆ°a cÃ³ khÃ¡ch hÃ ng</td></tr>';
 }
 
 function showCustomerModal(data={}){
-    showModal(`<h3>${data.customerId?'Sửa':'Thêm'} khách hàng</h3>
-        <div class="form-group"><label>Họ tên</label><input type="text" id="cusName" value="${data.fullName||''}" placeholder="Họ tên khách hàng"></div>
-        <div class="form-group"><label>Số điện thoại</label><input type="text" id="cusPhone" value="${data.phoneNum||''}" placeholder="Số điện thoại"></div>
+    showModal(`<h3>${data.customerId?'Sá»­a':'ThÃªm'} khÃ¡ch hÃ ng</h3>
+        <div class="form-group"><label>Há» tÃªn</label><input type="text" id="cusName" value="${data.fullName||''}" placeholder="Há» tÃªn khÃ¡ch hÃ ng"></div>
+        <div class="form-group"><label>Sá»‘ Ä‘iá»‡n thoáº¡i</label><input type="text" id="cusPhone" value="${data.phoneNum||''}" placeholder="Sá»‘ Ä‘iá»‡n thoáº¡i"></div>
         <div class="form-group"><label>Email</label><input type="text" id="cusEmail" value="${data.email||''}" placeholder="Email"></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveCustomer('${data.customerId||''}')">${data.customerId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveCustomer('${data.customerId||''}')">${data.customerId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -885,19 +886,19 @@ async function saveCustomer(id){
     const body = {fullName: document.getElementById('cusName').value, phoneNum: document.getElementById('cusPhone').value, email: document.getElementById('cusEmail').value};
     const r = id ? await api('/api/customers/'+id,'PUT',body) : await api('/api/customers','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadCustomers(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadCustomers(); }
 }
 
 async function deleteCustomer(id){
-    if(!confirm('Xóa khách hàng này?')) return;
+    if(!confirm('XÃ³a khÃ¡ch hÃ ng nÃ y?')) return;
     const r = await api('/api/customers/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadCustomers(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadCustomers(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PROMOTIONS & CAMPAIGNS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadPromotions(){
     const [camps, promos] = await Promise.all([api('/api/campaigns'), api('/api/promotions')]);
 
@@ -905,32 +906,32 @@ async function loadPromotions(){
         `<tr><td>${c.name||''}</td><td>${c.description||''}</td><td>${fmtDate(c.startDate)}</td><td>${fmtDate(c.endDate)}</td>
         <td>${statusBadge(c.isActive?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showCampaignModal(${JSON.stringify(c).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteCampaign('${c.campaignId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showCampaignModal(${JSON.stringify(c).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCampaign('${c.campaignId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">Chưa có chiến dịch</td></tr>';
+    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">ChÆ°a cÃ³ chiáº¿n dá»‹ch</td></tr>';
 
     document.getElementById('promotionList').innerHTML = (promos||[]).map(p =>
         `<tr><td>${p.name||''}</td><td>${p.promoType||''}</td><td>${p.voucherCode||''}</td>
-        <td>${p.priority||''}</td><td>${p.currentUsageCount||0}/${p.maxUsageCount||'∞'}</td>
+        <td>${p.priority||''}</td><td>${p.currentUsageCount||0}/${p.maxUsageCount||'âˆž'}</td>
         <td>${fmtDate(p.expiryDate)}</td><td>${statusBadge(p.isActive?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showPromotionModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deletePromotion('${p.promotionId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showPromotionModal(${JSON.stringify(p).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePromotion('${p.promotionId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="8" style="text-align:center;color:#999">Chưa có khuyến mãi</td></tr>';
+    ).join('') || '<tr><td colspan="8" style="text-align:center;color:#999">ChÆ°a cÃ³ khuyáº¿n mÃ£i</td></tr>';
 }
 
 function showCampaignModal(data={}){
-    showModal(`<h3>${data.campaignId?'Sửa':'Thêm'} chiến dịch</h3>
-        <div class="form-group"><label>Tên chiến dịch</label><input type="text" id="campName" value="${data.name||''}" placeholder="Tên chiến dịch"></div>
-        <div class="form-group"><label>Mô tả</label><textarea id="campDesc">${data.description||''}</textarea></div>
-        <div class="form-group"><label>Ngày bắt đầu</label><input type="date" id="campStart" value="${(data.startDate||'').substring(0,10)}"></div>
-        <div class="form-group"><label>Ngày kết thúc</label><input type="date" id="campEnd" value="${(data.endDate||'').substring(0,10)}"></div>
-        <div class="form-group"><label>Kích hoạt</label><select id="campActive"><option value="1" ${data.isActive!==false?'selected':''}>Có</option><option value="0" ${data.isActive===false?'selected':''}>Không</option></select></div>
+    showModal(`<h3>${data.campaignId?'Sá»­a':'ThÃªm'} chiáº¿n dá»‹ch</h3>
+        <div class="form-group"><label>TÃªn chiáº¿n dá»‹ch</label><input type="text" id="campName" value="${data.name||''}" placeholder="TÃªn chiáº¿n dá»‹ch"></div>
+        <div class="form-group"><label>MÃ´ táº£</label><textarea id="campDesc">${data.description||''}</textarea></div>
+        <div class="form-group"><label>NgÃ y báº¯t Ä‘áº§u</label><input type="date" id="campStart" value="${(data.startDate||'').substring(0,10)}"></div>
+        <div class="form-group"><label>NgÃ y káº¿t thÃºc</label><input type="date" id="campEnd" value="${(data.endDate||'').substring(0,10)}"></div>
+        <div class="form-group"><label>KÃ­ch hoáº¡t</label><select id="campActive"><option value="1" ${data.isActive!==false?'selected':''}>CÃ³</option><option value="0" ${data.isActive===false?'selected':''}>KhÃ´ng</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveCampaign('${data.campaignId||''}')">${data.campaignId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveCampaign('${data.campaignId||''}')">${data.campaignId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -940,35 +941,35 @@ async function saveCampaign(id){
         isActive: document.getElementById('campActive').value==='1'};
     const r = id ? await api('/api/campaigns/'+id,'PUT',body) : await api('/api/campaigns','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadPromotions(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadPromotions(); }
 }
 
 async function deleteCampaign(id){
-    if(!confirm('Xóa chiến dịch?')) return;
+    if(!confirm('XÃ³a chiáº¿n dá»‹ch?')) return;
     const r = await api('/api/campaigns/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadPromotions(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadPromotions(); }
 }
 
 function showPromotionModal(data={}){
-    showModal(`<h3>${data.promotionId?'Sửa':'Thêm'} khuyến mãi / Voucher</h3>
-        <div class="form-group"><label>Tên</label><input type="text" id="proName" value="${data.name||''}" placeholder="Tên khuyến mãi"></div>
-        <div class="form-group"><label>Loại</label><select id="proType">
-            <option value="PERCENT" ${data.promoType==='PERCENT'?'selected':''}>Giảm %</option>
-            <option value="FIXED" ${data.promoType==='FIXED'?'selected':''}>Giảm tiền cố định</option>
-            <option value="BUY_X_GET_Y" ${data.promoType==='BUY_X_GET_Y'?'selected':''}>Mua X tặng Y</option>
+    showModal(`<h3>${data.promotionId?'Sá»­a':'ThÃªm'} khuyáº¿n mÃ£i / Voucher</h3>
+        <div class="form-group"><label>TÃªn</label><input type="text" id="proName" value="${data.name||''}" placeholder="TÃªn khuyáº¿n mÃ£i"></div>
+        <div class="form-group"><label>Loáº¡i</label><select id="proType">
+            <option value="PERCENT" ${data.promoType==='PERCENT'?'selected':''}>Giáº£m %</option>
+            <option value="FIXED" ${data.promoType==='FIXED'?'selected':''}>Giáº£m tiá»n cá»‘ Ä‘á»‹nh</option>
+            <option value="BUY_X_GET_Y" ${data.promoType==='BUY_X_GET_Y'?'selected':''}>Mua X táº·ng Y</option>
             <option value="VOUCHER" ${data.promoType==='VOUCHER'?'selected':''}>Voucher</option>
         </select></div>
-        <div class="form-group"><label>Mã Voucher</label><input type="text" id="proVoucher" value="${data.voucherCode||''}" placeholder="Mã voucher (nếu có)"></div>
-        <div class="form-group"><label>Quy tắc giảm giá (JSON)</label><input type="text" id="proRule" value="${data.ruleDefinition||''}" placeholder='{"discountPercent":10}'>
+        <div class="form-group"><label>MÃ£ Voucher</label><input type="text" id="proVoucher" value="${data.voucherCode||''}" placeholder="MÃ£ voucher (náº¿u cÃ³)"></div>
+        <div class="form-group"><label>Quy táº¯c giáº£m giÃ¡ (JSON)</label><input type="text" id="proRule" value="${data.ruleDefinition||''}" placeholder='{"discountPercent":10}'>
         </div>
-        <div class="form-group"><label>Ưu tiên</label><input type="number" id="proPriority" value="${data.priority||1}"></div>
-        <div class="form-group"><label>Số lần dùng tối đa</label><input type="number" id="proMax" value="${data.maxUsageCount||100}"></div>
-        <div class="form-group"><label>Ngày hết hạn</label><input type="date" id="proExpiry" value="${(data.expiryDate||'').substring(0,10)}"></div>
-        <div class="form-group"><label>Kích hoạt</label><select id="proActive"><option value="1" ${data.isActive!==false?'selected':''}>Có</option><option value="0" ${data.isActive===false?'selected':''}>Không</option></select></div>
+        <div class="form-group"><label>Æ¯u tiÃªn</label><input type="number" id="proPriority" value="${data.priority||1}"></div>
+        <div class="form-group"><label>Sá»‘ láº§n dÃ¹ng tá»‘i Ä‘a</label><input type="number" id="proMax" value="${data.maxUsageCount||100}"></div>
+        <div class="form-group"><label>NgÃ y háº¿t háº¡n</label><input type="date" id="proExpiry" value="${(data.expiryDate||'').substring(0,10)}"></div>
+        <div class="form-group"><label>KÃ­ch hoáº¡t</label><select id="proActive"><option value="1" ${data.isActive!==false?'selected':''}>CÃ³</option><option value="0" ${data.isActive===false?'selected':''}>KhÃ´ng</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="savePromotion('${data.promotionId||''}')">${data.promotionId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="savePromotion('${data.promotionId||''}')">${data.promotionId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -979,19 +980,19 @@ async function savePromotion(id){
         expiryDate: document.getElementById('proExpiry').value, isActive: document.getElementById('proActive').value==='1'};
     const r = id ? await api('/api/promotions/'+id,'PUT',body) : await api('/api/promotions','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadPromotions(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadPromotions(); }
 }
 
 async function deletePromotion(id){
-    if(!confirm('Xóa khuyến mãi?')) return;
+    if(!confirm('XÃ³a khuyáº¿n mÃ£i?')) return;
     const r = await api('/api/promotions/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadPromotions(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadPromotions(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // EMPLOYEES
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadEmployees(){
     const search = document.getElementById('empSearch')?.value || '';
     const data = await api('/api/employees?search='+encodeURIComponent(search));
@@ -999,22 +1000,22 @@ async function loadEmployees(){
         `<tr><td>${e.employeeCode||''}</td><td>${e.fullName||''}</td><td>${fmtDate(e.hireDate)}</td>
         <td>${fmt(e.baseSalary)}</td><td>${statusBadge(e.status)}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="editEmployee('${e.employeeId}')">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteEmployee('${e.employeeId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="editEmployee('${e.employeeId}')">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteEmployee('${e.employeeId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">Chưa có nhân viên</td></tr>';
+    ).join('') || '<tr><td colspan="6" style="text-align:center;color:#999">ChÆ°a cÃ³ nhÃ¢n viÃªn</td></tr>';
 }
 
 function showEmployeeModal(data={}){
-    showModal(`<h3>${data.employeeId?'Sửa':'Thêm'} nhân viên</h3>
-        <div class="form-group"><label>Mã NV</label><input type="text" id="empCode" value="${data.employeeCode||''}" placeholder="VD: NV001"></div>
-        <div class="form-group"><label>Họ tên</label><input type="text" id="empName" value="${data.fullName||''}" placeholder="Họ tên nhân viên"></div>
-        <div class="form-group"><label>Ngày vào làm</label><input type="date" id="empHire" value="${(data.hireDate||'').substring(0,10)}"></div>
-        <div class="form-group"><label>Lương cơ bản</label><input type="number" id="empSalary" value="${data.baseSalary||0}"></div>
-        <div class="form-group"><label>Trạng thái</label><select id="empStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Đang làm</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Nghỉ việc</option></select></div>
+    showModal(`<h3>${data.employeeId?'Sá»­a':'ThÃªm'} nhÃ¢n viÃªn</h3>
+        <div class="form-group"><label>MÃ£ NV</label><input type="text" id="empCode" value="${data.employeeCode||''}" placeholder="VD: NV001"></div>
+        <div class="form-group"><label>Há» tÃªn</label><input type="text" id="empName" value="${data.fullName||''}" placeholder="Há» tÃªn nhÃ¢n viÃªn"></div>
+        <div class="form-group"><label>NgÃ y vÃ o lÃ m</label><input type="date" id="empHire" value="${(data.hireDate||'').substring(0,10)}"></div>
+        <div class="form-group"><label>LÆ°Æ¡ng cÆ¡ báº£n</label><input type="number" id="empSalary" value="${data.baseSalary||0}"></div>
+        <div class="form-group"><label>Tráº¡ng thÃ¡i</label><select id="empStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Äang lÃ m</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Nghá»‰ viá»‡c</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveEmployee('${data.employeeId||''}')">${data.employeeId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveEmployee('${data.employeeId||''}')">${data.employeeId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -1029,19 +1030,19 @@ async function saveEmployee(id){
         status: document.getElementById('empStatus').value};
     const r = id ? await api('/api/employees/'+id,'PUT',body) : await api('/api/employees','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadEmployees(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadEmployees(); }
 }
 
 async function deleteEmployee(id){
-    if(!confirm('Xóa nhân viên?')) return;
+    if(!confirm('XÃ³a nhÃ¢n viÃªn?')) return;
     const r = await api('/api/employees/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadEmployees(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadEmployees(); }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ACCOUNTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadAccounts(){
     allRoles = await api('/api/auth/roles') || [];
     const data = await api('/api/accounts');
@@ -1049,23 +1050,23 @@ async function loadAccounts(){
         `<tr><td>${a.username}</td><td>${a.fullName||''}</td><td><span class="badge badge-blue">${a.roleName}</span></td>
         <td>${statusBadge(a.isActive?'ACTIVE':'INACTIVE')}</td>
         <td class="actions">
-            <button class="btn btn-info btn-sm" onclick="showAccountModal(${JSON.stringify(a).replace(/"/g,'&quot;')})">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteAccount('${a.accountId}')">Xóa</button>
+            <button class="btn btn-info btn-sm" onclick="showAccountModal(${JSON.stringify(a).replace(/"/g,'&quot;')})">Sá»­a</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAccount('${a.accountId}')">XÃ³a</button>
         </td></tr>`
-    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">Chưa có tài khoản</td></tr>';
+    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999">ChÆ°a cÃ³ tÃ i khoáº£n</td></tr>';
 }
 
 function showAccountModal(data={}){
     const roleOpts = allRoles.map(r=>`<option value="${r.roleId}" ${r.roleId===data.roleId?'selected':''}>${r.roleName} - ${r.description||''}</option>`).join('');
-    showModal(`<h3>${data.accountId?'Sửa':'Thêm'} tài khoản</h3>
-        <div class="form-group"><label>Username</label><input type="text" id="accUser" value="${data.username||''}" placeholder="Tên đăng nhập"></div>
-        <div class="form-group"><label>Họ tên</label><input type="text" id="accName" value="${data.fullName||''}" placeholder="Họ tên"></div>
-        ${!data.accountId?'<div class="form-group"><label>Mật khẩu</label><input type="password" id="accPass" value="" placeholder="Mật khẩu (mặc định: 123456)"></div>':''}
-        <div class="form-group"><label>Vai trò (Role)</label><select id="accRole"><option value="">-- Chọn --</option>${roleOpts}</select></div>
-        <div class="form-group"><label>Kích hoạt</label><select id="accActive"><option value="1" ${data.isActive!==false?'selected':''}>Có</option><option value="0" ${data.isActive===false?'selected':''}>Không</option></select></div>
+    showModal(`<h3>${data.accountId?'Sá»­a':'ThÃªm'} tÃ i khoáº£n</h3>
+        <div class="form-group"><label>Username</label><input type="text" id="accUser" value="${data.username||''}" placeholder="TÃªn Ä‘Äƒng nháº­p"></div>
+        <div class="form-group"><label>Há» tÃªn</label><input type="text" id="accName" value="${data.fullName||''}" placeholder="Há» tÃªn"></div>
+        ${!data.accountId?'<div class="form-group"><label>Máº­t kháº©u</label><input type="password" id="accPass" value="" placeholder="Máº­t kháº©u (máº·c Ä‘á»‹nh: 123456)"></div>':''}
+        <div class="form-group"><label>Vai trÃ² (Role)</label><select id="accRole"><option value="">-- Chá»n --</option>${roleOpts}</select></div>
+        <div class="form-group"><label>KÃ­ch hoáº¡t</label><select id="accActive"><option value="1" ${data.isActive!==false?'selected':''}>CÃ³</option><option value="0" ${data.isActive===false?'selected':''}>KhÃ´ng</option></select></div>
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
-            <button class="btn btn-primary" onclick="saveAccount('${data.accountId||''}')">${data.accountId?'Cập nhật':'Thêm'}</button>
+            <button class="btn btn-outline" onclick="hideModal()">Há»§y</button>
+            <button class="btn btn-primary" onclick="saveAccount('${data.accountId||''}')">${data.accountId?'Cáº­p nháº­t':'ThÃªm'}</button>
         </div>`);
 }
 
@@ -1078,14 +1079,228 @@ async function saveAccount(id){
     }
     const r = id ? await api('/api/accounts/'+id,'PUT',body) : await api('/api/accounts','POST',body);
     if(r.error) toast(r.error,'error');
-    else { toast('Thành công','success'); hideModal(); loadAccounts(); }
+    else { toast('ThÃ nh cÃ´ng','success'); hideModal(); loadAccounts(); }
 }
 
 async function deleteAccount(id){
-    if(!confirm('Xóa tài khoản?')) return;
+    if(!confirm('XÃ³a tÃ i khoáº£n?')) return;
     const r = await api('/api/accounts/'+id,'DELETE');
     if(r.error) toast(r.error,'error');
-    else { toast('Đã xóa','success'); loadAccounts(); }
+    else { toast('ÄÃ£ xÃ³a','success'); loadAccounts(); }
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// TRANSFERS
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+async function loadTransfers(){
+    // Store Transfers
+    const st = await api('/api/transfers/store');
+    const stBody = document.getElementById('storeTransferList');
+    stBody.innerHTML = '';
+    if(Array.isArray(st)){
+        st.forEach(r => {
+            const statusBadge = transferStatusBadge(r.status);
+            stBody.innerHTML += `<tr>
+                <td>${r.requestNo}</td>
+                <td>${r.storeName||r.storeId||''}</td>
+                <td>${statusBadge}</td>
+                <td>${r.priority||'NORMAL'}</td>
+                <td>${r.needDate||''}</td>
+                <td>${r.warehouseName||r.assignedWarehouseId||'â€”'}</td>
+                <td>${(r.createdAt||'').substring(0,10)}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewStoreTransferDetail('${r.requestId}')">Chi tiáº¿t</button>
+                    ${r.status==='DRAFT'?`<button class="btn btn-sm btn-warning" onclick="actionStoreTransfer('${r.requestId}','submit')">Gá»­i</button>`:''}
+                    ${r.status==='SUBMITTED'?`<button class="btn btn-sm btn-success" onclick="showAssignWarehouseModal('${r.requestId}')">Chá»‰ Ä‘á»‹nh kho</button>`:''}
+                    ${r.status==='ASSIGNED'?`<button class="btn btn-sm btn-warning" onclick="actionStoreTransfer('${r.requestId}','ship')">Xuáº¥t kho</button>`:''}
+                    ${r.status==='SHIPPING'?`<button class="btn btn-sm btn-success" onclick="actionStoreTransfer('${r.requestId}','receive')">Nháº­n hÃ ng</button>`:''}
+                    ${r.status==='DRAFT'?`<button class="btn btn-sm btn-danger" onclick="deleteStoreTransfer('${r.requestId}')">XÃ³a</button>`:''}
+                </td>
+            </tr>`;
+        });
+    }
+
+    // Overstock
+    const ov = await api('/api/transfers/overstock');
+    const ovBody = document.getElementById('overstockList');
+    ovBody.innerHTML = '';
+    if(Array.isArray(ov)){
+        ov.forEach(r => {
+            const statusBadge = transferStatusBadge(r.status);
+            ovBody.innerHTML += `<tr>
+                <td>${r.requestNo}</td>
+                <td>${r.warehouseName||r.warehouseId||''}</td>
+                <td>${statusBadge}</td>
+                <td>${r.targetStoreName||r.targetStoreId||'â€”'}</td>
+                <td>${(r.createdAt||'').substring(0,10)}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewOverstockDetail('${r.requestId}')">Chi tiáº¿t</button>
+                    ${r.status==='DRAFT'?`<button class="btn btn-sm btn-warning" onclick="actionOverstock('${r.requestId}','submit')">Gá»­i</button>`:''}
+                    ${r.status==='SUBMITTED'?`<button class="btn btn-sm btn-success" onclick="showAssignStoreModal('${r.requestId}')">Chá»‰ Ä‘á»‹nh CH</button>`:''}
+                    ${r.status==='ASSIGNED'?`<button class="btn btn-sm btn-success" onclick="actionOverstock('${r.requestId}','accept')">Cháº¥p nháº­n</button>`:''}
+                    ${r.status==='ACCEPTED'?`<button class="btn btn-sm btn-warning" onclick="actionOverstock('${r.requestId}','ship')">Xuáº¥t kho</button>`:''}
+                    ${r.status==='SHIPPING'?`<button class="btn btn-sm btn-success" onclick="actionOverstock('${r.requestId}','receive')">Nháº­n hÃ ng</button>`:''}
+                    ${r.status==='DRAFT'?`<button class="btn btn-sm btn-danger" onclick="deleteOverstock('${r.requestId}')">XÃ³a</button>`:''}
+                </td>
+            </tr>`;
+        });
+    }
+}
+
+function transferStatusBadge(s){
+    const colors = {DRAFT:'#95a5a6',SUBMITTED:'#f39c12',ASSIGNED:'#2980b9',ACCEPTED:'#8e44ad',SHIPPING:'#e67e22',RECEIVED:'#27ae60',REJECTED:'#e74c3c',CANCELLED:'#7f8c8d'};
+    return `<span style="background:${colors[s]||'#95a5a6'};color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">${s}</span>`;
+}
+
+async function showStoreTransferModal(){
+    const stores = await api('/api/stores') || [];
+    const storeOpts = Array.isArray(stores) ? stores.map(s=>`<option value="${s.storeId}">${s.name}</option>`).join('') : '';
+    showModal(`<h3>Táº¡o yÃªu cáº§u chuyá»ƒn hÃ ng</h3>
+        <label>Cá»­a hÃ ng</label><select id="stStoreId">${storeOpts}</select>
+        <label>Æ¯u tiÃªn</label><select id="stPriority"><option>NORMAL</option><option>HIGH</option><option>URGENT</option></select>
+        <label>NgÃ y cáº§n</label><input type="date" id="stNeedDate">
+        <label>Ghi chÃº</label><textarea id="stNote"></textarea>
+        <button class="btn btn-success" onclick="createStoreTransfer()">Táº¡o</button>`);
+}
+
+async function createStoreTransfer(){
+    const body = {storeId: document.getElementById('stStoreId').value, priority: document.getElementById('stPriority').value,
+        needDate: document.getElementById('stNeedDate').value, note: document.getElementById('stNote').value, createdBy: currentUser.userId};
+    const r = await api('/api/transfers/store','POST',body);
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ táº¡o yÃªu cáº§u #'+r.requestNo,'success'); hideModal(); loadTransfers(); }
+}
+
+async function actionStoreTransfer(id, action){
+    const r = await api(`/api/transfers/store/${id}/${action}`,'POST',{receivedBy:currentUser.userId});
+    if(r.error) toast(r.error,'error');
+    else { toast('ThÃ nh cÃ´ng','success'); loadTransfers(); }
+}
+
+async function deleteStoreTransfer(id){
+    if(!confirm('XÃ³a yÃªu cáº§u?')) return;
+    const r = await api('/api/transfers/store/'+id,'DELETE');
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ xÃ³a','success'); loadTransfers(); }
+}
+
+async function showAssignWarehouseModal(reqId){
+    const whs = await api('/api/warehouses') || [];
+    const opts = Array.isArray(whs) ? whs.map(w=>`<option value="${w.warehouseId}">${w.warehouseName}</option>`).join('') : '';
+    showModal(`<h3>Chá»‰ Ä‘á»‹nh kho</h3>
+        <label>Kho</label><select id="assignWh">${opts}</select>
+        <button class="btn btn-success" onclick="doAssignWarehouse('${reqId}')">XÃ¡c nháº­n</button>`);
+}
+
+async function doAssignWarehouse(reqId){
+    const r = await api(`/api/transfers/store/${reqId}/assign`,'POST',{warehouseId:document.getElementById('assignWh').value,assignedBy:currentUser.userId});
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ chá»‰ Ä‘á»‹nh kho','success'); hideModal(); loadTransfers(); }
+}
+
+async function viewStoreTransferDetail(id){
+    const items = await api(`/api/transfers/store/${id}/items`);
+    let rows = '';
+    if(Array.isArray(items)){
+        items.forEach(i => {
+            rows += `<tr><td>${i.productCode||''}</td><td>${i.productName||i.productId}</td><td>${i.requestedQty}</td><td>${i.approvedQty||'â€”'}</td><td>${i.note||''}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="delStoreItem('${i.itemId}','${id}')">XÃ³a</button></td></tr>`;
+        });
+    }
+    showModal(`<h3>Chi tiáº¿t yÃªu cáº§u chuyá»ƒn hÃ ng</h3>
+        <table class="data-table"><thead><tr><th>MÃ£ SP</th><th>TÃªn</th><th>SL yÃªu cáº§u</th><th>SL duyá»‡t</th><th>Ghi chÃº</th><th></th></tr></thead><tbody>${rows}</tbody></table>
+        <hr><h4>ThÃªm sáº£n pháº©m</h4>
+        <label>MÃ£ sáº£n pháº©m</label><input id="stItemPid" placeholder="Product ID">
+        <label>Sá»‘ lÆ°á»£ng</label><input type="number" id="stItemQty" value="1" min="1">
+        <label>Ghi chÃº</label><input id="stItemNote">
+        <button class="btn btn-success" onclick="addStoreItem('${id}')">ThÃªm</button>`);
+}
+
+async function addStoreItem(reqId){
+    const r = await api(`/api/transfers/store/${reqId}/items`,'POST',{productId:document.getElementById('stItemPid').value,requestedQty:parseInt(document.getElementById('stItemQty').value),note:document.getElementById('stItemNote').value});
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ thÃªm','success'); viewStoreTransferDetail(reqId); }
+}
+
+async function delStoreItem(itemId, reqId){
+    const r = await api(`/api/transfers/store/items/${itemId}`,'DELETE');
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ xÃ³a','success'); viewStoreTransferDetail(reqId); }
+}
+
+// â”€â”€ OVERSTOCK â”€â”€
+async function showOverstockModal(){
+    const whs = await api('/api/warehouses') || [];
+    const opts = Array.isArray(whs) ? whs.map(w=>`<option value="${w.warehouseId}">${w.warehouseName}</option>`).join('') : '';
+    showModal(`<h3>Táº¡o yÃªu cáº§u Ä‘iá»u chuyá»ƒn hÃ ng tá»“n</h3>
+        <label>Kho</label><select id="ovWhId">${opts}</select>
+        <label>Ghi chÃº</label><textarea id="ovNote"></textarea>
+        <button class="btn btn-success" onclick="createOverstock()">Táº¡o</button>`);
+}
+
+async function createOverstock(){
+    const body = {warehouseId: document.getElementById('ovWhId').value, note: document.getElementById('ovNote').value, createdBy: currentUser.userId};
+    const r = await api('/api/transfers/overstock','POST',body);
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ táº¡o yÃªu cáº§u #'+r.requestNo,'success'); hideModal(); loadTransfers(); }
+}
+
+async function actionOverstock(id, action){
+    const r = await api(`/api/transfers/overstock/${id}/${action}`,'POST',{acceptedBy:currentUser.userId});
+    if(r.error) toast(r.error,'error');
+    else { toast('ThÃ nh cÃ´ng','success'); loadTransfers(); }
+}
+
+async function deleteOverstock(id){
+    if(!confirm('XÃ³a yÃªu cáº§u?')) return;
+    const r = await api('/api/transfers/overstock/'+id,'DELETE');
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ xÃ³a','success'); loadTransfers(); }
+}
+
+async function showAssignStoreModal(reqId){
+    const stores = await api('/api/stores') || [];
+    const opts = Array.isArray(stores) ? stores.map(s=>`<option value="${s.storeId}">${s.name}</option>`).join('') : '';
+    showModal(`<h3>Chá»‰ Ä‘á»‹nh cá»­a hÃ ng nháº­n</h3>
+        <label>Cá»­a hÃ ng</label><select id="assignStore">${opts}</select>
+        <button class="btn btn-success" onclick="doAssignStore('${reqId}')">XÃ¡c nháº­n</button>`);
+}
+
+async function doAssignStore(reqId){
+    const r = await api(`/api/transfers/overstock/${reqId}/assign`,'POST',{targetStoreId:document.getElementById('assignStore').value,assignedBy:currentUser.userId});
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ chá»‰ Ä‘á»‹nh CH','success'); hideModal(); loadTransfers(); }
+}
+
+async function viewOverstockDetail(id){
+    const items = await api(`/api/transfers/overstock/${id}/items`);
+    let rows = '';
+    if(Array.isArray(items)){
+        items.forEach(i => {
+            rows += `<tr><td>${i.productCode||''}</td><td>${i.productName||i.productId}</td><td>${i.overstockQty}</td><td>${i.transferQty||'â€”'}</td><td>${i.note||''}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="delOverstockItem('${i.itemId}','${id}')">XÃ³a</button></td></tr>`;
+        });
+    }
+    showModal(`<h3>Chi tiáº¿t hÃ ng tá»“n kho</h3>
+        <table class="data-table"><thead><tr><th>MÃ£ SP</th><th>TÃªn</th><th>SL tá»“n</th><th>SL chuyá»ƒn</th><th>Ghi chÃº</th><th></th></tr></thead><tbody>${rows}</tbody></table>
+        <hr><h4>ThÃªm sáº£n pháº©m</h4>
+        <label>MÃ£ sáº£n pháº©m</label><input id="ovItemPid" placeholder="Product ID">
+        <label>SL tá»“n</label><input type="number" id="ovItemQty" value="1" min="1">
+        <label>Ghi chÃº</label><input id="ovItemNote">
+        <button class="btn btn-success" onclick="addOverstockItem('${id}')">ThÃªm</button>`);
+}
+
+async function addOverstockItem(reqId){
+    const r = await api(`/api/transfers/overstock/${reqId}/items`,'POST',{productId:document.getElementById('ovItemPid').value,overstockQty:parseInt(document.getElementById('ovItemQty').value),note:document.getElementById('ovItemNote').value});
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ thÃªm','success'); viewOverstockDetail(reqId); }
+}
+
+async function delOverstockItem(itemId, reqId){
+    const r = await api(`/api/transfers/overstock/items/${itemId}`,'DELETE');
+    if(r.error) toast(r.error,'error');
+    else { toast('ÄÃ£ xÃ³a','success'); viewOverstockDetail(reqId); }
 }
 </script>
 </body>
