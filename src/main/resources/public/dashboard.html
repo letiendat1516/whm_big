@@ -128,26 +128,41 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
         <div>
             <div style="background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)">
                 <h4 style="margin-bottom:10px;color:var(--primary)">🛒 Giỏ hàng</h4>
-                <!-- ...existing code for posCart table and totals... -->
+                <table class="data-table" id="posCart"><thead><tr><th>Tên sản phẩm</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th><th></th></tr></thead>
+                <tbody></tbody></table>
+                <div style="display:flex;justify-content:space-between;margin-top:12px">
+                    <div>
+                        <label style="font-size:12px;color:#333">Ghi chú</label>
+                        <textarea id="posNote" placeholder="Nhập ghi chú cho đơn hàng..." style="width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:5px;font-size:12px;height:40px"></textarea>
+                    </div>
+                    <div style="min-width:160px">
+                        <div style="font-size:14px;margin-bottom:4px;color:#333">Tổng cộng</div>
+                        <div style="font-size:18px;font-weight:700;color:var(--primary)" id="posTotal">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- â•â•â• ORDERS â•â•â• -->
 <div class="section" id="sec-orders">
     <div class="toolbar">
-        <input type="text" id="orderSearch" placeholder="ðŸ” TÃ¬m Ä‘Æ¡n hÃ ng..." oninput="loadOrders()">
+        <input type="text" id="orderSearch" placeholder="🔍 Tìm đơn hàng..." oninput="loadOrders()">
         <button class="btn btn-info btn-sm" onclick="loadOrders()">🔄 Tải lại</button>
     </div>
-    <table class="data-table"><thead><tr><th>MÃ£ ÄH</th><th>NgÃ y</th><th>Tá»•ng tiá»n</th><th>Thuáº¿</th><th>Giáº£m giÃ¡</th><th>ThÃ nh tiá»n</th><th>Thanh toÃ¡n</th><th>CÃ´ng ná»£</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Mã ĐH</th><th>Ngày</th><th>Tổng tiền</th><th>Thuế</th><th>Giảm giá</th><th>Thành tiền</th><th>Thanh toán</th><th>Công nợ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
     <tbody id="orderList"></tbody></table>
 </div>
 
 <!-- â•â•â• PAYMENTS â•â•â• -->
 <div class="section" id="sec-payments">
     <div class="toolbar">
-        <input type="text" id="paymentSearch" placeholder="ðŸ” TÃ¬m thanh toÃ¡n..." oninput="loadPayments()">
+        <input type="text" id="paymentSearch" placeholder="🔍 Tìm thanh toán..." oninput="loadPayments()">
         <button class="btn btn-success" onclick="showPaymentModal()">+ Thanh toán mới</button>
         <button class="btn btn-info btn-sm" onclick="loadPayments()">🔄 Tải lại</button>
     </div>
-    <table class="data-table"><thead><tr><th>MÃ£ TT</th><th>MÃ£ ÄH</th><th>NgÃ y</th><th>PhÆ°Æ¡ng thá»©c</th><th>Sá»‘ tiá»n</th><th>Tráº¡ng thÃ¡i</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Mã TT</th><th>Mã ĐH</th><th>Ngày</th><th>Phương thức</th><th>Số tiền</th><th>Trạng thái</th></tr></thead>
     <tbody id="paymentList"></tbody></table>
 </div>
 
@@ -157,18 +172,18 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
         <button class="btn btn-success" onclick="showReturnModal()">+ Tạo phiếu trả</button>
         <button class="btn btn-info btn-sm" onclick="loadReturns()">🔄 Tải lại</button>
     </div>
-    <table class="data-table"><thead><tr><th>MÃ£ tráº£</th><th>MÃ£ ÄH gá»‘c</th><th>NgÃ y tráº£</th><th>LÃ½ do</th><th>Sá»‘ tiá»n hoÃ n</th><th>Tráº¡ng thÃ¡i</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Mã trả</th><th>Mã ĐH gốc</th><th>Ngày trả</th><th>Lý do</th><th>Số tiền hoàn</th><th>Trạng thái</th></tr></thead>
     <tbody id="returnList"></tbody></table>
 </div>
 
 <!-- â•â•â• PRODUCTS â•â•â• -->
 <div class="section" id="sec-products">
     <div class="toolbar">
-        <input type="text" id="productSearch" placeholder="ðŸ” TÃ¬m sáº£n pháº©m (tÃªn, mÃ£, thÆ°Æ¡ng hiá»‡u)..." oninput="loadProducts()">
+        <input type="text" id="productSearch" placeholder="🔍 Tìm sản phẩm (tên, mã, thương hiệu)..." oninput="loadProducts()">
         <button class="btn btn-success" onclick="showProductModal()">+ Thêm sản phẩm</button>
         <button class="btn btn-info btn-sm" onclick="loadProducts()">🔄 Tải lại</button>
     </div>
-    <table class="data-table"><thead><tr><th>MÃ£ SP</th><th>TÃªn</th><th>Danh má»¥c</th><th>ThÆ°Æ¡ng hiá»‡u</th><th>ÄVT</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Mã SP</th><th>Tên</th><th>Danh mục</th><th>Thương hiệu</th><th>ĐVT</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
     <tbody id="productList"></tbody></table>
 </div>
 
@@ -190,17 +205,17 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
         <button class="btn btn-info btn-sm" onclick="loadInventory()">🔄 Tải lại</button>
     </div>
     <h4 style="margin:10px 0 6px;color:var(--primary);font-size:13px">Danh sách kho</h4>
-    <table class="data-table"><thead><tr><th>MÃ£ kho</th><th>TÃªn kho</th><th>Äá»‹a chá»‰</th><th>Tráº¡ng thÃ¡i</th><th>Thao tÃ¡c</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Mã kho</th><th>Tên kho</th><th>Địa chỉ</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
     <tbody id="warehouseList"></tbody></table>
     <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Tồn kho</h4>
-    <table class="data-table"><thead><tr><th>Kho</th><th>Sáº£n pháº©m</th><th>Tá»“n kho</th><th>ÄÃ£ Ä‘áº·t</th><th>Kháº£ dá»¥ng</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Kho</th><th>Sản phẩm</th><th>Tồn kho</th><th>Đã đặt</th><th>Khả dụng</th></tr></thead>
     <tbody id="balanceList"></tbody></table>
 </div>
 
 <!-- â•â•â• SUPPLIERS â•â•â• -->
 <div class="section" id="sec-suppliers">
     <div class="toolbar">
-        <input type="text" id="supplierSearch" placeholder="ðŸ” TÃ¬m nhÃ  cung cáº¥p..." oninput="loadSuppliers()">
+        <input type="text" id="supplierSearch" placeholder="🔍 Tìm nhà cung cấp..." oninput="loadSuppliers()">
         <button class="btn btn-success" onclick="showSupplierModal()">+ Thêm NCC</button>
         <button class="btn btn-info btn-sm" onclick="loadSuppliers()">🔄 Tải lại</button>
     </div>
@@ -211,11 +226,11 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
 <!-- â•â•â• CUSTOMERS â•â•â• -->
 <div class="section" id="sec-customers">
     <div class="toolbar">
-        <input type="text" id="customerSearch" placeholder="ðŸ” TÃ¬m khÃ¡ch hÃ ng (tÃªn, SÄT, email)..." oninput="loadCustomers()">
+        <input type="text" id="customerSearch" placeholder="🔍 Tìm khách hàng (tên, SĐT, email)..." oninput="loadCustomers()">
         <button class="btn btn-success" onclick="showCustomerModal()">+ Thêm khách</button>
         <button class="btn btn-info btn-sm" onclick="loadCustomers()">🔄 Tải lại</button>
     </div>
-    <table class="data-table"><thead><tr><th>Há» tÃªn</th><th>SÄT</th><th>Email</th><th>Háº¡ng</th><th>Äiá»ƒm</th><th>NgÃ y ÄK</th><th>Thao tÃ¡c</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Hạng</th><th>Điểm</th><th>Ngày ĐK</th><th>Thao tác</th></tr></thead>
     <tbody id="customerList"></tbody></table>
 </div>
 
@@ -230,14 +245,14 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
     <table class="data-table"><thead><tr><th>Tên</th><th>Mô tả</th><th>Bắt đầu</th><th>Kết thúc</th><th>Kích hoạt</th><th>Thao tác</th></tr></thead>
     <tbody id="campaignList"></tbody></table>
     <h4 style="margin:16px 0 6px;color:var(--primary);font-size:13px">Khuyến mãi</h4>
-    <table class="data-table"><thead><tr><th>TÃªn</th><th>Loáº¡i</th><th>MÃ£ voucher</th><th>Æ¯u tiÃªn</th><th>ÄÃ£ dÃ¹ng/Tá»‘i Ä‘a</th><th>Háº¿t háº¡n</th><th>KÃ­ch hoáº¡t</th><th>Thao tÃ¡c</th></tr></thead>
+    <table class="data-table"><thead><tr><th>Tên</th><th>Loại</th><th>Mã voucher</th><th>Ưu tiên</th><th>Đã dùng/Tối đa</th><th>Hết hạn</th><th>Kích hoạt</th><th>Thao tác</th></tr></thead>
     <tbody id="promotionList"></tbody></table>
 </div>
 
 <!-- â•â•â• EMPLOYEES â•â•â• -->
 <div class="section" id="sec-employees">
     <div class="toolbar">
-        <input type="text" id="empSearch" placeholder="ðŸ” TÃ¬m nhÃ¢n viÃªn (tÃªn, mÃ£)..." oninput="loadEmployees()">
+        <input type="text" id="empSearch" placeholder="🔍 Tìm nhân viên (tên, mã)..." oninput="loadEmployees()">
         <button class="btn btn-success" onclick="showEmployeeModal()">+ Thêm nhân viên</button>
         <button class="btn btn-info btn-sm" onclick="loadEmployees()">🔄 Tải lại</button>
     </div>
@@ -263,9 +278,9 @@ body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:#222}
 </div>
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GLOBAL STATE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INIT
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 (async function init(){
@@ -318,10 +333,10 @@ function switchSection(id, title){
 function reloadCurrentSection(){
     const active = document.querySelector('.menu-item.active');
     if(active) switchSection(active.dataset.section, active.textContent.trim());
-    toast('ÄÃ£ táº£i láº¡i dá»¯ liá»‡u','success');
+    toast('Đã tải lại dữ liệu','success');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // API HELPER
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function api(url, method='GET', body=null){
@@ -440,7 +455,7 @@ function renderCart(){
         `<tr><td>${c.name}</td><td><input type="number" value="${c.qty}" min="1" style="width:50px;padding:3px;font-size:12px" onchange="updateCartQty(${i},this.value)"></td>
         <td>${fmt(c.price)}</td><td>${fmt(c.price*c.qty)}</td>
         <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${i})">✕</button></td></tr>`
-    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;font-size:11px">Giá» trá»‘ng</td></tr>';
+    ).join('') || '<tr><td colspan="5" style="text-align:center;color:#999;font-size:11px">Giỏ trống</td></tr>';
 
     const sub = cart.reduce((s,c)=>s+c.price*c.qty,0);
     const tax = Math.round(sub * 0.1);
@@ -451,7 +466,7 @@ function renderCart(){
 }
 
 async function posCheckout(){
-    if(!cart.length){ toast('Giá» hÃ ng trá»‘ng','error'); return; }
+    if(!cart.length){ toast('Giỏ hàng trống','error'); return; }
     const sub = cart.reduce((s,c)=>s+c.price*c.qty,0);
     const taxRate = 10;
     const taxAmt = Math.round(sub * taxRate/100);
@@ -462,9 +477,9 @@ async function posCheckout(){
         <div class="form-group"><label>Thuế (${taxRate}%)</label><input value="${fmt(taxAmt)} đ" disabled></div>
         <div class="form-group"><label>Tổng thanh toán</label><input value="${fmt(sub+taxAmt)} đ" disabled style="font-weight:700;font-size:16px"></div>
         <div class="form-group"><label>Phương thức</label>
-            <select id="ckMethod"><option value="CASH">Tiá»n máº·t</option><option value="QR">QR / Chuyá»ƒn khoáº£n</option><option value="PARTIAL">Thanh toÃ¡n má»™t pháº§n</option></select>
+            <select id="ckMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR / Chuyển khoản</option><option value="PARTIAL">Thanh toán một phần</option></select>
         </div>
-        <div class="form-group"><label>Sá»‘ tiá»n khÃ¡ch tráº£</label><input type="number" id="ckPaid" value="${sub+taxAmt}"></div>
+        <div class="form-group"><label>Số tiền khách trả</label><input type="number" id="ckPaid" value="${sub+taxAmt}"></div>
         <div class="form-group"><label>Ghi chú</label><input type="text" id="ckNote" value="${document.getElementById('posNote').value}"></div>
         <div class="modal-actions">
             <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
@@ -550,7 +565,7 @@ function showPayForOrder(orderId, debt){
     showModal(`<h3>Thanh toán công nợ</h3>
         <div class="form-group"><label>Mã đơn hàng</label><input value="${shortId(orderId)}" disabled></div>
         <div class="form-group"><label>Công nợ còn lại</label><input value="${fmt(debt)} đ" disabled></div>
-        <div class="form-group"><label>Sá»‘ tiá»n thanh toÃ¡n</label><input type="number" id="payDebtAmt" value="${debt}"></div>
+        <div class="form-group"><label>Số tiền thanh toán</label><input type="number" id="payDebtAmt" value="${debt}"></div>
         <div class="form-group"><label>Phương thức</label>
             <select id="payDebtMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR</option></select></div>
         <div class="modal-actions">
@@ -582,7 +597,7 @@ async function loadPayments(){
 function showPaymentModal(){
     showModal(`<h3>Thanh toán mới</h3>
         <div class="form-group"><label>Mã đơn hàng</label><input type="text" id="pmOrderId" placeholder="Nhập mã đơn hàng..."></div>
-        <div class="form-group"><label>Sá»‘ tiá»n</label><input type="number" id="pmAmount" placeholder="Sá»‘ tiá»n thanh toÃ¡n"></div>
+        <div class="form-group"><label>Số tiền</label><input type="number" id="pmAmount" placeholder="Số tiền thanh toán"></div>
         <div class="form-group"><label>Phương thức</label>
             <select id="pmMethod"><option value="CASH">Tiền mặt</option><option value="QR">QR</option></select></div>
         <div class="modal-actions">
@@ -633,7 +648,7 @@ async function doCreateReturn(){
     else { toast('Tạo phiếu trả thành công','success'); hideModal(); loadReturns(); }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PRODUCTS
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadProducts(){
@@ -658,7 +673,7 @@ async function showProductModal(data={}){
         <div class="form-group"><label>Tên sản phẩm</label><input type="text" id="pName" value="${data.name||''}" placeholder="Tên sản phẩm"></div>
         <div class="form-group"><label>Danh mục</label><select id="pCat"><option value="">-- Chọn --</option>${catOpts}</select></div>
         <div class="form-group"><label>Thương hiệu</label><input type="text" id="pBrand" value="${data.brand||''}" placeholder="Thương hiệu"></div>
-        <div class="form-group"><label>ÄÆ¡n vá»‹ tÃ­nh</label><input type="text" id="pUnit" value="${data.unit||''}" placeholder="VD: bao, kg, cÃ¡i"></div>
+        <div class="form-group"><label>Đơn vị tính</label><input type="text" id="pUnit" value="${data.unit||''}" placeholder="VD: bao, kg, cái"></div>
         <div class="form-group"><label>Mô tả</label><textarea id="pDesc">${data.description||''}</textarea></div>
         <div class="form-group"><label>Trạng thái</label><select id="pStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Hoạt động</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Ngừng KD</option></select></div>
         <div class="modal-actions">
@@ -732,7 +747,7 @@ async function deleteCategory(id){
     else { toast('Đã xóa','success'); loadCategories(); }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INVENTORY
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadInventory(){
@@ -766,7 +781,7 @@ function showWarehouseModal(data={}){
     showModal(`<h3>${data.warehouseId?'Sửa':'Thêm'} kho hàng</h3>
         <div class="form-group"><label>Mã kho</label><input type="text" id="whCode" value="${data.warehouseCode||''}" placeholder="VD: WH001"></div>
         <div class="form-group"><label>Tên kho</label><input type="text" id="whName" value="${data.warehouseName||''}" placeholder="Tên kho hàng"></div>
-        <div class="form-group"><label>Äá»‹a chá»‰</label><input type="text" id="whAddr" value="${data.address||''}" placeholder="Äá»‹a chá»‰ kho"></div>
+        <div class="form-group"><label>Địa chỉ</label><input type="text" id="whAddr" value="${data.address||''}" placeholder="Địa chỉ kho"></div>
         <div class="modal-actions">
             <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
             <button class="btn btn-primary" onclick="saveWarehouse('${data.warehouseId||''}')">${data.warehouseId?'Cập nhật':'Thêm'}</button>
@@ -787,7 +802,7 @@ async function deleteWarehouse(id){
     else { toast('Đã xóa','success'); loadInventory(); }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SUPPLIERS
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadSuppliers(){
@@ -933,7 +948,7 @@ function showPromotionModal(data={}){
         <div class="form-group"><label>Tên</label><input type="text" id="proName" value="${data.name||''}" placeholder="Tên khuyến mãi"></div>
         <div class="form-group"><label>Loại</label><select id="proType">
             <option value="PERCENT" ${data.promoType==='PERCENT'?'selected':''}>Giảm %</option>
-            <option value="FIXED" ${data.promoType==='FIXED'?'selected':''}>Giáº£m tiá»n cá»‘ Ä‘á»‹nh</option>
+            <option value="FIXED" ${data.promoType==='FIXED'?'selected':''}>Giảm tiền cố định</option>
             <option value="BUY_X_GET_Y" ${data.promoType==='BUY_X_GET_Y'?'selected':''}>Mua X tặng Y</option>
             <option value="VOUCHER" ${data.promoType==='VOUCHER'?'selected':''}>Voucher</option>
         </select></div>
@@ -989,7 +1004,7 @@ function showEmployeeModal(data={}){
         <div class="form-group"><label>Họ tên</label><input type="text" id="empName" value="${data.fullName||''}" placeholder="Họ tên nhân viên"></div>
         <div class="form-group"><label>Ngày vào làm</label><input type="date" id="empHire" value="${(data.hireDate||'').substring(0,10)}"></div>
         <div class="form-group"><label>Lương cơ bản</label><input type="number" id="empSalary" value="${data.baseSalary||0}"></div>
-        <div class="form-group"><label>Tráº¡ng thÃ¡i</label><select id="empStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Äang lÃ m</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Nghá»‰ viá»‡c</option></select></div>
+        <div class="form-group"><label>Trạng thái</label><select id="empStatus"><option value="ACTIVE" ${data.status==='ACTIVE'?'selected':''}>Đang làm</option><option value="INACTIVE" ${data.status==='INACTIVE'?'selected':''}>Nghỉ việc</option></select></div>
         <div class="modal-actions">
             <button class="btn btn-outline" onclick="hideModal()">Hủy</button>
             <button class="btn btn-primary" onclick="saveEmployee('${data.employeeId||''}')">${data.employeeId?'Cập nhật':'Thêm'}</button>
@@ -1173,7 +1188,7 @@ async function showAssignWarehouseModal(reqId){
 async function doAssignWarehouse(reqId){
     const r = await api(`/api/transfers/store/${reqId}/assign`,'POST',{warehouseId:document.getElementById('assignWh').value,assignedBy:currentUser.userId});
     if(r.error) toast(r.error,'error');
-    else { toast('ÄÃ£ chá»‰ Ä‘á»‹nh kho','success'); hideModal(); loadTransfers(); }
+    else { toast('Đã chỉ định kho','success'); hideModal(); loadTransfers(); }
 }
 
 async function viewStoreTransferDetail(id){
@@ -1210,7 +1225,7 @@ async function delStoreItem(itemId, reqId){
 async function showOverstockModal(){
     const whs = await api('/api/warehouses') || [];
     const opts = Array.isArray(whs) ? whs.map(w=>`<option value="${w.warehouseId}">${w.warehouseName}</option>`).join('') : '';
-    showModal(`<h3>Táº¡o yÃªu cáº§u Ä‘iá»u chuyá»ƒn hÃ ng tá»“n</h3>
+    showModal(`<h3>Tạo yêu cầu điều chuyển hàng tồn</h3>
         <label>Kho</label><select id="ovWhId">${opts}</select>
         <label>Ghi chú</label><textarea id="ovNote"></textarea>
         <button class="btn btn-success" onclick="createOverstock()">Tạo</button>`);
@@ -1247,7 +1262,7 @@ async function showAssignStoreModal(reqId){
 async function doAssignStore(reqId){
     const r = await api(`/api/transfers/overstock/${reqId}/assign`,'POST',{targetStoreId:document.getElementById('assignStore').value,assignedBy:currentUser.userId});
     if(r.error) toast(r.error,'error');
-    else { toast('ÄÃ£ chá»‰ Ä‘á»‹nh CH','success'); hideModal(); loadTransfers(); }
+    else { toast('Đã chỉ định CH','success'); hideModal(); loadTransfers(); }
 }
 
 async function viewOverstockDetail(id){
